@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UtsavLink — Cross-State Event Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9942A;
+    --gold-light: #F0C060;
+    --deep: #0D0A06;
+    --dark: #1A1208;
+    --card: #1E1810;
+    --text: #F5EDD8;
+    --muted: #9A8B6E;
+    --accent: #E8521A;
+    --ap: #2A6B4A;
+    --ts: #8B2252;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(13,10,6,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--gold-light);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--deep) !important;
+    padding: 10px 24px; border-radius: 6px;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--deep) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 60%, rgba(139,34,82,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 70% 40%, rgba(42,107,74,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,148,42,0.06) 0%, transparent 80%);
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(201,148,42,0.4);
+    border-radius: 100px; padding: 6px 18px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--gold); margin-bottom: 28px;
+    letter-spacing: 0.5px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '✦'; font-size: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900; line-height: 1.0;
+    margin-bottom: 24px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: italic; color: var(--gold-light);
+    display: block;
+  }
+
+  .hero-sub {
+    max-width: 560px; font-size: 1.1rem;
+    color: var(--muted); line-height: 1.7;
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--deep); border: none;
+    padding: 16px 36px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 0 40px rgba(201,148,42,0.3);
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    box-shadow: 0 0 60px rgba(201,148,42,0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text); border: 1px solid rgba(245,237,216,0.2);
+    padding: 16px 36px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 500; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* ── STATES BRIDGE ── */
+  .bridge {
+    padding: 80px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 0;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .state-card {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 40px; border-radius: 16px;
+    position: relative; overflow: hidden;
+    min-width: 200px;
+    transition: transform 0.3s;
+  }
+  .state-card:hover { transform: scale(1.03); }
+
+  .state-card.ts {
+    background: linear-gradient(135deg, rgba(139,34,82,0.25), rgba(139,34,82,0.08));
+    border: 1px solid rgba(139,34,82,0.4);
+  }
+  .state-card.ap {
+    background: linear-gradient(135deg, rgba(42,107,74,0.25), rgba(42,107,74,0.08));
+    border: 1px solid rgba(42,107,74,0.4);
+  }
+
+  .state-flag {
+    font-size: 3rem; margin-bottom: 12px;
+  }
+
+  .state-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .state-card.ts .state-name { color: #D4669A; }
+  .state-card.ap .state-name { color: #5DB88A; }
+
+  .state-desc {
+    font-size: 0.8rem; color: var(--muted);
+    text-align: center; line-height: 1.5;
+  }
+
+  .bridge-connector {
+    display: flex; flex-direction: column;
+    align-items: center; padding: 0 24px; gap: 6px;
+  }
+
+  .bridge-line {
+    width: 120px; height: 2px;
+    background: linear-gradient(to right, var(--ts), var(--gold), var(--ap));
+    position: relative;
+  }
+  .bridge-line::after {
+    content: '⇄';
+    position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold); font-size: 1.4rem;
+  }
+
+  .bridge-label {
+    font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  section { padding: 100px 24px; }
+
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 12px; font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; margin-bottom: 60px;
+    max-width: 520px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px; max-width: 1100px; margin: 0 auto;
+  }
+
+  .step {
+    background: var(--card);
+    border: 1px solid rgba(201,148,42,0.12);
+    border-radius: 16px; padding: 32px 28px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .step:hover {
+    border-color: rgba(201,148,42,0.35);
+    transform: translateY(-4px);
+  }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; font-weight: 900;
+    color: rgba(201,148,42,0.1);
+    position: absolute; top: 16px; right: 20px;
+    line-height: 1;
+  }
+
+  .step-icon { font-size: 2rem; margin-bottom: 16px; }
+
+  .step h3 {
+    font-size: 1.05rem; font-weight: 600;
+    margin-bottom: 10px; color: var(--gold-light);
+  }
+  .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── SERVICES ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 16px; max-width: 1100px; margin: 0 auto;
+  }
+
+  .service-chip {
+    background: var(--card);
+    border: 1px solid rgba(201,148,42,0.1);
+    border-radius: 12px; padding: 20px 16px;
+    text-align: center; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .service-chip:hover {
+    border-color: var(--gold);
+    background: rgba(201,148,42,0.08);
+    transform: translateY(-2px);
+  }
+
+  .service-chip .icon { font-size: 2rem; margin-bottom: 10px; }
+  .service-chip .name { font-size: 0.85rem; font-weight: 500; }
+  .service-chip .price { font-size: 0.75rem; color: var(--gold); margin-top: 4px; }
+
+  /* ── VALUE PROP ── */
+  .value-section {
+    background: linear-gradient(135deg, rgba(201,148,42,0.06), transparent);
+    border-top: 1px solid rgba(201,148,42,0.12);
+    border-bottom: 1px solid rgba(201,148,42,0.12);
+  }
+
+  .value-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; max-width: 1000px; margin: 0 auto;
+    align-items: center;
+  }
+
+  .comparison-table {
+    background: var(--card);
+    border: 1px solid rgba(201,148,42,0.15);
+    border-radius: 16px; overflow: hidden;
+  }
+
+  .comp-header {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    background: rgba(201,148,42,0.1);
+    padding: 14px 20px;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.5px; color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .comp-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    padding: 14px 20px; font-size: 0.88rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    align-items: center;
+  }
+  .comp-row:hover { background: rgba(201,148,42,0.04); }
+
+  .comp-row .local { color: var(--accent); }
+  .comp-row .cross { color: #5DB88A; font-weight: 600; }
+  .comp-row .badge {
+    display: inline-block;
+    background: rgba(93,184,138,0.15);
+    color: #5DB88A; border-radius: 4px;
+    padding: 2px 8px; font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .value-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; margin-bottom: 20px; line-height: 1.2;
+  }
+  .value-text p { color: var(--muted); line-height: 1.75; margin-bottom: 16px; }
+  .value-text .highlight { color: var(--gold-light); font-weight: 600; }
+
+  /* ── VENDORS ── */
+  .vendor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px; max-width: 1100px; margin: 0 auto;
+  }
+
+  .vendor-card {
+    background: var(--card);
+    border: 1px solid rgba(201,148,42,0.1);
+    border-radius: 16px; padding: 24px;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .vendor-card:hover {
+    border-color: rgba(201,148,42,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .vendor-top {
+    display: flex; align-items: center;
+    gap: 14px; margin-bottom: 16px;
+  }
+
+  .vendor-avatar {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+  }
+
+  .vendor-info h4 { font-size: 0.95rem; font-weight: 600; }
+  .vendor-info .loc {
+    font-size: 0.78rem; color: var(--muted); margin-top: 2px;
+  }
+
+  .vendor-state-tag {
+    margin-left: auto;
+    font-size: 0.7rem; padding: 4px 10px;
+    border-radius: 100px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .tag-ap { background: rgba(42,107,74,0.2); color: #5DB88A; border: 1px solid rgba(42,107,74,0.3); }
+  .tag-ts { background: rgba(139,34,82,0.2); color: #D4669A; border: 1px solid rgba(139,34,82,0.3); }
+
+  .vendor-services {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;
+  }
+  .vendor-service {
+    font-size: 0.72rem; background: rgba(255,255,255,0.05);
+    padding: 4px 10px; border-radius: 100px; color: var(--muted);
+  }
+
+  .vendor-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .vendor-price { font-size: 0.85rem; }
+  .vendor-price strong { color: var(--gold-light); font-size: 1rem; }
+
+  .stars { color: var(--gold); font-size: 0.8rem; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    text-align: center; padding: 100px 24px;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,148,42,0.1), transparent 70%);
+  }
+
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 20px; position: relative;
+  }
+  .cta-section p {
+    color: var(--muted); max-width: 480px; margin: 0 auto 40px;
+    line-height: 1.7; position: relative;
+  }
+
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+  .btn-vendor {
+    background: transparent;
+    color: var(--gold); border: 1px solid var(--gold);
+    padding: 16px 36px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-vendor:hover {
+    background: rgba(201,148,42,0.1);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(201,148,42,0.1);
+    padding: 40px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer .logo { font-size: 1.2rem; }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .value-grid { grid-template-columns: 1fr; }
+    .bridge-line { width: 60px; }
+    footer { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Utsav<span>Link</span></div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#how">How it works</a>
+    <a href="#vendors">Vendors</a>
+    <a href="#" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">Telangana × Andhra Pradesh Event Marketplace</div>
+  <h1>Your Budget.<br><em>Better Events.</em></h1>
+  <p class="hero-sub">Same ₹30,000. Ultra-quality vendors from across state lines. Book decorators, photographers, caterers & more — wherever the value is best.</p>
+  <div class="hero-actions">
+    <button class="btn-primary">Find Vendors Near You</button>
+    <button class="btn-ghost">List Your Services →</button>
+  </div>
+
+  <!-- BRIDGE VISUAL -->
+  <div class="bridge">
+    <div class="state-card ts">
+      <div class="state-flag">🏛️</div>
+      <div class="state-name">Telangana</div>
+      <div class="state-desc">Customers seeking<br/>premium quality</div>
+    </div>
+
+    <div class="bridge-connector">
+      <div class="bridge-line"></div>
+      <div class="bridge-label">UtsavLink connects</div>
+    </div>
+
+    <div class="state-card ap">
+      <div class="state-flag">🌿</div>
+      <div class="state-name">Andhra Pradesh</div>
+      <div class="state-desc">Skilled vendors with<br/>competitive pricing</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label">Simple Process</div>
+    <div class="section-title">Book cross-state vendors in 4 easy steps</div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-icon">📍</div>
+        <h3>Enter Your Location & Budget</h3>
+        <p>Tell us where you are and how much you want to spend. We'll show you what's available locally and from neighboring states.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-icon">🔍</div>
+        <h3>Compare Side-by-Side</h3>
+        <p>See local vs. cross-state vendors ranked by quality, ratings, and price. No surprises — full transparency on travel costs too.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-icon">🤝</div>
+        <h3>Book & Coordinate</h3>
+        <p>Chat with vendors, finalize packages, and book securely. We handle logistics coordination so you don't have to.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <div class="step-icon">🎉</div>
+        <h3>Enjoy Your Event</h3>
+        <p>Relax on your big day. Vendors arrive ready. Payment released only after successful delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" style="background: rgba(255,255,255,0.01);">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="section-label">All Event Categories</div>
+    <div class="section-title" style="margin:0 auto 40px; text-align:center">Everything for your celebration</div>
+    <div class="services-grid">
+      <div class="service-chip reveal"><div class="icon">📸</div><div class="name">Photography</div><div class="price">From ₹8,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🎬</div><div class="name">Videography</div><div class="price">From ₹12,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🌸</div><div class="name">Decoration</div><div class="price">From ₹15,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🍽️</div><div class="name">Catering</div><div class="price">From ₹200/plate</div></div>
+      <div class="service-chip reveal"><div class="icon">🎤</div><div class="name">DJ & Music</div><div class="price">From ₹6,000</div></div>
+      <div class="service-chip reveal"><div class="icon">💄</div><div class="name">Bridal Makeup</div><div class="price">From ₹8,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🏟️</div><div class="name">Venue Booking</div><div class="price">From ₹20,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🎪</div><div class="name">Tent & Mandap</div><div class="price">From ₹10,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🚗</div><div class="name">Wedding Cars</div><div class="price">From ₹5,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🎂</div><div class="name">Custom Cakes</div><div class="price">From ₹2,500</div></div>
+      <div class="service-chip reveal"><div class="icon">🪔</div><div class="name">Mehendi</div><div class="price">From ₹3,000</div></div>
+      <div class="service-chip reveal"><div class="icon">🎁</div><div class="name">Invitation Cards</div><div class="price">From ₹1,500</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE COMPARISON -->
+<section class="value-section">
+  <div class="value-grid">
+    <div class="value-text reveal">
+      <div class="section-label">The UtsavLink Advantage</div>
+      <h2>Same budget. <em style="color:var(--gold-light)">Twice</em> the quality.</h2>
+      <p>Local monopolies mean you pay premium prices for average work. UtsavLink opens up a 2-state talent pool — so your ₹30,000 goes much, much further.</p>
+      <p class="highlight">✦ Travel costs included in vendor quotes<br/>✦ Verified portfolios & real reviews<br/>✦ Secure escrow payments</p>
+    </div>
+    <div class="comparison-table reveal">
+      <div class="comp-header">
+        <span>Service</span><span>Local</span><span>Cross-State</span>
+      </div>
+      <div class="comp-row">
+        <span>Photography</span>
+        <span class="local">₹18,000<br/><small style="color:var(--muted)">Basic DSLR</small></span>
+        <span class="cross">₹12,000<br/><span class="badge">Pro Camera</span></span>
+      </div>
+      <div class="comp-row">
+        <span>Decoration</span>
+        <span class="local">₹22,000<br/><small style="color:var(--muted)">Plastic flowers</small></span>
+        <span class="cross">₹18,000<br/><span class="badge">Real blooms</span></span>
+      </div>
+      <div class="comp-row">
+        <span>Catering</span>
+        <span class="local">₹350/plate<br/><small style="color:var(--muted)">8 items</small></span>
+        <span class="cross">₹250/plate<br/><span class="badge">14 items</span></span>
+      </div>
+      <div class="comp-row">
+        <span>Bridal MU</span>
+        <span class="local">₹15,000<br/><small style="color:var(--muted)">Local artist</small></span>
+        <span class="cross">₹10,000<br/><span class="badge">Award-winning</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED VENDORS -->
+<section id="vendors">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label">Featured Vendors</div>
+    <div class="section-title">Top-rated across both states</div>
+    <div class="vendor-cards">
+
+      <div class="vendor-card reveal">
+        <div class="vendor-top">
+          <div class="vendor-avatar" style="background:rgba(42,107,74,0.2)">📸</div>
+          <div class="vendor-info">
+            <h4>Krishna Studios</h4>
+            <div class="loc">📍 Vijayawada, AP</div>
+          </div>
+          <div class="vendor-state-tag tag-ap">Andhra Pradesh</div>
+        </div>
+        <div class="vendor-services">
+          <span class="vendor-service">Wedding Photography</span>
+          <span class="vendor-service">Reels</span>
+          <span class="vendor-service">Drone</span>
+        </div>
+        <div class="vendor-bottom">
+          <div class="vendor-price">From <strong>₹14,000</strong></div>
+          <div class="stars">★★★★★ 4.9</div>
+        </div>
+      </div>
+
+      <div class="vendor-card reveal">
+        <div class="vendor-top">
+          <div class="vendor-avatar" style="background:rgba(139,34,82,0.2)">🌸</div>
+          <div class="vendor-info">
+            <h4>Shree Decorators</h4>
+            <div class="loc">📍 Hyderabad, TS</div>
+          </div>
+          <div class="vendor-state-tag tag-ts">Telangana</div>
+        </div>
+        <div class="vendor-services">
+          <span class="vendor-service">Stage Decor</span>
+          <span class="vendor-service">Floral</span>
+          <span class="vendor-service">Mandap</span>
+        </div>
+        <div class="vendor-bottom">
+          <div class="vendor-price">From <strong>₹18,000</strong></div>
+          <div class="stars">★★★★★ 4.8</div>
+        </div>
+      </div>
+
+      <div class="vendor-card reveal">
+        <div class="vendor-top">
+          <div class="vendor-avatar" style="background:rgba(42,107,74,0.2)">🎬</div>
+          <div class="vendor-info">
+            <h4>Ravi Cinemaworks</h4>
+            <div class="loc">📍 Guntur, AP</div>
+          </div>
+          <div class="vendor-state-tag tag-ap">Andhra Pradesh</div>
+        </div>
+        <div class="vendor-services">
+          <span class="vendor-service">4K Video</span>
+          <span class="vendor-service">Highlight Film</span>
+          <span class="vendor-service">Live Stream</span>
+        </div>
+        <div class="vendor-bottom">
+          <div class="vendor-price">From <strong>₹20,000</strong></div>
+          <div class="stars">★★★★☆ 4.7</div>
+        </div>
+      </div>
+
+      <div class="vendor-card reveal">
+        <div class="vendor-top">
+          <div class="vendor-avatar" style="background:rgba(201,148,42,0.2)">🍽️</div>
+          <div class="vendor-info">
+            <h4>Andhra Grand Catering</h4>
+            <div class="loc">📍 Nellore, AP</div>
+          </div>
+          <div class="vendor-state-tag tag-ap">Andhra Pradesh</div>
+        </div>
+        <div class="vendor-services">
+          <span class="vendor-service">Telugu Cuisine</span>
+          <span class="vendor-service">Veg/Non-Veg</span>
+          <span class="vendor-service">500+ pax</span>
+        </div>
+        <div class="vendor-bottom">
+          <div class="vendor-price">From <strong>₹220/plate</strong></div>
+          <div class="stars">★★★★★ 4.9</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Plan your dream event<br/><span style="color:var(--gold)">without compromising.</span></h2>
+  <p>Join thousands of Telugu families who stretched their budget further with UtsavLink.</p>
+  <div class="cta-actions">
+    <button class="btn-primary">Find Vendors Now</button>
+    <button class="btn-vendor">Register as Vendor</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Utsav<span>Link</span></div>
+  <p>Connecting Telangana & Andhra Pradesh for better events.</p>
+  <p style="font-size:0.75rem;color:var(--muted)">© 2026 UtsavLink. Built for Telugu communities.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Service chip interactivity
+  document.querySelectorAll('.service-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.style.borderColor = 'var(--gold)';
+      chip.style.background = 'rgba(201,148,42,0.15)';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UtsavLink — Complete UI Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — Copy these into your project
+   ═══════════════════════════════════════════════ */
+:root {
+  /* Primary Palette */
+  --clr-primary:     #FF6B35;   /* Vibrant saffron-orange — main CTA */
+  --clr-primary-dk:  #E05520;   /* Hover state */
+  --clr-primary-lt:  #FFF0EA;   /* Light background tint */
+
+  /* Secondary */
+  --clr-ap:          #00875A;   /* Andhra Pradesh — success/AP green */
+  --clr-ap-lt:       #E3F5EF;
+  --clr-ts:          #6B21A8;   /* Telangana — purple */
+  --clr-ts-lt:       #F3E8FF;
+
+  /* Neutrals */
+  --clr-bg:          #F8F7F4;   /* Warm off-white page bg */
+  --clr-surface:     #FFFFFF;
+  --clr-surface2:    #F2F1EE;
+  --clr-border:      #E8E5DF;
+  --clr-border-dk:   #D4CFC6;
+  --clr-text:        #1C1917;   /* Near black */
+  --clr-text-2:      #57534E;   /* Secondary text */
+  --clr-text-3:      #A8A29E;   /* Placeholder/muted */
+
+  /* Semantic */
+  --clr-success:     #16A34A;
+  --clr-warning:     #D97706;
+  --clr-error:       #DC2626;
+  --clr-info:        #2563EB;
+
+  /* Dark mode surface */
+  --clr-dark:        #1C1917;
+  --clr-dark-2:      #292524;
+  --clr-dark-3:      #44403C;
+
+  /* Typography */
+  --font-body:       'Sora', sans-serif;
+  --font-display:    'Nunito', sans-serif;
+
+  /* Spacing scale (4px base) */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* Border radius */
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-full: 9999px;
+
+  /* Shadows */
+  --sh-sm:  0 1px 3px rgba(28,25,23,0.08), 0 1px 2px rgba(28,25,23,0.06);
+  --sh-md:  0 4px 12px rgba(28,25,23,0.10), 0 2px 4px rgba(28,25,23,0.06);
+  --sh-lg:  0 16px 40px rgba(28,25,23,0.12), 0 4px 8px rgba(28,25,23,0.08);
+  --sh-xl:  0 24px 60px rgba(28,25,23,0.16);
+}
+
+/* ─── RESET ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-body);
+  background:#E8E6E1;
+  color:var(--clr-text);
+  line-height:1.5;
+  min-height:100vh;
+}
+
+/* ─── FIGMA CANVAS ───────────────────────────── */
+.canvas-bg{
+  background: #E8E6E1;
+  background-image:
+    radial-gradient(circle, #C4BFB8 1px, transparent 1px);
+  background-size: 24px 24px;
+  padding: 48px 32px;
+  min-height: 100vh;
+}
+
+/* ─── STICKY TOP NAV ─────────────────────────── */
+.ds-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:var(--clr-dark);
+  display:flex;align-items:center;
+  padding:0 24px;
+  height:52px;
+  gap:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.ds-nav::-webkit-scrollbar{display:none}
+.ds-logo{
+  font-family:var(--font-display);
+  font-weight:900;font-size:1.1rem;
+  color:var(--clr-primary);
+  padding:0 20px 0 0;
+  border-right:1px solid var(--clr-dark-3);
+  margin-right:8px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.ds-btn{
+  height:52px;padding:0 16px;
+  font-size:0.78rem;font-weight:600;
+  color:rgba(255,255,255,0.5);
+  background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;
+  font-family:var(--font-body);
+  white-space:nowrap;flex-shrink:0;
+  transition:all 0.15s;
+  letter-spacing:0.2px;
+}
+.ds-btn:hover{color:rgba(255,255,255,0.85);}
+.ds-btn.active{color:var(--clr-primary);border-bottom-color:var(--clr-primary);}
+
+/* ─── SCREENS ────────────────────────────────── */
+.screen{display:none;padding-top:52px;}
+.screen.active{display:block;}
+
+/* ─── FRAME LAYOUT ───────────────────────────── */
+.frame-row{
+  display:flex;gap:32px;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  margin-bottom:48px;
+}
+.frame-col{display:flex;flex-direction:column;gap:12px;}
+.frame-title{
+  font-size:0.72rem;font-weight:700;
+  color:#6B6560;letter-spacing:1.5px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.frame-title span{
+  background:var(--clr-primary);color:white;
+  font-size:0.6rem;padding:2px 6px;border-radius:4px;
+}
+
+/* ─── PHONE FRAME ────────────────────────────── */
+.phone{
+  width:375px;
+  background:var(--clr-surface);
+  border-radius:44px;
+  overflow:hidden;
+  box-shadow: 0 0 0 8px #2A2724, 0 0 0 10px #1C1917, var(--sh-xl);
+  flex-shrink:0;
+  position:relative;
+}
+.phone-notch{
+  background:var(--clr-dark);
+  height:44px;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+}
+.phone-notch .time{color:white;font-size:0.8rem;font-weight:700;}
+.phone-notch .icons{color:white;font-size:0.75rem;opacity:0.8;display:flex;gap:4px;align-items:center;}
+.phone-body{background:var(--clr-bg);min-height:500px;}
+
+/* ─── ANNOTATIONS ────────────────────────────── */
+.ann{
+  background:white;
+  border-radius:var(--r-md);
+  padding:12px 14px;
+  max-width:280px;
+  box-shadow:var(--sh-md);
+  border-left:3px solid var(--clr-primary);
+  font-size:0.78rem;
+  line-height:1.55;
+  color:var(--clr-text-2);
+}
+.ann-trigger{
+  font-weight:700;color:var(--clr-primary);
+  font-size:0.72rem;letter-spacing:0.5px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.ann-arrow{
+  font-size:0.7rem;color:var(--clr-primary);
+  display:flex;align-items:center;gap:4px;
+  margin-top:6px;font-weight:700;
+}
+.ann-code{
+  font-family:monospace;font-size:0.72rem;
+  background:var(--clr-surface2);
+  padding:2px 6px;border-radius:4px;
+  color:var(--clr-primary-dk);
+}
+
+/* ─── SECTION HEADER ─────────────────────────── */
+.sec-head{
+  margin-bottom:32px;
+}
+.sec-label{
+  font-size:0.72rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--clr-primary);
+  margin-bottom:6px;
+}
+.sec-title{
+  font-family:var(--font-display);
+  font-size:2rem;font-weight:800;
+  color:var(--clr-dark);
+  margin-bottom:4px;
+}
+.sec-sub{color:var(--clr-text-2);font-size:0.88rem;}
+
+/* ═══════════════════════════════════
+   UI COMPONENTS — Design System
+   ═══════════════════════════════════ */
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:6px;font-family:var(--font-body);
+  font-weight:700;border:none;cursor:pointer;
+  transition:all 0.18s ease;
+  border-radius:var(--r-md);
+  white-space:nowrap;
+}
+.btn-primary-ui{
+  background:var(--clr-primary);color:white;
+  padding:14px 24px;font-size:0.9rem;
+  box-shadow:0 4px 16px rgba(255,107,53,0.35);
+}
+.btn-primary-ui:hover{background:var(--clr-primary-dk);transform:translateY(-1px);}
+.btn-secondary-ui{background:var(--clr-surface2);color:var(--clr-text);padding:14px 24px;font-size:0.9rem;}
+.btn-ghost-ui{background:transparent;color:var(--clr-primary);border:2px solid var(--clr-primary);padding:12px 22px;font-size:0.9rem;}
+.btn-dark-ui{background:var(--clr-dark);color:white;padding:14px 24px;font-size:0.9rem;}
+.btn-sm-ui{padding:9px 16px;font-size:0.8rem;border-radius:var(--r-sm);}
+
+/* Input */
+.input-ui{
+  width:100%;border:1.5px solid var(--clr-border);
+  border-radius:var(--r-md);padding:13px 16px;
+  font-family:var(--font-body);font-size:0.88rem;
+  background:var(--clr-surface);color:var(--clr-text);
+  outline:none;transition:all 0.18s;
+}
+.input-ui.focused{border-color:var(--clr-primary);box-shadow:0 0 0 3px rgba(255,107,53,0.12);}
+.input-ui.error{border-color:var(--clr-error);}
+
+/* Tags */
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:var(--r-full);
+  font-size:0.72rem;font-weight:700;
+}
+.tag-ap-ui{background:var(--clr-ap-lt);color:var(--clr-ap);}
+.tag-ts-ui{background:var(--clr-ts-lt);color:var(--clr-ts);}
+.tag-orange{background:var(--clr-primary-lt);color:var(--clr-primary);}
+.tag-dark{background:var(--clr-dark);color:white;}
+
+/* Cards */
+.card-ui{
+  background:var(--clr-surface);
+  border:1px solid var(--clr-border);
+  border-radius:var(--r-lg);
+  padding:16px;
+  box-shadow:var(--sh-sm);
+  transition:all 0.2s;
+}
+.card-ui:hover{box-shadow:var(--sh-md);border-color:var(--clr-primary);}
+.card-ui.selected{border-color:var(--clr-primary);box-shadow:0 0 0 2px rgba(255,107,53,0.2);}
+.card-ui.best{border-color:var(--clr-ap);box-shadow:0 0 0 2px rgba(0,135,90,0.15);}
+
+/* Value bar */
+.vbar-wrap{margin-top:10px;}
+.vbar-label{display:flex;justify-content:space-between;font-size:0.72rem;margin-bottom:4px;}
+.vbar-track{height:5px;background:var(--clr-border);border-radius:3px;overflow:hidden;}
+.vbar-fill{height:100%;border-radius:3px;}
+.vbar-high{background:linear-gradient(90deg,var(--clr-ap),#22C55E);}
+.vbar-mid{background:linear-gradient(90deg,var(--clr-warning),#FBBF24);}
+.vbar-low{background:var(--clr-error);}
+
+/* Stars */
+.stars{color:#F59E0B;letter-spacing:1px;font-size:0.9rem;}
+
+/* Bottom nav */
+.bnav{
+  display:flex;background:var(--clr-surface);
+  border-top:1px solid var(--clr-border);
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;padding:10px 4px 12px;
+  gap:3px;font-size:0.62rem;font-weight:700;
+  color:var(--clr-text-3);cursor:pointer;
+  letter-spacing:0.3px;
+}
+.bnav-item.active{color:var(--clr-primary);}
+.bnav-icon{font-size:1.3rem;line-height:1;}
+
+/* Progress steps */
+.steps-row{display:flex;align-items:center;padding:16px 20px;gap:0;}
+.step-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:800;flex-shrink:0;
+}
+.step-done{background:var(--clr-ap);color:white;}
+.step-active{background:var(--clr-primary);color:white;}
+.step-pending{background:var(--clr-border);color:var(--clr-text-3);}
+.step-line{flex:1;height:2px;}
+.step-line-done{background:var(--clr-ap);}
+.step-line-pending{background:var(--clr-border);}
+
+/* OTP boxes */
+.otp-row{display:flex;gap:10px;justify-content:center;padding:8px 0;}
+.otp-box{
+  width:48px;height:54px;border-radius:var(--r-md);
+  border:2px solid var(--clr-border);
+  background:var(--clr-surface);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:1.5rem;font-weight:800;color:var(--clr-text);
+}
+.otp-box.filled{border-color:var(--clr-primary);background:var(--clr-primary-lt);}
+.otp-box.current{border-color:var(--clr-primary);box-shadow:0 0 0 3px rgba(255,107,53,0.15);}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day{
+  aspect-ratio:1;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:600;cursor:pointer;
+  transition:all 0.15s;
+}
+.cal-available{background:#DCFCE7;color:var(--clr-ap);}
+.cal-booked{background:#FEE2E2;color:var(--clr-error);text-decoration:line-through;}
+.cal-selected{background:var(--clr-primary);color:white;}
+.cal-today{border:2px solid var(--clr-primary);}
+.cal-default:hover{background:var(--clr-surface2);}
+.cal-head{font-size:0.65rem;font-weight:700;color:var(--clr-text-3);text-align:center;padding:4px 0;}
+
+/* Chip */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:var(--r-full);
+  font-size:0.8rem;font-weight:600;cursor:pointer;
+  border:2px solid var(--clr-border);background:var(--clr-surface);
+  color:var(--clr-text-2);transition:all 0.15s;
+  white-space:nowrap;
+}
+.chip.active{background:var(--clr-dark);color:white;border-color:var(--clr-dark);}
+.chip:hover:not(.active){border-color:var(--clr-primary);color:var(--clr-primary);}
+
+/* Stat box */
+.stat{
+  background:var(--clr-surface);border:1px solid var(--clr-border);
+  border-radius:var(--r-lg);padding:14px;text-align:center;
+}
+.stat-val{font-family:var(--font-display);font-size:1.6rem;font-weight:800;}
+.stat-lbl{font-size:0.7rem;color:var(--clr-text-3);margin-top:2px;font-weight:600;}
+
+/* Badge */
+.badge{
+  display:inline-flex;background:var(--clr-error);color:white;
+  border-radius:var(--r-full);padding:2px 6px;
+  font-size:0.62rem;font-weight:800;
+}
+
+/* Divider */
+.divider{height:1px;background:var(--clr-border);margin:12px 0;}
+
+/* Section inside phone */
+.phone-section{padding:16px;}
+.phone-section-title{
+  font-family:var(--font-display);font-size:1rem;font-weight:800;
+  color:var(--clr-text);margin-bottom:2px;
+}
+
+/* ─── SPEC PANEL ─────────────────────────────── */
+.spec-panel{
+  background:white;border-radius:var(--r-xl);
+  padding:24px;min-width:280px;max-width:320px;
+  box-shadow:var(--sh-md);
+}
+.spec-section{margin-bottom:20px;}
+.spec-section:last-child{margin-bottom:0;}
+.spec-title{
+  font-size:0.68rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--clr-text-3);
+  margin-bottom:10px;border-bottom:1px solid var(--clr-border);
+  padding-bottom:6px;
+}
+.spec-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.78rem;margin-bottom:6px;
+}
+.spec-key{color:var(--clr-text-2);}
+.spec-val{font-weight:700;color:var(--clr-text);}
+.spec-val.primary{color:var(--clr-primary);}
+.spec-val.ap{color:var(--clr-ap);}
+.spec-swatch{
+  width:20px;height:20px;border-radius:4px;
+  border:1px solid rgba(0,0,0,0.08);
+}
+
+/* ─── COLOR TOKENS GRID ──────────────────────── */
+.color-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.color-chip{
+  display:flex;flex-direction:column;gap:4px;
+  font-size:0.65rem;color:#6B6560;text-align:center;
+}
+.color-block{
+  width:60px;height:40px;border-radius:var(--r-sm);
+  border:1px solid rgba(0,0,0,0.08);
+  box-shadow:var(--sh-sm);
+}
+.color-name{font-weight:700;font-size:0.65rem;}
+.color-hex{opacity:0.7;}
+
+/* ─── COMPONENT SPEC TABLE ───────────────────── */
+.spec-table{
+  background:white;border-radius:var(--r-xl);
+  overflow:hidden;box-shadow:var(--sh-md);
+  width:100%;border-collapse:collapse;
+}
+.spec-table th{
+  background:var(--clr-dark);color:white;
+  padding:12px 20px;text-align:left;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.5px;
+}
+.spec-table td{
+  padding:12px 20px;font-size:0.82rem;
+  border-bottom:1px solid var(--clr-border);
+  vertical-align:top;
+}
+.spec-table tr:hover td{background:var(--clr-primary-lt);}
+.spec-table .component{font-weight:700;}
+.spec-table .trigger{color:var(--clr-info);font-size:0.78rem;}
+.spec-table .action{color:var(--clr-ap);font-size:0.78rem;}
+.spec-table .api-call{
+  font-family:monospace;font-size:0.72rem;
+  background:var(--clr-surface2);
+  padding:2px 6px;border-radius:4px;
+  color:var(--clr-primary-dk);
+}
+
+@media(max-width:768px){
+  .phone{width:100%;max-width:375px;}
+  .frame-row{gap:20px;}
+  .ds-nav{padding:0 12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ STICKY NAV ══ -->
+<div class="ds-nav">
+  <div class="ds-logo">UtsavLink</div>
+  <button class="ds-btn active" onclick="show('tokens')">🎨 Design Tokens</button>
+  <button class="ds-btn" onclick="show('login')">1 · Login</button>
+  <button class="ds-btn" onclick="show('home')">2 · Home</button>
+  <button class="ds-btn" onclick="show('search')">3 · Search</button>
+  <button class="ds-btn" onclick="show('results')">4 · Results</button>
+  <button class="ds-btn" onclick="show('vendor')">5 · Vendor</button>
+  <button class="ds-btn" onclick="show('booking')">6 · Booking</button>
+  <button class="ds-btn" onclick="show('mybookings')">7 · My Bookings</button>
+  <button class="ds-btn" onclick="show('dashboard')">8 · Dashboard</button>
+  <button class="ds-btn" onclick="show('vreg')">9 · Vendor Register</button>
+  <button class="ds-btn" onclick="show('actions')">⚡ All Actions</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: DESIGN TOKENS
+══════════════════════════════════════════ -->
+<div id="tokens" class="screen active">
+<div class="canvas-bg">
+
+  <div class="sec-head">
+    <div class="sec-label">Foundation</div>
+    <div class="sec-title">Design Tokens</div>
+    <div class="sec-sub">Copy these CSS variables to your project's global stylesheet</div>
+  </div>
+
+  <div class="frame-row" style="align-items:flex-start">
+
+    <!-- Colors -->
+    <div style="background:white;border-radius:24px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);min-width:500px;">
+      <div class="spec-title">COLOR PALETTE</div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.72rem;font-weight:700;color:#999;margin-bottom:8px;">PRIMARY</div>
+        <div class="color-grid">
+          <div class="color-chip"><div class="color-block" style="background:#FF6B35"></div><div class="color-name">Primary</div><div class="color-hex">#FF6B35</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#E05520"></div><div class="color-name">Primary Dk</div><div class="color-hex">#E05520</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#FFF0EA"></div><div class="color-name">Primary Lt</div><div class="color-hex">#FFF0EA</div></div>
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.72rem;font-weight:700;color:#999;margin-bottom:8px;">STATE COLORS</div>
+        <div class="color-grid">
+          <div class="color-chip"><div class="color-block" style="background:#00875A"></div><div class="color-name">AP Green</div><div class="color-hex">#00875A</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#E3F5EF"></div><div class="color-name">AP Light</div><div class="color-hex">#E3F5EF</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#6B21A8"></div><div class="color-name">TS Purple</div><div class="color-hex">#6B21A8</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#F3E8FF"></div><div class="color-name">TS Light</div><div class="color-hex">#F3E8FF</div></div>
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.72px;font-weight:700;color:#999;margin-bottom:8px;font-size:0.72rem;">NEUTRALS</div>
+        <div class="color-grid">
+          <div class="color-chip"><div class="color-block" style="background:#F8F7F4;border:1px solid #E8E5DF"></div><div class="color-name">BG</div><div class="color-hex">#F8F7F4</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#FFFFFF;border:1px solid #E8E5DF"></div><div class="color-name">Surface</div><div class="color-hex">#FFFFFF</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#F2F1EE;border:1px solid #E8E5DF"></div><div class="color-name">Surface2</div><div class="color-hex">#F2F1EE</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#E8E5DF"></div><div class="color-name">Border</div><div class="color-hex">#E8E5DF</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#57534E"></div><div class="color-name">Text 2</div><div class="color-hex">#57534E</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#1C1917"></div><div class="color-name">Text</div><div class="color-hex">#1C1917</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;color:#999;margin-bottom:8px;">SEMANTIC</div>
+        <div class="color-grid">
+          <div class="color-chip"><div class="color-block" style="background:#16A34A"></div><div class="color-name">Success</div><div class="color-hex">#16A34A</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#D97706"></div><div class="color-name">Warning</div><div class="color-hex">#D97706</div></div>
+          <div class="color-chip"><div class="color-block" style="background:#DC2626"></div><div class="color-name">Error</div><div class="color-hex">#DC2626</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography & Spacing -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div style="background:white;border-radius:24px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div class="spec-title">TYPOGRAPHY</div>
+        <div style="margin-bottom:12px;">
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.5rem;color:#1C1917;">Nunito — Display Font</div>
+          <div style="font-size:0.72rem;color:#999;">font-weight: 700, 800, 900 · Headings, Logo, Numbers</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-family:'Sora',sans-serif;font-size:1rem;color:#1C1917;">Sora — Body Font</div>
+          <div style="font-size:0.72rem;color:#999;">font-weight: 400, 500, 600, 700 · Body, Labels, Buttons</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #F2F1EE;padding-bottom:6px;">
+            <span style="font-family:'Nunito',sans-serif;font-weight:800;font-size:2rem;color:#1C1917;">H1</span>
+            <span style="font-size:0.72rem;color:#999;">Nunito 800 · 28-32px</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #F2F1EE;padding-bottom:6px;">
+            <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:1.4rem;color:#1C1917;">H2</span>
+            <span style="font-size:0.72rem;color:#999;">Nunito 700 · 20-22px</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #F2F1EE;padding-bottom:6px;">
+            <span style="font-size:0.88rem;font-weight:600;color:#1C1917;">Body Strong</span>
+            <span style="font-size:0.72rem;color:#999;">Sora 600 · 14px</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;">
+            <span style="font-size:0.8rem;color:#57534E;">Body Regular</span>
+            <span style="font-size:0.72rem;color:#999;">Sora 400 · 12-13px</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:24px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div class="spec-title">SPACING SCALE (4px base)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;gap:8px;align-items:center;" >
+            <div style="height:8px;background:var(--clr-primary);width:4px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-1</span>
+            <span style="font-size:0.75rem;color:#999;">4px</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="height:8px;background:var(--clr-primary);width:8px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-2</span>
+            <span style="font-size:0.75rem;color:#999;">8px</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="height:8px;background:var(--clr-primary);width:12px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-3</span>
+            <span style="font-size:0.75rem;color:#999;">12px</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="height:8px;background:var(--clr-primary);width:16px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-4</span>
+            <span style="font-size:0.75rem;color:#999;">16px · default padding</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="height:8px;background:var(--clr-primary);width:24px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-6</span>
+            <span style="font-size:0.75rem;color:#999;">24px · card padding</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="height:8px;background:var(--clr-primary);width:32px;border-radius:2px;"></div>
+            <span style="font-size:0.75rem;color:#57534E;width:30px;">sp-8</span>
+            <span style="font-size:0.75rem;color:#999;">32px · section gap</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:24px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div class="spec-title">BORDER RADIUS</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div style="text-align:center;font-size:0.7rem;color:#999;">
+            <div style="width:40px;height:40px;background:#F2F1EE;border-radius:8px;border:1px solid #E8E5DF;margin-bottom:4px;"></div>
+            r-sm<br/>8px
+          </div>
+          <div style="text-align:center;font-size:0.7rem;color:#999;">
+            <div style="width:40px;height:40px;background:#F2F1EE;border-radius:12px;border:1px solid #E8E5DF;margin-bottom:4px;"></div>
+            r-md<br/>12px
+          </div>
+          <div style="text-align:center;font-size:0.7rem;color:#999;">
+            <div style="width:40px;height:40px;background:#F2F1EE;border-radius:16px;border:1px solid #E8E5DF;margin-bottom:4px;"></div>
+            r-lg<br/>16px
+          </div>
+          <div style="text-align:center;font-size:0.7rem;color:#999;">
+            <div style="width:40px;height:40px;background:#F2F1EE;border-radius:24px;border:1px solid #E8E5DF;margin-bottom:4px;"></div>
+            r-xl<br/>24px
+          </div>
+          <div style="text-align:center;font-size:0.7rem;color:#999;">
+            <div style="width:40px;height:20px;background:#F2F1EE;border-radius:9999px;border:1px solid #E8E5DF;margin-bottom:4px;margin-top:10px;"></div>
+            r-full<br/>pill
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Component Library -->
+    <div style="background:white;border-radius:24px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);min-width:320px;">
+      <div class="spec-title">COMPONENT LIBRARY</div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.68rem;font-weight:700;color:#bbb;margin-bottom:10px;letter-spacing:1px;">BUTTONS</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-primary-ui" style="width:100%;">Primary Button</button>
+          <button class="btn btn-dark-ui" style="width:100%;">Dark Button</button>
+          <button class="btn btn-ghost-ui" style="width:100%;">Ghost Button</button>
+          <button class="btn btn-secondary-ui" style="width:100%;">Secondary</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary-ui btn-sm-ui">Small</button>
+            <button class="btn btn-ghost-ui btn-sm-ui">Small Ghost</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.68rem;font-weight:700;color:#bbb;margin-bottom:10px;letter-spacing:1px;">INPUTS</div>
+        <input class="input-ui" placeholder="Default input" style="margin-bottom:8px;"/>
+        <input class="input-ui focused" value="Focused state" style="margin-bottom:8px;"/>
+        <input class="input-ui error" value="Error state"/>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.68rem;font-weight:700;color:#bbb;margin-bottom:10px;letter-spacing:1px;">TAGS & BADGES</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="tag tag-ap-ui">Andhra Pradesh</span>
+          <span class="tag tag-ts-ui">Telangana</span>
+          <span class="tag tag-orange">Best Value</span>
+          <span class="tag tag-dark">Verified ✓</span>
+          <span class="badge">3</span>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:0.68rem;font-weight:700;color:#bbb;margin-bottom:10px;letter-spacing:1px;">VALUE BAR</div>
+        <div class="vbar-wrap">
+          <div class="vbar-label"><span style="font-size:0.72rem;color:#999;">Value Score</span><span style="font-size:0.72rem;font-weight:700;color:#00875A;">94/100</span></div>
+          <div class="vbar-track"><div class="vbar-fill vbar-high" style="width:94%"></div></div>
+        </div>
+        <div class="vbar-wrap">
+          <div class="vbar-label"><span style="font-size:0.72rem;color:#999;">Value Score</span><span style="font-size:0.72rem;font-weight:700;color:#D97706;">65/100</span></div>
+          <div class="vbar-track"><div class="vbar-fill vbar-mid" style="width:65%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1: LOGIN
+══════════════════════════════════════════ -->
+<div id="login" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 1</div><div class="sec-title">Login / Onboarding</div><div class="sec-sub">Phone OTP → New User Register · 3 steps total</div></div>
+
+  <div class="frame-row">
+
+    <!-- 1A Phone -->
+    <div class="frame-col">
+      <div class="frame-title">1A · Enter Phone <span>Entry Point</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:0;">
+          <!-- Logo area -->
+          <div style="text-align:center;margin-bottom:40px;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2.4rem;color:#FF6B35;margin-bottom:4px;">UtsavLink</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);letter-spacing:1px;">TS ↔ AP EVENT MARKETPLACE</div>
+          </div>
+          <!-- Card -->
+          <div style="background:white;border-radius:24px;padding:24px;width:100%;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:4px;">Welcome! 👋</div>
+            <div style="font-size:0.78rem;color:#57534E;margin-bottom:20px;">Enter phone to find better vendors for your budget</div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+              <div style="background:#F2F1EE;border:1.5px solid #E8E5DF;border-radius:12px;padding:13px 14px;font-size:0.88rem;font-weight:700;flex-shrink:0;">🇮🇳 +91</div>
+              <div class="input-ui" style="flex:1;border-color:#E8E5DF;color:#A8A29E;">98XXXXXXXX</div>
+            </div>
+            <button class="btn btn-primary-ui" style="width:100%;padding:15px;">Send OTP →</button>
+            <div style="margin-top:16px;padding:12px;background:#FFF0EA;border-radius:12px;border-left:3px solid #FF6B35;">
+              <div style="font-size:0.72rem;font-weight:700;color:#FF6B35;margin-bottom:2px;">🏪 Are you a vendor?</div>
+              <div style="font-size:0.72rem;color:#57534E;">Register your business and get bookings from TS & AP customers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Send OTP"</div>
+        Validate 10 digits → Call <span class="ann-code">POST /auth/send-otp</span> → Navigate to 1B
+        <div class="ann-arrow">→ Screen 1B</div>
+      </div>
+    </div>
+
+    <!-- 1B OTP -->
+    <div class="frame-col">
+      <div class="frame-title">1B · Verify OTP <span>Auto-submit on 6th digit</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;">
+          <div style="background:white;border-radius:24px;padding:24px;width:100%;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:4px;">Verify OTP ✉️</div>
+            <div style="font-size:0.78rem;color:#57534E;margin-bottom:4px;">Sent to +91 98XX XXX XXX</div>
+            <div style="font-size:0.72rem;color:#FF6B35;font-weight:600;margin-bottom:16px;">Valid for 10 minutes</div>
+            <div class="otp-row" style="justify-content:center;gap:8px;margin-bottom:16px;">
+              <div class="otp-box filled">4</div>
+              <div class="otp-box filled">7</div>
+              <div class="otp-box filled">2</div>
+              <div class="otp-box current"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+            </div>
+            <div style="text-align:center;font-size:0.78rem;color:#A8A29E;margin-bottom:16px;">Resend OTP in <strong style="color:#1C1917;">42s</strong></div>
+            <button class="btn btn-secondary-ui" style="width:100%;color:#A8A29E;cursor:default;">← Change number</button>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">6th digit entered</div>
+        Auto-submit → <span class="ann-code">POST /auth/verify-otp</span> → New user? Go 1C · Returning? Go Home
+        <div class="ann-arrow">→ Screen 1C or Home</div>
+      </div>
+    </div>
+
+    <!-- 1C Register -->
+    <div class="frame-col">
+      <div class="frame-title">1C · Set Up Profile <span>New users only</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;">
+          <div style="background:white;border-radius:24px;padding:24px;width:100%;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:4px;">Almost done! 🎉</div>
+            <div style="font-size:0.78rem;color:#57534E;margin-bottom:20px;">Tell us where you are</div>
+            <div style="margin-bottom:12px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:4px;">YOUR NAME</div>
+              <input class="input-ui focused" placeholder="e.g. Ramesh Kumar" style="margin-bottom:0;"/>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:4px;">STATE</div>
+              <select class="input-ui"><option>Telangana</option><option>Andhra Pradesh</option></select>
+            </div>
+            <div style="margin-bottom:20px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:4px;">DISTRICT</div>
+              <select class="input-ui"><option>Nalgonda</option><option>Warangal</option><option>Khammam</option></select>
+            </div>
+            <button class="btn btn-primary-ui" style="width:100%;padding:15px;">Get Started →</button>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Get Started"</div>
+        <span class="ann-code">POST /auth/register</span> with name, district, state, role → Store JWT → Navigate to Home
+        <div class="ann-arrow">→ Home Screen</div>
+      </div>
+    </div>
+
+    <!-- Spec -->
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">SCREEN SPECS</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val">#1C1917 (dark warm)</span></div>
+        <div class="spec-row"><span class="spec-key">Card bg</span><span class="spec-val">#FFFFFF</span></div>
+        <div class="spec-row"><span class="spec-key">Card radius</span><span class="spec-val">24px</span></div>
+        <div class="spec-row"><span class="spec-key">Card padding</span><span class="spec-val">24px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">OTP INPUT SPECS</div>
+        <div class="spec-row"><span class="spec-key">Box size</span><span class="spec-val">48×54px</span></div>
+        <div class="spec-row"><span class="spec-key">Font</span><span class="spec-val">Nunito 800 · 24px</span></div>
+        <div class="spec-row"><span class="spec-key">Gap</span><span class="spec-val">8px between boxes</span></div>
+        <div class="spec-row"><span class="spec-key">Filled border</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Filled bg</span><span class="spec-val primary">#FFF0EA</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">VENDOR CTA BOX</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val primary">#FFF0EA</span></div>
+        <div class="spec-row"><span class="spec-key">Left border</span><span class="spec-val primary">3px #FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">12px</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2: HOME
+══════════════════════════════════════════ -->
+<div id="home" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 2</div><div class="sec-title">Home Dashboard</div><div class="sec-sub">Landing after login · Hero search + categories + savings banner</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">2A · Home (Customer) <span>Default</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>🔔</span><span>●●●</span></div></div>
+        <!-- App Header -->
+        <div style="background:#1C1917;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:#FF6B35;">UtsavLink</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:1px;">📍 Nalgonda, Telangana</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">🔔</div>
+            <div style="width:32px;height:32px;background:#FF6B35;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:white;">R</div>
+          </div>
+        </div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <!-- Hero search card -->
+          <div style="background:#1C1917;border-radius:20px;padding:16px;margin-bottom:12px;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;color:white;margin-bottom:2px;">Find better vendors</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.5);margin-bottom:14px;">Same budget. Ultra quality from AP.</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:10px 14px;margin-bottom:8px;font-size:0.8rem;color:rgba(255,255,255,0.5);">🎪 What service do you need?</div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;">
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;font-size:0.78rem;color:rgba(255,255,255,0.5);">💰 Budget</div>
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;font-size:0.78rem;color:rgba(255,255,255,0.5);">📅 Date</div>
+            </div>
+            <button class="btn btn-primary-ui" style="width:100%;padding:12px;font-size:0.85rem;">🔍 Find Best Vendors</button>
+          </div>
+          <!-- Savings strip -->
+          <div style="background:#E3F5EF;border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+            <span style="font-size:1.2rem;">💡</span>
+            <div style="font-size:0.72rem;"><span style="font-weight:700;color:#00875A;">Avg ₹8,200 saved</span><span style="color:#57534E;"> booking AP vendors in Nalgonda</span></div>
+          </div>
+          <!-- Categories -->
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;margin-bottom:10px;">Browse by service</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+            <div style="background:white;border-radius:12px;padding:10px 6px;text-align:center;border:1.5px solid #E8E5DF;cursor:pointer;">
+              <div style="font-size:1.3rem;">📸</div>
+              <div style="font-size:0.6rem;font-weight:600;color:#57534E;margin-top:3px;">Photo</div>
+            </div>
+            <div style="background:white;border-radius:12px;padding:10px 6px;text-align:center;border:1.5px solid #E8E5DF;cursor:pointer;">
+              <div style="font-size:1.3rem;">🌸</div>
+              <div style="font-size:0.6rem;font-weight:600;color:#57534E;margin-top:3px;">Decor</div>
+            </div>
+            <div style="background:white;border-radius:12px;padding:10px 6px;text-align:center;border:1.5px solid #E8E5DF;cursor:pointer;">
+              <div style="font-size:1.3rem;">🍽️</div>
+              <div style="font-size:0.6rem;font-weight:600;color:#57534E;margin-top:3px;">Catering</div>
+            </div>
+            <div style="background:white;border-radius:12px;padding:10px 6px;text-align:center;border:1.5px solid #E8E5DF;cursor:pointer;">
+              <div style="font-size:1.3rem;">💄</div>
+              <div style="font-size:0.6rem;font-weight:600;color:#57534E;margin-top:3px;">Makeup</div>
+            </div>
+          </div>
+          <!-- Featured vendor -->
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;margin-bottom:10px;">Top value vendors</div>
+          <div class="card-ui best" style="cursor:pointer;margin-bottom:0;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:40px;height:40px;background:#E3F5EF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">📸</div>
+              <div style="flex:1;">
+                <div style="font-weight:700;font-size:0.85rem;">Krishna Studios <span style="font-size:0.65rem;color:#00875A;font-weight:700;">✦ BEST VALUE</span></div>
+                <div style="font-size:0.7rem;color:#57534E;">📍 Vijayawada · 4K + Drone + Reels</div>
+              </div>
+              <span class="tag tag-ap-ui">AP</span>
+            </div>
+            <div class="vbar-wrap"><div class="vbar-label"><span style="font-size:0.7rem;color:#A8A29E;">Value Score</span><span style="font-size:0.7rem;font-weight:700;color:#00875A;">96/100</span></div><div class="vbar-track"><div class="vbar-fill vbar-high" style="width:96%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;">₹21,000</div><div style="font-size:0.65rem;color:#A8A29E;">incl. ₹3,000 travel</div></div>
+              <div class="stars">★★★★★ <span style="font-size:0.72rem;color:#57534E;">4.9</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bnav-item active"><div class="bnav-icon">🏠</div>Home</div>
+          <div class="bnav-item"><div class="bnav-icon">🔍</div>Search</div>
+          <div class="bnav-item"><div class="bnav-icon">📋</div>Bookings</div>
+          <div class="bnav-item"><div class="bnav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap category chip</div>
+        Navigate to Results with category pre-selected + user's district
+        <div class="ann-arrow">→ Results Screen</div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap vendor card</div>
+        Navigate to Vendor Detail with vendor_id
+        <div class="ann-arrow">→ Screen 5</div>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">APP HEADER</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val">#1C1917</span></div>
+        <div class="spec-row"><span class="spec-key">Logo color</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">56px</span></div>
+        <div class="spec-row"><span class="spec-key">Avatar</span><span class="spec-val">32px circle, primary</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">HERO SEARCH CARD</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val">#1C1917</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">20px</span></div>
+        <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">16px</span></div>
+        <div class="spec-row"><span class="spec-key">Input rows bg</span><span class="spec-val">rgba(255,255,255,0.08)</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">SAVINGS STRIP</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val ap">#E3F5EF</span></div>
+        <div class="spec-row"><span class="spec-key">Amount color</span><span class="spec-val ap">#00875A bold</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">12px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">CATEGORY CHIPS</div>
+        <div class="spec-row"><span class="spec-key">Grid</span><span class="spec-val">4 columns</span></div>
+        <div class="spec-row"><span class="spec-key">Size</span><span class="spec-val">flex × 1 col</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">12px</span></div>
+        <div class="spec-row"><span class="spec-key">Hover border</span><span class="spec-val primary">#FF6B35</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">BOTTOM NAV</div>
+        <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">60px</span></div>
+        <div class="spec-row"><span class="spec-key">Active color</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Icon size</span><span class="spec-val">22px</span></div>
+        <div class="spec-row"><span class="spec-key">Label size</span><span class="spec-val">10px Sora 700</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3: SEARCH
+══════════════════════════════════════════ -->
+<div id="search" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 3</div><div class="sec-title">Budget Search</div><div class="sec-sub">Core differentiator — budget-first, not city-first like competitors</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">3A · Search Form <span>Default</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#F8F7F4;">
+          <div style="background:#1C1917;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:#FF6B35;">UtsavLink</div>
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.4);">📍 Nalgonda</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:4px;">Find best vendors</div>
+            <div style="font-size:0.75rem;color:#57534E;margin-bottom:20px;">Budget-first search across TS & AP</div>
+
+            <!-- Category -->
+            <div style="margin-bottom:14px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">SERVICE CATEGORY</div>
+              <select class="input-ui"><option>📸 Photography</option><option>🌸 Decoration</option><option>🍽️ Catering</option></select>
+            </div>
+
+            <!-- Budget -->
+            <div style="margin-bottom:14px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">YOUR BUDGET (₹)</div>
+              <input class="input-ui focused" value="₹ 30,000" style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:8px;"/>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <div style="padding:6px 12px;background:#F2F1EE;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹15k</div>
+                <div style="padding:6px 12px;background:#F2F1EE;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹25k</div>
+                <div style="padding:6px 12px;background:#1C1917;color:white;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;">₹30k</div>
+                <div style="padding:6px 12px;background:#F2F1EE;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹50k</div>
+                <div style="padding:6px 12px;background:#F2F1EE;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹75k</div>
+              </div>
+            </div>
+
+            <!-- District -->
+            <div style="margin-bottom:14px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">YOUR DISTRICT</div>
+              <select class="input-ui"><option>Nalgonda, Telangana</option><option>Vijayawada, AP</option></select>
+            </div>
+
+            <!-- Date -->
+            <div style="margin-bottom:14px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">EVENT DATE</div>
+              <input class="input-ui" type="date" value="2025-06-15"/>
+            </div>
+
+            <!-- Scope -->
+            <div style="margin-bottom:20px;">
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">SHOW VENDORS FROM</div>
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;padding:10px;background:#1C1917;color:white;border-radius:12px;text-align:center;font-size:0.78rem;font-weight:700;cursor:pointer;">TS + AP</div>
+                <div style="flex:1;padding:10px;background:white;border:1.5px solid #E8E5DF;border-radius:12px;text-align:center;font-size:0.78rem;font-weight:600;color:#57534E;cursor:pointer;">Local</div>
+                <div style="flex:1;padding:10px;background:white;border:1.5px solid #E8E5DF;border-radius:12px;text-align:center;font-size:0.78rem;font-weight:600;color:#57534E;cursor:pointer;">AP Only</div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary-ui" style="width:100%;padding:15px;font-size:0.9rem;">🔍 Find Best Value Vendors</button>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bnav-item"><div class="bnav-icon">🏠</div>Home</div>
+          <div class="bnav-item active"><div class="bnav-icon">🔍</div>Search</div>
+          <div class="bnav-item"><div class="bnav-icon">📋</div>Bookings</div>
+          <div class="bnav-item"><div class="bnav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap quick budget chip</div>
+        Auto-fill budget input field with that amount
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Find Best Value"</div>
+        Validate all fields → <span class="ann-code">GET /search/vendors?budget=30000&category=photography&district=Nalgonda&date=...&scope=both</span> → Show results
+        <div class="ann-arrow">→ Screen 4</div>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">FORM FIELD SPECS</div>
+        <div class="spec-row"><span class="spec-key">Label size</span><span class="spec-val">11px Sora 700</span></div>
+        <div class="spec-row"><span class="spec-key">Label color</span><span class="spec-val">#A8A29E</span></div>
+        <div class="spec-row"><span class="spec-key">Label spacing</span><span class="spec-val">letter-spacing: 1px</span></div>
+        <div class="spec-row"><span class="spec-key">Label case</span><span class="spec-val">UPPERCASE</span></div>
+        <div class="spec-row"><span class="spec-key">Input height</span><span class="spec-val">48px</span></div>
+        <div class="spec-row"><span class="spec-key">Input radius</span><span class="spec-val">12px</span></div>
+        <div class="spec-row"><span class="spec-key">Focus border</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Focus glow</span><span class="spec-val primary">rgba(255,107,53,0.12)</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">BUDGET INPUT</div>
+        <div class="spec-row"><span class="spec-key">Font</span><span class="spec-val">Nunito 800 · 18px</span></div>
+        <div class="spec-row"><span class="spec-key">Quick chips</span><span class="spec-val">8px gap, wrap</span></div>
+        <div class="spec-row"><span class="spec-key">Active chip</span><span class="spec-val">#1C1917 bg, white text</span></div>
+        <div class="spec-row"><span class="spec-key">Chip radius</span><span class="spec-val">8px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">SCOPE SELECTOR</div>
+        <div class="spec-row"><span class="spec-key">Layout</span><span class="spec-val">3 equal flex buttons</span></div>
+        <div class="spec-row"><span class="spec-key">Active</span><span class="spec-val">#1C1917, white text</span></div>
+        <div class="spec-row"><span class="spec-key">Inactive</span><span class="spec-val">white bg, #E8E5DF border</span></div>
+        <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">40px</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 4: RESULTS
+══════════════════════════════════════════ -->
+<div id="results" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 4</div><div class="sec-title">Search Results</div><div class="sec-sub">Value-ranked vendor list · AP vendors shown first · savings visible upfront</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">4A · Results List <span>Value Ranked</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <!-- Search bar -->
+        <div style="background:#1C1917;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+          <span style="color:rgba(255,255,255,0.6);font-size:1rem;cursor:pointer;">←</span>
+          <div style="flex:1;background:rgba(255,255,255,0.1);border-radius:10px;padding:9px 14px;font-size:0.78rem;color:rgba(255,255,255,0.6);">📸 Photography · ₹30,000 · Nalgonda</div>
+          <span style="color:#FF6B35;font-size:0.78rem;font-weight:700;">Edit</span>
+        </div>
+        <!-- Savings strip -->
+        <div style="background:#00875A;padding:10px 14px;display:flex;gap:8px;align-items:center;">
+          <span>💡</span>
+          <span style="font-size:0.75rem;color:white;"><strong>Save ₹9,000</strong> — AP vendors beat local quality here</span>
+        </div>
+        <div style="background:#F8F7F4;padding:12px 14px;">
+          <!-- Filter row -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-size:0.75rem;color:#A8A29E;">12 vendors · by value</span>
+            <div style="display:flex;gap:4px;">
+              <div style="padding:5px 10px;background:#1C1917;color:white;border-radius:8px;font-size:0.7rem;font-weight:700;cursor:pointer;">All</div>
+              <div style="padding:5px 10px;background:white;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.7rem;font-weight:600;color:#57534E;cursor:pointer;">AP</div>
+              <div style="padding:5px 10px;background:white;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.7rem;font-weight:600;color:#57534E;cursor:pointer;">TS</div>
+              <div style="padding:5px 10px;background:white;border:1.5px solid #E8E5DF;border-radius:8px;font-size:0.7rem;font-weight:600;color:#57534E;cursor:pointer;">⚙️</div>
+            </div>
+          </div>
+          <!-- Vendor 1 - Best -->
+          <div class="card-ui best" style="margin-bottom:10px;position:relative;">
+            <div style="position:absolute;top:-1px;right:12px;background:#00875A;color:white;font-size:0.58rem;font-weight:800;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.5px;">BEST VALUE</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:40px;height:40px;background:#E3F5EF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.85rem;">Krishna Studios</div><div style="font-size:0.7rem;color:#57534E;">Vijayawada · 4K + Drone + Reels</div></div>
+              <span class="tag tag-ap-ui">AP</span>
+            </div>
+            <div class="vbar-wrap"><div class="vbar-label"><span style="font-size:0.7rem;color:#A8A29E;">Value</span><span style="font-size:0.7rem;font-weight:700;color:#00875A;">96/100</span></div><div class="vbar-track"><div class="vbar-fill vbar-high" style="width:96%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;">₹21,000</div><div style="font-size:0.65rem;color:#A8A29E;">incl. ₹3,000 travel</div></div>
+              <div class="stars">★★★★★ <span style="font-size:0.7rem;color:#57534E;">4.9 (127)</span></div>
+            </div>
+          </div>
+          <!-- Vendor 2 -->
+          <div class="card-ui" style="margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:40px;height:40px;background:#E3F5EF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.85rem;">Ravi Frames</div><div style="font-size:0.7rem;color:#57534E;">Guntur · Pro DSLR + Album</div></div>
+              <span class="tag tag-ap-ui">AP</span>
+            </div>
+            <div class="vbar-wrap"><div class="vbar-label"><span style="font-size:0.7rem;color:#A8A29E;">Value</span><span style="font-size:0.7rem;font-weight:700;color:#00875A;">88/100</span></div><div class="vbar-track"><div class="vbar-fill vbar-high" style="width:88%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;">₹24,000</div><div style="font-size:0.65rem;color:#A8A29E;">incl. ₹4,000 travel</div></div>
+              <div class="stars" style="font-size:0.8rem;">★★★★☆ <span style="font-size:0.7rem;color:#57534E;">4.7</span></div>
+            </div>
+          </div>
+          <!-- Vendor 3 TS local -->
+          <div class="card-ui">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:40px;height:40px;background:#F3E8FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.85rem;">Sri Balaji Photos</div><div style="font-size:0.7rem;color:#57534E;">Nalgonda · Basic DSLR</div></div>
+              <span class="tag tag-ts-ui">TS</span>
+            </div>
+            <div class="vbar-wrap"><div class="vbar-label"><span style="font-size:0.7rem;color:#A8A29E;">Value</span><span style="font-size:0.7rem;font-weight:700;color:#D97706;">51/100</span></div><div class="vbar-track"><div class="vbar-fill vbar-mid" style="width:51%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;">₹30,000</div><div style="font-size:0.65rem;color:#A8A29E;">local · no travel</div></div>
+              <div class="stars" style="font-size:0.8rem;">★★★☆☆ <span style="font-size:0.7rem;color:#57534E;">3.4</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap vendor card</div>
+        Navigate to Vendor Detail with vendor_id
+        <div class="ann-arrow">→ Screen 5</div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap AP / TS filter</div>
+        Filter array in component state — no API call needed
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap ⚙️ filter icon</div>
+        Open bottom sheet modal with: price range, min rating, sort options
+      </div>
+    </div>
+
+    <!-- Filter Sheet -->
+    <div class="frame-col">
+      <div class="frame-title">4B · Filter Sheet <span>Bottom Sheet Modal</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="position:relative;min-height:600px;background:#F8F7F4;">
+          <div style="position:absolute;inset:0;background:rgba(28,25,23,0.5);z-index:1;"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:white;border-radius:24px 24px 0 0;z-index:2;padding:0 0 32px;">
+            <div style="width:40px;height:4px;background:#E8E5DF;border-radius:2px;margin:14px auto;"></div>
+            <div style="padding:0 20px;">
+              <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:20px;">Filter Vendors</div>
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:8px;">SORT BY</div>
+              <div style="display:flex;gap:6px;margin-bottom:20px;">
+                <div style="padding:8px 14px;background:#1C1917;color:white;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">Value Score</div>
+                <div style="padding:8px 14px;background:#F2F1EE;border-radius:8px;font-size:0.78rem;font-weight:600;color:#57534E;cursor:pointer;">Price ↑</div>
+                <div style="padding:8px 14px;background:#F2F1EE;border-radius:8px;font-size:0.78rem;font-weight:600;color:#57534E;cursor:pointer;">Rating</div>
+              </div>
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:8px;">MAX BUDGET</div>
+              <input type="range" min="5000" max="100000" value="30000" style="width:100%;accent-color:#FF6B35;margin-bottom:4px;"/>
+              <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#A8A29E;margin-bottom:20px;"><span>₹5,000</span><span style="font-weight:700;color:#1C1917;">₹30,000</span></div>
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:8px;">MIN RATING</div>
+              <div style="display:flex;gap:6px;margin-bottom:20px;">
+                <div style="padding:7px 12px;background:#F2F1EE;border-radius:8px;font-size:0.75rem;cursor:pointer;">Any</div>
+                <div style="padding:7px 12px;background:#1C1917;color:white;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;">4.0+</div>
+                <div style="padding:7px 12px;background:#F2F1EE;border-radius:8px;font-size:0.75rem;cursor:pointer;">4.5+</div>
+                <div style="padding:7px 12px;background:#F2F1EE;border-radius:8px;font-size:0.75rem;cursor:pointer;">5.0</div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-secondary-ui" style="flex:1;padding:13px;">Reset</button>
+                <button class="btn btn-primary-ui" style="flex:2;padding:13px;">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Apply Filters"</div>
+        Filter + re-sort existing results in component state. Close sheet. Update count badge.
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">VENDOR CARD SPECS</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val">#FFFFFF</span></div>
+        <div class="spec-row"><span class="spec-key">Border</span><span class="spec-val">1px #E8E5DF</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">16px</span></div>
+        <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">16px</span></div>
+        <div class="spec-row"><span class="spec-key">Hover border</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Best border</span><span class="spec-val ap">#00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Avatar size</span><span class="spec-val">40×40px, r:10px</span></div>
+        <div class="spec-row"><span class="spec-key">Avatar (AP)</span><span class="spec-val ap">#E3F5EF bg</span></div>
+        <div class="spec-row"><span class="spec-key">Avatar (TS)</span><span class="spec-val" style="color:#6B21A8">#F3E8FF bg</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">BEST VALUE BADGE</div>
+        <div class="spec-row"><span class="spec-key">Position</span><span class="spec-val">absolute top -1px right 12px</span></div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val ap">#00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">0 0 8px 8px</span></div>
+        <div class="spec-row"><span class="spec-key">Font</span><span class="spec-val">Sora 800 · 9px</span></div>
+        <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">4px 10px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">VALUE BAR</div>
+        <div class="spec-row"><span class="spec-key">Track bg</span><span class="spec-val">#E8E5DF</span></div>
+        <div class="spec-row"><span class="spec-key">Track height</span><span class="spec-val">5px</span></div>
+        <div class="spec-row"><span class="spec-key">High (80+)</span><span class="spec-val ap">gradient green</span></div>
+        <div class="spec-row"><span class="spec-key">Mid (60-79)</span><span class="spec-val" style="color:#D97706">gradient amber</span></div>
+        <div class="spec-row"><span class="spec-key">Low (&lt;60)</span><span class="spec-val" style="color:#DC2626">#DC2626</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 5: VENDOR DETAIL
+══════════════════════════════════════════ -->
+<div id="vendor" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 5</div><div class="sec-title">Vendor Detail</div><div class="sec-sub">Portfolio · Stats · Tabs (About / Pricing / Reviews) · Book CTA</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">5A · Vendor Profile <span>Top Section</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10;">
+          <span style="color:rgba(255,255,255,0.6);cursor:pointer;font-size:1.1rem;">←</span>
+          <span style="font-weight:700;color:white;flex:1;font-size:0.9rem;">Krishna Studios</span>
+          <span style="font-size:1.1rem;cursor:pointer;">🤍</span>
+          <span style="font-size:1.1rem;cursor:pointer;">🔗</span>
+        </div>
+        <!-- Portfolio -->
+        <div style="background:#D4CDC3;height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+          <div style="font-size:4rem;">📸</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.6);color:white;font-size:0.7rem;padding:4px 10px;border-radius:20px;">+14 photos</div>
+          <div style="position:absolute;top:12px;left:12px;background:#00875A;color:white;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;">✓ Verified</div>
+        </div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
+            <div>
+              <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;">Krishna Studios</div>
+              <div style="font-size:0.72rem;color:#57534E;margin-top:2px;">📍 Vijayawada, AP · 💼 127 events done</div>
+            </div>
+            <span class="tag tag-ap-ui">AP Vendor</span>
+          </div>
+          <!-- Stats row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div class="stat"><div class="stat-val">9.2</div><div class="stat-lbl">Quality</div></div>
+            <div class="stat"><div class="stat-val">127</div><div class="stat-lbl">Events</div></div>
+            <div class="stat" style="background:#E3F5EF;border-color:#A7D7C5;"><div class="stat-val" style="color:#00875A;">96</div><div class="stat-lbl">Value</div></div>
+          </div>
+          <!-- Value bar -->
+          <div class="vbar-wrap" style="margin-bottom:14px;"><div class="vbar-label"><span style="font-size:0.72rem;color:#A8A29E;">Value Score</span><span style="font-size:0.72rem;font-weight:700;color:#00875A;">96 / 100</span></div><div class="vbar-track"><div class="vbar-fill vbar-high" style="width:96%"></div></div></div>
+          <!-- Tabs -->
+          <div style="display:flex;border-bottom:1.5px solid #E8E5DF;margin-bottom:14px;">
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.8rem;font-weight:700;color:#FF6B35;border-bottom:2px solid #FF6B35;cursor:pointer;">About</div>
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.8rem;font-weight:600;color:#A8A29E;cursor:pointer;">Pricing</div>
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.8rem;font-weight:600;color:#A8A29E;cursor:pointer;">Reviews</div>
+          </div>
+          <!-- About content -->
+          <div style="font-size:0.8rem;color:#57534E;line-height:1.7;margin-bottom:14px;">Professional wedding & event photographer based in Vijayawada. 8+ years experience. 4K camera, drone shots & cinematic reels.</div>
+          <div style="padding:12px;background:#FFF0EA;border-radius:12px;border-left:3px solid #FF6B35;font-size:0.75rem;color:#57534E;">
+            📍 Travels up to 300km from Vijayawada. Travel cost shown transparently at checkout.
+          </div>
+          <!-- Book button -->
+          <button class="btn btn-primary-ui" style="width:100%;padding:15px;margin-top:14px;font-size:0.9rem;">📅 Check Availability & Book</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap ❤️ heart icon</div>
+        Toggle saved state → <span class="ann-code">POST /vendors/:id/save</span> → Icon fills red
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap portfolio photo</div>
+        Open fullscreen lightbox gallery
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Check Availability & Book"</div>
+        Navigate to Booking screen with vendorId
+        <div class="ann-arrow">→ Screen 6</div>
+      </div>
+    </div>
+
+    <!-- Reviews Tab -->
+    <div class="frame-col">
+      <div class="frame-title">5B · Reviews Tab <span>Scroll Down</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px;">Customer Reviews</div>
+          <!-- Rating summary -->
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px;padding:14px;background:white;border-radius:16px;border:1px solid #E8E5DF;">
+            <div style="text-align:center;">
+              <div style="font-family:'Nunito',sans-serif;font-size:2.8rem;font-weight:900;color:#1C1917;line-height:1;">4.9</div>
+              <div class="stars" style="font-size:0.8rem;">★★★★★</div>
+              <div style="font-size:0.65rem;color:#A8A29E;margin-top:2px;">127 reviews</div>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:0.65rem;color:#A8A29E;width:10px;">5</span><div style="flex:1;height:5px;background:#E8E5DF;border-radius:3px;overflow:hidden;"><div style="width:85%;height:100%;background:#F59E0B;border-radius:3px;"></div></div></div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:0.65rem;color:#A8A29E;width:10px;">4</span><div style="flex:1;height:5px;background:#E8E5DF;border-radius:3px;overflow:hidden;"><div style="width:10%;height:100%;background:#F59E0B;border-radius:3px;"></div></div></div>
+              <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:0.65rem;color:#A8A29E;width:10px;">3</span><div style="flex:1;height:5px;background:#E8E5DF;border-radius:3px;overflow:hidden;"><div style="width:4%;height:100%;background:#F59E0B;border-radius:3px;"></div></div></div>
+            </div>
+          </div>
+          <!-- Review cards -->
+          <div style="background:white;border-radius:16px;border:1px solid #E8E5DF;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:32px;height:32px;background:#FFF0EA;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;color:#FF6B35;">R</div>
+              <div><div style="font-size:0.82rem;font-weight:700;">Ramesh K.</div><div style="font-size:0.65rem;color:#A8A29E;">Nalgonda, TS · Mar 2025</div></div>
+              <div class="stars" style="margin-left:auto;font-size:0.78rem;">★★★★★</div>
+            </div>
+            <div style="font-size:0.78rem;color:#57534E;line-height:1.6;margin-bottom:8px;">Excellent! Came from Vijayawada, very professional. Quality was 10x better than local photographers for same money.</div>
+            <div style="display:flex;gap:6px;">
+              <span class="tag tag-orange">Quality ★★★★★</span>
+              <span class="tag tag-ap-ui">Value ★★★★★</span>
+            </div>
+          </div>
+          <div style="background:white;border-radius:16px;border:1px solid #E8E5DF;padding:14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:32px;height:32px;background:#F3E8FF;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;color:#6B21A8;">S</div>
+              <div><div style="font-size:0.82rem;font-weight:700;">Sunitha M.</div><div style="font-size:0.65rem;color:#A8A29E;">Khammam, TS · Feb 2025</div></div>
+              <div class="stars" style="margin-left:auto;font-size:0.78rem;">★★★★★</div>
+            </div>
+            <div style="font-size:0.78rem;color:#57534E;line-height:1.6;">Saved ₹12,000 vs local. Photos were cinema quality. Will use again for daughter's wedding!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">STATS GRID</div>
+        <div class="spec-row"><span class="spec-key">Columns</span><span class="spec-val">3 equal</span></div>
+        <div class="spec-row"><span class="spec-key">Gap</span><span class="spec-val">8px</span></div>
+        <div class="spec-row"><span class="spec-key">Value stat bg</span><span class="spec-val ap">#E3F5EF</span></div>
+        <div class="spec-row"><span class="spec-key">Value stat border</span><span class="spec-val ap">#A7D7C5</span></div>
+        <div class="spec-row"><span class="spec-key">Number font</span><span class="spec-val">Nunito 800 · 26px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">TAB BAR</div>
+        <div class="spec-row"><span class="spec-key">Border</span><span class="spec-val">1.5px #E8E5DF</span></div>
+        <div class="spec-row"><span class="spec-key">Active color</span><span class="spec-val primary">#FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Active border</span><span class="spec-val primary">2px #FF6B35 (bottom)</span></div>
+        <div class="spec-row"><span class="spec-key">Inactive</span><span class="spec-val">#A8A29E</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">PORTFOLIO GALLERY</div>
+        <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">200px</span></div>
+        <div class="spec-row"><span class="spec-key">Photo count badge</span><span class="spec-val">absolute bottom-right</span></div>
+        <div class="spec-row"><span class="spec-key">Badge bg</span><span class="spec-val">rgba(0,0,0,0.6)</span></div>
+        <div class="spec-row"><span class="spec-key">Verified badge</span><span class="spec-val ap">#00875A absolute top-left</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 6: BOOKING
+══════════════════════════════════════════ -->
+<div id="booking" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 6</div><div class="sec-title">Booking Flow</div><div class="sec-sub">3-step flow: Date → Event Details → Confirm & Pay</div></div>
+
+  <div class="frame-row">
+    <!-- Step 1 -->
+    <div class="frame-col">
+      <div class="frame-title">6A · Step 1 — Date <span>Calendar</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="color:rgba(255,255,255,0.6);cursor:pointer;">←</span>
+          <span style="font-weight:700;color:white;font-size:0.9rem;">Book Krishna Studios</span>
+        </div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <!-- Progress bar -->
+          <div class="steps-row" style="background:white;border-radius:12px;margin-bottom:16px;padding:12px 16px;">
+            <div class="step-dot step-active">1</div>
+            <div class="step-line step-pending"></div>
+            <div class="step-dot step-pending">2</div>
+            <div class="step-line step-pending"></div>
+            <div class="step-dot step-pending">3</div>
+            <span style="font-size:0.68rem;color:#A8A29E;margin-left:10px;">Date → Details → Pay</span>
+          </div>
+          <!-- Calendar -->
+          <div style="background:white;border-radius:16px;border:1px solid #E8E5DF;padding:14px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <button style="background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:8px;background:#F2F1EE;">◀</button>
+              <span style="font-size:0.85rem;font-weight:700;">June 2025</span>
+              <button style="background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:8px;background:#F2F1EE;">▶</button>
+            </div>
+            <div class="cal-grid" style="margin-bottom:6px;">
+              <div class="cal-head">Su</div><div class="cal-head">Mo</div><div class="cal-head">Tu</div>
+              <div class="cal-head">We</div><div class="cal-head">Th</div><div class="cal-head">Fr</div><div class="cal-head">Sa</div>
+            </div>
+            <div class="cal-grid">
+              <div></div><div></div><div class="cal-day cal-default">1</div>
+              <div class="cal-day cal-available">2</div><div class="cal-day cal-available">3</div>
+              <div class="cal-day cal-booked">4</div><div class="cal-day cal-available">5</div>
+              <div class="cal-day cal-available">6</div><div class="cal-day cal-available">7</div>
+              <div class="cal-day cal-booked">8</div><div class="cal-day cal-available">9</div>
+              <div class="cal-day cal-default">10</div><div class="cal-day cal-available">11</div>
+              <div class="cal-day cal-available">12</div><div class="cal-day cal-default">13</div>
+              <div class="cal-day cal-available">14</div><div class="cal-day cal-selected">15</div>
+              <div class="cal-day cal-available">16</div><div class="cal-day cal-booked">17</div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:10px;font-size:0.65rem;color:#A8A29E;">
+              <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;border-radius:3px;background:#DCFCE7;display:inline-block;border:1px solid #86EFAC;"></span>Available</span>
+              <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;border-radius:3px;background:#FEE2E2;display:inline-block;border:1px solid #FCA5A5;"></span>Booked</span>
+              <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:10px;border-radius:3px;background:#FF6B35;display:inline-block;"></span>Selected</span>
+            </div>
+          </div>
+          <div style="background:white;border-radius:12px;border:1px solid #E8E5DF;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-size:0.78rem;color:#57534E;">Selected date</span>
+            <span style="font-weight:700;font-size:0.85rem;">Sun, 15 June 2025</span>
+          </div>
+          <button class="btn btn-primary-ui" style="width:100%;padding:14px;">Next: Event Details →</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap available date</div>
+        Set selectedDate → highlight day → enable "Next" button
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Calendar loaded</div>
+        <span class="ann-code">GET /vendors/:id/availability?month=2025-06</span> → Green=available, Red=booked
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="frame-col">
+      <div class="frame-title">6B · Step 2 — Details <span>Event Info</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;"><span style="font-weight:700;color:white;font-size:0.9rem;">Event Details</span></div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div class="steps-row" style="background:white;border-radius:12px;margin-bottom:16px;padding:12px 16px;">
+            <div class="step-dot step-done">✓</div>
+            <div class="step-line step-done"></div>
+            <div class="step-dot step-active">2</div>
+            <div class="step-line step-pending"></div>
+            <div class="step-dot step-pending">3</div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">EVENT TYPE</div>
+            <select class="input-ui"><option>💒 Wedding</option><option>💍 Engagement</option><option>🎂 Birthday</option></select>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">VENUE ADDRESS *</div>
+            <textarea class="input-ui" rows="2" placeholder="Hall name, area, district, landmark..."></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+            <div>
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">START TIME</div>
+              <input class="input-ui" type="time" value="10:00"/>
+            </div>
+            <div>
+              <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">DURATION</div>
+              <select class="input-ui"><option>6 hours</option><option>8 hours</option></select>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.68rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">SPECIAL REQUESTS</div>
+            <textarea class="input-ui" rows="2" placeholder="Candid shots, drone, specific poses..."></textarea>
+          </div>
+          <div style="background:#FFF0EA;border-radius:12px;padding:10px 12px;border-left:3px solid #FF6B35;margin-bottom:14px;font-size:0.72rem;color:#57534E;">
+            📍 Vendor travels from Vijayawada (~180km). Share exact venue pin on event day via WhatsApp.
+          </div>
+          <button class="btn btn-primary-ui" style="width:100%;padding:14px;">Next: Confirm →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="frame-col">
+      <div class="frame-title">6C · Step 3 — Confirm <span>Pay Advance</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;"><span style="font-weight:700;color:white;font-size:0.9rem;">Confirm & Pay</span></div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div class="steps-row" style="background:white;border-radius:12px;margin-bottom:16px;padding:12px 16px;">
+            <div class="step-dot step-done">✓</div>
+            <div class="step-line step-done"></div>
+            <div class="step-dot step-done">✓</div>
+            <div class="step-line step-done"></div>
+            <div class="step-dot step-active">3</div>
+          </div>
+          <!-- Summary card -->
+          <div style="background:white;border-radius:16px;border:1px solid #E8E5DF;padding:14px;margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:12px;">BOOKING SUMMARY</div>
+            <div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #F2F1EE;margin-bottom:12px;">
+              <div style="width:40px;height:40px;background:#E3F5EF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📸</div>
+              <div><div style="font-weight:700;font-size:0.88rem;">Krishna Studios</div><div style="font-size:0.7rem;color:#57534E;">Vijayawada, AP</div></div>
+              <span class="tag tag-ap-ui" style="margin-left:auto;">AP</span>
+            </div>
+            <div style="font-size:0.8rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#A8A29E;">Wedding · 15 Jun 2025</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#57534E;">Service fee</span><span>₹18,000</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#57534E;">Travel (Vjw→Nalgonda)</span><span>₹3,000</span></div>
+              <div style="display:flex;justify-content:space-between;font-weight:800;font-size:0.92rem;padding-top:10px;border-top:1.5px solid #F2F1EE;"><span>Total</span><span style="color:#00875A;">₹21,000</span></div>
+            </div>
+          </div>
+          <!-- Escrow note -->
+          <div style="background:#E3F5EF;border-radius:12px;border-left:3px solid #00875A;padding:12px 14px;margin-bottom:14px;">
+            <div style="font-size:0.72rem;font-weight:700;color:#00875A;margin-bottom:3px;">🔒 Secure Escrow Payment</div>
+            <div style="font-size:0.72rem;color:#57534E;">Pay <strong>₹6,300 now (30%)</strong>. Balance ₹14,700 released to vendor ONLY after event completion.</div>
+          </div>
+          <button class="btn btn-primary-ui" style="width:100%;padding:15px;font-size:0.95rem;">Pay ₹6,300 Advance →</button>
+          <button class="btn btn-secondary-ui" style="width:100%;padding:12px;margin-top:8px;font-size:0.82rem;">← Edit Details</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Pay Advance"</div>
+        <span class="ann-code">POST /bookings</span> → <span class="ann-code">POST /payments/initiate</span> → Open Razorpay UPI modal → On success → navigate to My Bookings
+        <div class="ann-arrow">→ Screen 7 · Success</div>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">PROGRESS BAR SPECS</div>
+        <div class="spec-row"><span class="spec-key">Done dot</span><span class="spec-val ap">#00875A bg, white ✓</span></div>
+        <div class="spec-row"><span class="spec-key">Active dot</span><span class="spec-val primary">#FF6B35 bg, white num</span></div>
+        <div class="spec-row"><span class="spec-key">Pending dot</span><span class="spec-val">#E8E5DF bg, #A8A29E num</span></div>
+        <div class="spec-row"><span class="spec-key">Done line</span><span class="spec-val ap">#00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Pending line</span><span class="spec-val">#E8E5DF</span></div>
+        <div class="spec-row"><span class="spec-key">Dot size</span><span class="spec-val">28×28px circle</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">CALENDAR CELLS</div>
+        <div class="spec-row"><span class="spec-key">Grid</span><span class="spec-val">7 columns</span></div>
+        <div class="spec-row"><span class="spec-key">Cell aspect</span><span class="spec-val">1:1 (square)</span></div>
+        <div class="spec-row"><span class="spec-key">Available</span><span class="spec-val ap">#DCFCE7 bg, #00875A text</span></div>
+        <div class="spec-row"><span class="spec-key">Booked</span><span class="spec-val" style="color:#DC2626">#FEE2E2 bg, strikethrough</span></div>
+        <div class="spec-row"><span class="spec-key">Selected</span><span class="spec-val primary">#FF6B35 bg, white text</span></div>
+        <div class="spec-row"><span class="spec-key">Cell radius</span><span class="spec-val">8px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">ESCROW NOTE BOX</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val ap">#E3F5EF</span></div>
+        <div class="spec-row"><span class="spec-key">Left border</span><span class="spec-val ap">3px #00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">12px</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 7: MY BOOKINGS
+══════════════════════════════════════════ -->
+<div id="mybookings" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 7</div><div class="sec-title">My Bookings</div><div class="sec-sub">Active / Completed tabs · Review flow for completed bookings</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">7A · Payment Success <span>After Pay</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#F8F7F4;min-height:560px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;">
+          <div style="width:88px;height:88px;background:#E3F5EF;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin-bottom:20px;border:3px solid #00875A;box-shadow:0 0 0 8px #E3F5EF;">✓</div>
+          <div style="font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;margin-bottom:8px;">Booking Confirmed!</div>
+          <div style="font-size:0.8rem;color:#57534E;line-height:1.6;margin-bottom:24px;">Krishna Studios has been notified.<br/>They will confirm within 2 hours.</div>
+          <div style="background:white;border:1px solid #E8E5DF;border-radius:16px;padding:16px;width:100%;margin-bottom:20px;text-align:left;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.8rem;"><span style="color:#A8A29E;">Booking ID</span><span style="font-weight:700;font-family:monospace;">#UTL-4821</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.8rem;"><span style="color:#A8A29E;">Advance paid</span><span style="font-weight:700;color:#00875A;">₹6,300 ✓</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;"><span style="color:#A8A29E;">Balance (post-event)</span><span style="font-weight:700;">₹14,700</span></div>
+          </div>
+          <button class="btn btn-primary-ui" style="width:100%;padding:14px;margin-bottom:8px;">View My Booking</button>
+          <button class="btn btn-secondary-ui" style="width:100%;padding:12px;">Back to Home</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Page load</div>
+        WhatsApp notification sent to customer + vendor via API. Vendor's date is now blocked in calendar. Confetti animation plays briefly.
+      </div>
+    </div>
+
+    <div class="frame-col">
+      <div class="frame-title">7B · My Bookings List <span>Active Tab</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:14px;">My Bookings</div>
+          <!-- Tab switcher -->
+          <div style="display:flex;gap:8px;margin-bottom:16px;">
+            <div style="padding:8px 20px;background:#1C1917;color:white;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;">Active (1)</div>
+            <div style="padding:8px 20px;background:white;border:1.5px solid #E8E5DF;border-radius:10px;font-size:0.8rem;font-weight:600;color:#57534E;cursor:pointer;">Completed (2)</div>
+          </div>
+          <!-- Active booking card -->
+          <div style="background:white;border-radius:16px;border:2px solid #00875A;padding:14px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:40px;height:40px;background:#E3F5EF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.85rem;">Krishna Studios</div><div style="font-size:0.7rem;color:#57534E;">Photography · 15 Jun 2025</div></div>
+              <div style="background:#E3F5EF;color:#00875A;font-size:0.65rem;font-weight:800;padding:4px 10px;border-radius:8px;">Confirmed ✓</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+              <div style="background:#F8F7F4;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:0.65rem;color:#A8A29E;">Advance Paid</div><div style="font-weight:700;color:#00875A;font-size:0.9rem;">₹6,300 ✓</div></div>
+              <div style="background:#F8F7F4;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:0.65rem;color:#A8A29E;">Balance Due</div><div style="font-weight:700;font-size:0.9rem;">₹14,700</div></div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:10px;background:#F2F1EE;border:none;border-radius:10px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:var(--font-body);">💬 Chat</button>
+              <button class="btn btn-dark-ui btn-sm-ui" style="flex:2;padding:10px;border-radius:10px;">Track Booking →</button>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bnav-item"><div class="bnav-icon">🏠</div>Home</div>
+          <div class="bnav-item"><div class="bnav-icon">🔍</div>Search</div>
+          <div class="bnav-item active"><div class="bnav-icon">📋</div>Bookings</div>
+          <div class="bnav-item"><div class="bnav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Leave Review"</div>
+        Open star rating + comment form inline in card → <span class="ann-code">POST /reviews</span>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">SUCCESS SCREEN</div>
+        <div class="spec-row"><span class="spec-key">Check icon size</span><span class="spec-val">88×88px</span></div>
+        <div class="spec-row"><span class="spec-key">Icon bg</span><span class="spec-val ap">#E3F5EF</span></div>
+        <div class="spec-row"><span class="spec-key">Icon border</span><span class="spec-val ap">3px #00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Outer glow</span><span class="spec-val ap">0 0 0 8px #E3F5EF</span></div>
+        <div class="spec-row"><span class="spec-key">Title font</span><span class="spec-val">Nunito 900 · 22px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">BOOKING CARD</div>
+        <div class="spec-row"><span class="spec-key">Active border</span><span class="spec-val ap">2px #00875A</span></div>
+        <div class="spec-row"><span class="spec-key">Pending border</span><span class="spec-val">#E8E5DF (default)</span></div>
+        <div class="spec-row"><span class="spec-key">Status badge</span><span class="spec-val">absolute top-right, 8px radius</span></div>
+        <div class="spec-row"><span class="spec-key">Amount grid</span><span class="spec-val">2 cols, 8px gap</span></div>
+        <div class="spec-row"><span class="spec-key">Amount box bg</span><span class="spec-val">#F8F7F4</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 8: VENDOR DASHBOARD
+══════════════════════════════════════════ -->
+<div id="dashboard" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 8</div><div class="sec-title">Vendor Dashboard</div><div class="sec-sub">Requests · Upcoming · History · Earnings stats</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">8A · Dashboard Home <span>Vendor View</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>🔔</span><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:#FF6B35;">UtsavLink</div><div style="font-size:0.65rem;color:rgba(255,255,255,0.4);">Vendor Panel</div></div>
+          <div style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;position:relative;">🔔<span class="badge" style="position:absolute;top:-3px;right:-3px;">3</span></div>
+        </div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <!-- Stats grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+            <div class="stat" style="background:#E3F5EF;border-color:#A7D7C5;"><div class="stat-val" style="color:#00875A;font-size:1.3rem;">₹84k</div><div class="stat-lbl">Earnings</div></div>
+            <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">Bookings</div></div>
+            <div class="stat"><div class="stat-val">4.9</div><div class="stat-lbl">Avg Rating</div></div>
+            <div class="stat" style="background:#FFF0EA;border-color:#FDBA74;"><div class="stat-val" style="color:#FF6B35;">96</div><div class="stat-lbl">Value Score</div></div>
+          </div>
+          <!-- Tabs -->
+          <div style="display:flex;border-bottom:1.5px solid #E8E5DF;margin-bottom:14px;">
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.78rem;font-weight:700;color:#FF6B35;border-bottom:2px solid #FF6B35;cursor:pointer;">Requests <span class="badge" style="margin-left:3px;">2</span></div>
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.78rem;font-weight:600;color:#A8A29E;cursor:pointer;">Upcoming</div>
+            <div style="flex:1;text-align:center;padding:10px 0;font-size:0.78rem;font-weight:600;color:#A8A29E;cursor:pointer;">History</div>
+          </div>
+          <!-- New request card -->
+          <div style="background:#FFF0EA;border:2px solid #FF6B35;border-radius:16px;padding:14px;margin-bottom:10px;">
+            <div style="font-size:0.65rem;font-weight:800;color:#FF6B35;letter-spacing:1px;margin-bottom:10px;">● NEW REQUEST</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;background:#1C1917;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">R</div>
+              <div><div style="font-weight:700;font-size:0.85rem;">Wedding — Ramesh Kumar</div><div style="font-size:0.7rem;color:#57534E;">22 Jun 2025 · Nalgonda</div></div>
+            </div>
+            <div style="font-size:0.82rem;font-weight:700;color:#1C1917;margin-bottom:12px;">Budget: ₹25,000 · Your quote: ₹21,000</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-dark-ui" style="flex:1;padding:11px;font-size:0.82rem;">✓ Accept</button>
+              <button class="btn btn-ghost-ui" style="flex:1;padding:11px;font-size:0.82rem;border-color:#FF6B35;color:#DC2626;border-color:#FECACA;">✗ Decline</button>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bnav-item active"><div class="bnav-icon">🏠</div>Home</div>
+          <div class="bnav-item"><div class="bnav-icon">📅</div>Calendar</div>
+          <div class="bnav-item"><div class="bnav-icon">💰</div>Earnings</div>
+          <div class="bnav-item"><div class="bnav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Accept"</div>
+        <span class="ann-code">PUT /bookings/:id/confirm</span> → Block date in calendar → WhatsApp sent to customer → Remove request card
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Decline"</div>
+        Show reason textarea → <span class="ann-code">PUT /bookings/:id/decline</span> → Customer notified
+      </div>
+    </div>
+
+    <!-- Availability Calendar -->
+    <div class="frame-col">
+      <div class="frame-title">8B · Availability Calendar <span>Vendor Manages Dates</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;"><span style="font-weight:700;color:white;font-size:0.9rem;">Set Availability</span></div>
+        <div style="background:#F8F7F4;padding:16px;">
+          <div style="font-size:0.78rem;color:#57534E;margin-bottom:14px;">Tap dates to mark available or block. Green = you will travel to TS.</div>
+          <div style="background:white;border-radius:16px;border:1px solid #E8E5DF;padding:14px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <button style="background:#F2F1EE;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:0.75rem;">◀ May</button>
+              <span style="font-size:0.85rem;font-weight:700;">June 2025</span>
+              <button style="background:#F2F1EE;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:0.75rem;">Jul ▶</button>
+            </div>
+            <div class="cal-grid" style="margin-bottom:6px;">
+              <div class="cal-head">Su</div><div class="cal-head">Mo</div><div class="cal-head">Tu</div>
+              <div class="cal-head">We</div><div class="cal-head">Th</div><div class="cal-head">Fr</div><div class="cal-head">Sa</div>
+            </div>
+            <div class="cal-grid">
+              <div></div><div></div>
+              <div class="cal-day cal-available">2</div><div class="cal-day cal-available">3</div>
+              <div class="cal-day cal-booked">4</div><div class="cal-day cal-available">5</div>
+              <div class="cal-day cal-available">6</div><div class="cal-day cal-available">7</div>
+              <div class="cal-day cal-booked">8</div><div class="cal-day cal-available">9</div>
+              <div class="cal-day cal-default">10</div><div class="cal-day cal-available">11</div>
+              <div class="cal-day cal-available">12</div><div class="cal-day cal-default">13</div>
+              <div class="cal-day cal-available">14</div><div class="cal-day cal-selected">15</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <button style="padding:11px;background:#E3F5EF;border:1.5px solid #00875A;border-radius:12px;font-size:0.78rem;font-weight:700;color:#00875A;cursor:pointer;font-family:var(--font-body);">Mark Available</button>
+            <button style="padding:11px;background:#FEE2E2;border:1.5px solid #DC2626;border-radius:12px;font-size:0.78rem;font-weight:700;color:#DC2626;cursor:pointer;font-family:var(--font-body);">Block Date</button>
+          </div>
+          <button class="btn btn-dark-ui" style="width:100%;padding:13px;">Save Availability</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Save Availability"</div>
+        Batch all changes → <span class="ann-code">POST /vendors/:id/availability</span> → Dates now visible to customers searching
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">STATS GRID</div>
+        <div class="spec-row"><span class="spec-key">Layout</span><span class="spec-val">2×2 grid, 8px gap</span></div>
+        <div class="spec-row"><span class="spec-key">Earnings card</span><span class="spec-val ap">#E3F5EF bg, AP green</span></div>
+        <div class="spec-row"><span class="spec-key">Value card</span><span class="spec-val primary">#FFF0EA bg, primary</span></div>
+        <div class="spec-row"><span class="spec-key">Number font</span><span class="spec-val">Nunito 800 · 26px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">NEW REQUEST CARD</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val primary">#FFF0EA</span></div>
+        <div class="spec-row"><span class="spec-key">Border</span><span class="spec-val primary">2px #FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Badge text</span><span class="spec-val">Sora 800 · 10px · UPPERCASE</span></div>
+        <div class="spec-row"><span class="spec-key">Letter spacing</span><span class="spec-val">1px</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">ACCEPT / DECLINE BUTTONS</div>
+        <div class="spec-row"><span class="spec-key">Accept</span><span class="spec-val">#1C1917 bg, white text</span></div>
+        <div class="spec-row"><span class="spec-key">Decline</span><span class="spec-val">ghost, red border+text</span></div>
+        <div class="spec-row"><span class="spec-key">Layout</span><span class="spec-val">flex: Accept 1, Decline 1</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 9: VENDOR REGISTER
+══════════════════════════════════════════ -->
+<div id="vreg" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Screen 9</div><div class="sec-title">Vendor Registration</div><div class="sec-sub">Full form — business details, pricing, travel settings, contact</div></div>
+
+  <div class="frame-row">
+    <div class="frame-col">
+      <div class="frame-title">9A · Vendor Register Form <span>Full Screen</span></div>
+      <div class="phone">
+        <div class="phone-notch"><span class="time">9:41</span><div class="icons"><span>●●●</span></div></div>
+        <div style="background:#1C1917;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="color:rgba(255,255,255,0.6);cursor:pointer;">←</span>
+          <span style="font-weight:700;color:white;font-size:0.9rem;">Register Your Business</span>
+        </div>
+        <div style="background:#F8F7F4;padding:16px;overflow-y:auto;">
+          <div style="font-size:0.78rem;color:#57534E;margin-bottom:16px;">Start receiving bookings from TS & AP customers</div>
+
+          <!-- Business Name -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">BUSINESS NAME *</div>
+            <input class="input-ui focused" placeholder="e.g. Krishna Studios"/>
+          </div>
+
+          <!-- Category -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">SERVICE CATEGORY *</div>
+            <select class="input-ui"><option>📸 Photography</option><option>🌸 Decoration</option><option>🍽️ Catering</option></select>
+          </div>
+
+          <!-- Description -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">ABOUT YOUR BUSINESS</div>
+            <textarea class="input-ui" rows="2" placeholder="Services, years of experience, equipment..."></textarea>
+          </div>
+
+          <!-- Location -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">YOUR STATE & DISTRICT *</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <select class="input-ui"><option>Andhra Pradesh</option><option>Telangana</option></select>
+              <select class="input-ui"><option>Vijayawada</option><option>Guntur</option></select>
+            </div>
+          </div>
+
+          <!-- Base price -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">BASE PRICE (₹) *</div>
+            <input class="input-ui" type="number" placeholder="18000"/>
+            <div style="font-size:0.68rem;color:#A8A29E;margin-top:4px;">Minimum service fee. Travel added automatically by UtsavLink.</div>
+          </div>
+
+          <!-- Travel toggle -->
+          <div style="background:white;border-radius:12px;border:1.5px solid #E8E5DF;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+            <div style="width:22px;height:22px;background:#FF6B35;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.8rem;flex-shrink:0;">✓</div>
+            <div><div style="font-weight:600;font-size:0.85rem;">Willing to travel to other districts/states</div><div style="font-size:0.68rem;color:#A8A29E;margin-top:1px;">Get bookings from TS ↔ AP customers</div></div>
+          </div>
+
+          <!-- Travel settings -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div>
+              <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">MAX DISTANCE (km)</div>
+              <input class="input-ui" value="300"/>
+            </div>
+            <div>
+              <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">₹ PER KM</div>
+              <input class="input-ui" value="12"/>
+            </div>
+          </div>
+
+          <!-- WhatsApp -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">WHATSAPP NUMBER</div>
+            <input class="input-ui" placeholder="10-digit number"/>
+          </div>
+
+          <!-- Instagram -->
+          <div style="margin-bottom:16px;">
+            <div style="font-size:0.65rem;font-weight:700;color:#A8A29E;letter-spacing:1px;margin-bottom:5px;">INSTAGRAM (optional)</div>
+            <input class="input-ui" placeholder="@yourbusiness"/>
+          </div>
+
+          <!-- Info note -->
+          <div style="background:#FFF0EA;border-left:3px solid #FF6B35;border-radius:0 12px 12px 0;padding:10px 12px;margin-bottom:14px;font-size:0.72rem;color:#57534E;">
+            ℹ️ Profile reviewed by our team. You can receive booking requests once verified.
+          </div>
+
+          <button class="btn btn-primary-ui" style="width:100%;padding:15px;font-size:0.9rem;">Create Vendor Profile →</button>
+        </div>
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap travel toggle</div>
+        Toggle boolean. Show/hide travel radius + per-km fields with animation.
+      </div>
+      <div class="ann">
+        <div class="ann-trigger">Tap "Create Vendor Profile"</div>
+        Validate required fields → <span class="ann-code">POST /vendors/register</span> → Navigate to Vendor Dashboard
+        <div class="ann-arrow">→ Screen 8</div>
+      </div>
+    </div>
+
+    <div class="spec-panel">
+      <div class="spec-section">
+        <div class="spec-title">FORM SECTIONS</div>
+        <div class="spec-row"><span class="spec-key">Label style</span><span class="spec-val">Sora 700 · 10px · UPPERCASE</span></div>
+        <div class="spec-row"><span class="spec-key">Label color</span><span class="spec-val">#A8A29E</span></div>
+        <div class="spec-row"><span class="spec-key">Letter spacing</span><span class="spec-val">1px</span></div>
+        <div class="spec-row"><span class="spec-key">Gap between fields</span><span class="spec-val">12px (margin-bottom)</span></div>
+        <div class="spec-row"><span class="spec-key">Required marker</span><span class="spec-val">* after label text</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">TRAVEL TOGGLE</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val">white card</span></div>
+        <div class="spec-row"><span class="spec-key">Border</span><span class="spec-val">1.5px #E8E5DF</span></div>
+        <div class="spec-row"><span class="spec-key">Checkbox (on)</span><span class="spec-val primary">22px, #FF6B35, r:6px, ✓</span></div>
+        <div class="spec-row"><span class="spec-key">Checkbox (off)</span><span class="spec-val">22px, #F2F1EE, r:6px</span></div>
+        <div class="spec-row"><span class="spec-key">Full row clickable</span><span class="spec-val">cursor: pointer</span></div>
+      </div>
+      <div class="spec-section">
+        <div class="spec-title">INFO NOTE BOX</div>
+        <div class="spec-row"><span class="spec-key">Background</span><span class="spec-val primary">#FFF0EA</span></div>
+        <div class="spec-row"><span class="spec-key">Left border</span><span class="spec-val primary">3px #FF6B35</span></div>
+        <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val">0 12px 12px 0</span></div>
+        <div class="spec-row"><span class="spec-key">Text size</span><span class="spec-val">11px</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: ALL ACTIONS TABLE
+══════════════════════════════════════════ -->
+<div id="actions" class="screen">
+<div class="canvas-bg">
+  <div class="sec-head"><div class="sec-label">Reference</div><div class="sec-title">⚡ Every Action → What Happens</div><div class="sec-sub">Complete developer reference — every tap mapped to API call and result</div></div>
+
+  <table class="spec-table" style="width:100%;margin-bottom:40px;">
+    <thead>
+      <tr>
+        <th>Screen</th>
+        <th>User Action</th>
+        <th>Frontend Response</th>
+        <th>API Call</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">ONBOARDING</td></tr>
+      <tr><td class="component">Splash</td><td class="trigger">Auto 2s</td><td>Check localStorage for JWT token</td><td>—</td><td class="action">Token exists → Home · No token → Login</td></tr>
+      <tr><td class="component">Login 1A</td><td class="trigger">Tap "Send OTP"</td><td>Validate 10 digits. Show loading.</td><td><span class="api-call">POST /auth/send-otp</span></td><td class="action">Navigate to Screen 1B</td></tr>
+      <tr><td class="component">Login 1B</td><td class="trigger">6th OTP digit entered</td><td>Auto-submit (no button tap)</td><td><span class="api-call">POST /auth/verify-otp</span></td><td class="action">New user → 1C · Returning → Home</td></tr>
+      <tr><td class="component">Login 1B</td><td class="trigger">Tap "Resend OTP" (after 60s)</td><td>Reset 60s countdown timer</td><td><span class="api-call">POST /auth/send-otp</span></td><td class="action">New OTP sent. Show toast.</td></tr>
+      <tr><td class="component">Login 1C</td><td class="trigger">Tap "Get Started"</td><td>Validate name + district</td><td><span class="api-call">POST /auth/register</span></td><td class="action">Store JWT → Navigate Home or Vendor Register</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">SEARCH & RESULTS</td></tr>
+      <tr><td class="component">Home</td><td class="trigger">Tap category chip</td><td>Set category in component state</td><td>—</td><td class="action">Navigate to Results with category + user's district pre-filled</td></tr>
+      <tr><td class="component">Search 3A</td><td class="trigger">Tap quick budget chip (₹30k)</td><td>Update budget input value</td><td>—</td><td class="action">Input auto-fills. No navigation.</td></tr>
+      <tr><td class="component">Search 3A</td><td class="trigger">Tap "Find Best Value"</td><td>Validate all 4 fields</td><td><span class="api-call">GET /search/vendors?budget&category&district&date&scope</span></td><td class="action">Navigate to Results with skeleton loading</td></tr>
+      <tr><td class="component">Results 4A</td><td class="trigger">Tap AP / TS / All filter</td><td>Filter array in component memory</td><td>— (no API call)</td><td class="action">Re-render list. Update count badge.</td></tr>
+      <tr><td class="component">Results 4A</td><td class="trigger">Tap ⚙️ filter icon</td><td>Open bottom sheet modal</td><td>—</td><td class="action">Filter sheet slides up with animation</td></tr>
+      <tr><td class="component">Results 4B</td><td class="trigger">Tap "Apply Filters"</td><td>Sort + filter in state</td><td>—</td><td class="action">Dismiss sheet. Update count. Re-render.</td></tr>
+      <tr><td class="component">Results 4A</td><td class="trigger">Tap vendor card</td><td>Navigate with vendor_id as route param</td><td><span class="api-call">GET /vendors/:id</span></td><td class="action">Vendor Detail screen loads</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">VENDOR DETAIL</td></tr>
+      <tr><td class="component">Detail 5A</td><td class="trigger">Swipe gallery photos</td><td>Carousel index++ in state</td><td>—</td><td class="action">Next photo shown. Dot indicator updates.</td></tr>
+      <tr><td class="component">Detail 5A</td><td class="trigger">Tap gallery photo</td><td>Open fullscreen lightbox modal</td><td>—</td><td class="action">Fullscreen image with close button</td></tr>
+      <tr><td class="component">Detail 5A</td><td class="trigger">Tap ❤️ heart icon</td><td>Toggle saved boolean in state</td><td><span class="api-call">POST /vendors/:id/save</span></td><td class="action">Icon fills red. Toast "Saved!"</td></tr>
+      <tr><td class="component">Detail 5A</td><td class="trigger">Tap About / Pricing / Reviews tab</td><td>Set activeTab in state</td><td>Reviews: <span class="api-call">GET /vendors/:id/reviews</span></td><td class="action">Tab content switches with animation</td></tr>
+      <tr><td class="component">Detail 5A</td><td class="trigger">Tap "Check Availability & Book"</td><td>Verify user is logged in</td><td><span class="api-call">GET /vendors/:id/availability?month=YYYY-MM</span></td><td class="action">Navigate to Booking Screen 6A</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">BOOKING FLOW</td></tr>
+      <tr><td class="component">Booking 6A</td><td class="trigger">Tap available date</td><td>Set selectedDate in state</td><td>—</td><td class="action">Date highlighted orange. "Next" button activates.</td></tr>
+      <tr><td class="component">Booking 6A</td><td class="trigger">Tap "Next: Event Details"</td><td>Validate date is selected</td><td>—</td><td class="action">Navigate to Step 2 (6B). Progress bar updates.</td></tr>
+      <tr><td class="component">Booking 6B</td><td class="trigger">Tap "Next: Confirm"</td><td>Validate event_location is not empty</td><td><span class="api-call">POST /bookings</span></td><td class="action">Create booking → Navigate to Step 3 (6C)</td></tr>
+      <tr><td class="component">Booking 6C</td><td class="trigger">Tap "Pay Advance"</td><td>Create Razorpay order</td><td><span class="api-call">POST /payments/initiate</span> → Razorpay modal</td><td class="action">UPI payment modal opens</td></tr>
+      <tr><td class="component">Payment</td><td class="trigger">UPI payment success</td><td>Razorpay handler callback</td><td><span class="api-call">POST /payments/verify</span></td><td class="action">Navigate to Success screen (7A). WhatsApp sent. Confetti.</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">MY BOOKINGS</td></tr>
+      <tr><td class="component">Bookings 7B</td><td class="trigger">Tap Active / Completed tab</td><td>Filter bookings array in state</td><td>—</td><td class="action">Tab content re-renders</td></tr>
+      <tr><td class="component">Bookings 7B</td><td class="trigger">Tap "Leave Review"</td><td>Show rating + comment form inline</td><td><span class="api-call">POST /reviews</span> on submit</td><td class="action">Review submitted. Vendor value_score recomputed.</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">VENDOR DASHBOARD</td></tr>
+      <tr><td class="component">Dashboard 8A</td><td class="trigger">Tap "Accept" booking</td><td>Optimistic UI — remove card</td><td><span class="api-call">PUT /bookings/:id/confirm</span></td><td class="action">Date blocked. WhatsApp sent to customer.</td></tr>
+      <tr><td class="component">Dashboard 8A</td><td class="trigger">Tap "Decline" booking</td><td>Show reason textarea</td><td><span class="api-call">PUT /bookings/:id/decline</span></td><td class="action">Customer notified. Booking status = declined.</td></tr>
+      <tr><td class="component">Dashboard 8A</td><td class="trigger">Tap Requests / Upcoming / History tab</td><td>Filter bookings by status</td><td>—</td><td class="action">Tab content re-renders</td></tr>
+      <tr><td class="component">Availability 8B</td><td class="trigger">Tap date + "Mark Available"</td><td>Stage change in local state</td><td>—</td><td class="action">Date turns green. Not saved yet.</td></tr>
+      <tr><td class="component">Availability 8B</td><td class="trigger">Tap "Save Availability"</td><td>Batch all staged changes</td><td><span class="api-call">POST /vendors/:id/availability (batch)</span></td><td class="action">All dates saved. Customers can now book those dates.</td></tr>
+      <tr><td colspan="5" style="background:var(--clr-dark);color:var(--clr-primary);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 20px;">VENDOR REGISTRATION</td></tr>
+      <tr><td class="component">VReg 9A</td><td class="trigger">Tap travel toggle checkbox</td><td>Toggle willing_to_travel boolean</td><td>—</td><td class="action">Show/hide travel radius + per-km fields with slide animation</td></tr>
+      <tr><td class="component">VReg 9A</td><td class="trigger">Tap "Create Vendor Profile"</td><td>Validate required fields</td><td><span class="api-call">POST /vendors/register</span></td><td class="action">Navigate to Vendor Dashboard (Screen 8)</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ds-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

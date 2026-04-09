@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UtsavLink — Full Build Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#07090F;
+  --surface:#0F1218;
+  --card:#141820;
+  --border:#1E2530;
+  --text:#E8EDF5;
+  --muted:#6B7A94;
+  --blue:#3B7BF6;
+  --blue-glow:rgba(59,123,246,0.15);
+  --green:#22C97A;
+  --amber:#F5A623;
+  --red:#F05A5A;
+  --purple:#9B6DFF;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;line-height:1.6}
+
+/* HEADER */
+header{
+  padding:60px 40px 40px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(59,123,246,0.05),transparent 60%);
+  position:relative;overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,123,246,0.08),transparent 70%);
+}
+.header-tag{
+  display:inline-block;background:rgba(59,123,246,0.12);
+  border:1px solid rgba(59,123,246,0.3);
+  color:var(--blue);border-radius:100px;
+  padding:5px 16px;font-size:0.75rem;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;
+}
+header h1{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:800;line-height:1.1;margin-bottom:12px;
+}
+header h1 span{color:var(--blue);}
+header p{color:var(--muted);font-size:1rem;max-width:580px;}
+
+/* NAV TABS */
+.tabs{
+  display:flex;gap:0;
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  overflow-x:auto;
+}
+.tab{
+  padding:16px 28px;font-size:0.88rem;font-weight:600;
+  color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all 0.2s;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'Instrument Sans',sans-serif;
+}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+/* CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:48px 40px;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* SECTION HEADER */
+.sec-label{
+  font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--blue);font-weight:600;margin-bottom:8px;
+}
+.sec-title{
+  font-family:'Syne',sans-serif;font-size:1.8rem;
+  font-weight:800;margin-bottom:8px;
+}
+.sec-sub{color:var(--muted);font-size:0.92rem;margin-bottom:40px;}
+
+/* CARDS */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:28px;margin-bottom:20px;
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:rgba(59,123,246,0.3);}
+
+.card-title{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:1.05rem;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.card p{color:var(--muted);font-size:0.88rem;line-height:1.7;}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+/* PHASE TIMELINE */
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;
+  width:2px;background:var(--border);
+}
+.phase{position:relative;margin-bottom:32px;}
+.phase::before{
+  content:'';position:absolute;left:-28px;top:6px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--blue);border:2px solid var(--bg);
+  box-shadow:0 0 0 3px rgba(59,123,246,0.2);
+}
+.phase-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:12px;
+}
+.phase-num{
+  font-family:'Syne',sans-serif;font-size:0.75rem;
+  font-weight:800;color:var(--blue);letter-spacing:1px;
+  text-transform:uppercase;
+}
+.phase-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;}
+.phase-time{
+  margin-left:auto;font-size:0.75rem;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);
+  padding:3px 10px;border-radius:100px;
+}
+.task-list{display:flex;flex-direction:column;gap:8px;}
+.task{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:0.87rem;color:var(--muted);
+}
+.task::before{content:'→';color:var(--blue);flex-shrink:0;margin-top:1px;}
+
+/* DB TABLES */
+.db-table{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;margin-bottom:16px;
+}
+.db-table-header{
+  background:rgba(59,123,246,0.08);
+  padding:12px 20px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.db-table-header h4{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
+.db-tag{
+  font-size:0.68rem;padding:3px 8px;border-radius:4px;
+  font-weight:600;letter-spacing:0.5px;
+}
+.tag-pk{background:rgba(245,166,35,0.15);color:var(--amber);}
+.tag-fk{background:rgba(155,109,255,0.15);color:var(--purple);}
+.tag-idx{background:rgba(34,201,122,0.15);color:var(--green);}
+
+.db-fields{padding:12px 0;}
+.db-field{
+  display:flex;align-items:center;gap:12px;
+  padding:7px 20px;font-size:0.83rem;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.db-field:last-child{border-bottom:none;}
+.field-name{color:var(--text);font-weight:500;width:160px;flex-shrink:0;}
+.field-type{color:var(--blue);font-size:0.78rem;width:100px;flex-shrink:0;}
+.field-note{color:var(--muted);font-size:0.78rem;}
+
+/* API ROUTES */
+.route{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:10px;
+  font-size:0.85rem;
+}
+.method{
+  font-weight:700;font-size:0.72rem;letter-spacing:1px;
+  padding:4px 10px;border-radius:6px;flex-shrink:0;
+  font-family:'Syne',sans-serif;
+}
+.get{background:rgba(34,201,122,0.15);color:var(--green);}
+.post{background:rgba(59,123,246,0.15);color:var(--blue);}
+.put{background:rgba(245,166,35,0.15);color:var(--amber);}
+.delete{background:rgba(240,90,90,0.15);color:var(--red);}
+
+.route-path{color:var(--text);font-family:monospace;flex:1;}
+.route-desc{color:var(--muted);font-size:0.8rem;}
+
+/* BUDGET UI MOCKUP */
+.mockup{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+}
+.mockup-bar{
+  background:var(--card);padding:14px 20px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%;}
+.mockup-body{padding:28px;}
+
+.search-row{
+  display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;
+}
+.mock-input{
+  flex:1;min-width:140px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:12px 16px;
+  font-size:0.85rem;color:var(--muted);
+}
+.mock-btn{
+  background:var(--blue);color:white;
+  border:none;border-radius:8px;padding:12px 24px;
+  font-weight:600;font-size:0.85rem;cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;
+  white-space:nowrap;
+}
+
+.result-header{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:16px;
+}
+.result-header h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;}
+.result-count{font-size:0.8rem;color:var(--muted);}
+
+.vendor-row{
+  display:grid;grid-template-columns:auto 1fr auto auto auto;
+  align-items:center;gap:16px;
+  padding:16px;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;
+  margin-bottom:10px;transition:border-color 0.2s;cursor:pointer;
+}
+.vendor-row:hover{border-color:var(--blue);}
+
+.v-avatar{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+}
+.v-name{font-weight:600;font-size:0.9rem;}
+.v-loc{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+.v-state{
+  font-size:0.7rem;padding:3px 10px;border-radius:100px;
+  font-weight:600;white-space:nowrap;
+}
+.ap-tag{background:rgba(34,201,122,0.12);color:var(--green);border:1px solid rgba(34,201,122,0.25);}
+.ts-tag{background:rgba(155,109,255,0.12);color:var(--purple);border:1px solid rgba(155,109,255,0.25);}
+
+.v-price{text-align:right;}
+.v-price .amount{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text);}
+.v-price .total{font-size:0.72rem;color:var(--muted);}
+
+.value-bar-wrap{width:90px;}
+.value-label{font-size:0.68rem;color:var(--muted);margin-bottom:4px;text-align:right;}
+.value-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.value-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+.fill-high{background:var(--green);}
+.fill-mid{background:var(--amber);}
+.fill-low{background:var(--red);}
+
+.savings-banner{
+  background:rgba(34,201,122,0.07);
+  border:1px solid rgba(34,201,122,0.2);
+  border-radius:10px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:20px;font-size:0.85rem;
+}
+.savings-banner .icon{font-size:1.3rem;}
+.savings-banner strong{color:var(--green);}
+.savings-banner span{color:var(--muted);}
+
+/* TECH STACK */
+.stack-row{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:10px;
+}
+.stack-layer{
+  font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);width:100px;flex-shrink:0;font-weight:600;
+}
+.stack-tech{
+  display:flex;flex-wrap:wrap;gap:8px;flex:1;
+}
+.tech-chip{
+  background:var(--card);border:1px solid var(--border);
+  padding:5px 12px;border-radius:6px;
+  font-size:0.8rem;font-weight:500;
+}
+.stack-why{color:var(--muted);font-size:0.78rem;flex:1;text-align:right;}
+
+/* MONETIZATION */
+.money-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:24px;
+}
+.money-card h4{
+  font-family:'Syne',sans-serif;font-weight:700;
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;
+}
+.money-card p{color:var(--muted);font-size:0.85rem;margin-bottom:12px;}
+.money-tag{
+  font-size:0.75rem;font-weight:700;
+  padding:3px 10px;border-radius:4px;
+}
+.tag-early{background:rgba(34,201,122,0.15);color:var(--green);}
+.tag-later{background:rgba(245,166,35,0.15);color:var(--amber);}
+
+/* BADGE */
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.72rem;font-weight:600;
+  padding:4px 10px;border-radius:100px;
+}
+.badge-blue{background:rgba(59,123,246,0.12);color:var(--blue);border:1px solid rgba(59,123,246,0.2);}
+.badge-green{background:rgba(34,201,122,0.12);color:var(--green);border:1px solid rgba(34,201,122,0.2);}
+
+@media(max-width:768px){
+  header{padding:40px 20px 30px;}
+  .tabs{padding:0 20px;}
+  .content{padding:32px 20px;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .vendor-row{grid-template-columns:auto 1fr auto;}
+  .vendor-row .value-bar-wrap{display:none;}
+  .stack-why{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">UtsavLink — Full Build Plan</div>
+  <h1>UI + Backend <span>Architecture</span></h1>
+  <p>Complete blueprint — budget comparison UI, database design, API routes, tech stack, and roadmap.</p>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('ui')">🖥 Budget UI</button>
+  <button class="tab" onclick="showTab('db')">🗄 Database</button>
+  <button class="tab" onclick="showTab('api')">⚡ API Routes</button>
+  <button class="tab" onclick="showTab('stack')">🔧 Tech Stack</button>
+  <button class="tab" onclick="showTab('roadmap')">🗺 Roadmap</button>
+  <button class="tab" onclick="showTab('money')">💰 Monetization</button>
+</div>
+
+<!-- ══════════════════════════════════ UI TAB ══════════════════════════════════ -->
+<div id="ui" class="section active content">
+  <div class="sec-label">Core Differentiator</div>
+  <div class="sec-title">Budget Comparison UI</div>
+  <div class="sec-sub">This is the screen no competitor has. Customer enters budget → sees local vs cross-state vendors ranked by value-per-rupee.</div>
+
+  <div class="mockup">
+    <div class="mockup-bar">
+      <div class="dot" style="background:#F05A5A"></div>
+      <div class="dot" style="background:#F5A623"></div>
+      <div class="dot" style="background:#22C97A"></div>
+      <span style="color:var(--muted);font-size:0.78rem;margin-left:8px">utsavlink.in/search</span>
+    </div>
+    <div class="mockup-body">
+
+      <!-- SEARCH ROW -->
+      <div class="search-row">
+        <div class="mock-input">📍 Your district — Nalgonda, Telangana</div>
+        <div class="mock-input">🎪 Service — Photography</div>
+        <div class="mock-input">💰 Budget — ₹30,000</div>
+        <div class="mock-input">📅 Date — 15 Jun 2025</div>
+        <button class="mock-btn">Find Best Value →</button>
+      </div>
+
+      <!-- SAVINGS BANNER -->
+      <div class="savings-banner">
+        <div class="icon">💡</div>
+        <div>
+          <strong>Save up to ₹9,000</strong>
+          <span> — Cross-state vendors offer better quality for your budget. Travel cost already included below.</span>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="result-header">
+        <h3>12 vendors found · sorted by Value Score</h3>
+        <div class="result-count">Showing Local + AP vendors</div>
+      </div>
+
+      <!-- VENDOR 1 - Best value -->
+      <div class="vendor-row">
+        <div class="v-avatar" style="background:rgba(34,201,122,0.12)">📸</div>
+        <div>
+          <div class="v-name">Krishna Studios <span style="font-size:0.72rem;color:var(--green);margin-left:6px">✦ Best Value</span></div>
+          <div class="v-loc">📍 Vijayawada, AP · travels to TS · 4K + Drone + Reels</div>
+        </div>
+        <div class="ap-tag v-state">Andhra Pradesh</div>
+        <div class="v-price">
+          <div class="amount">₹21,000</div>
+          <div class="total">incl. ₹3,000 travel</div>
+        </div>
+        <div class="value-bar-wrap">
+          <div class="value-label">Value 96/100</div>
+          <div class="value-bar"><div class="value-fill fill-high" style="width:96%"></div></div>
+        </div>
+      </div>
+
+      <!-- VENDOR 2 -->
+      <div class="vendor-row">
+        <div class="v-avatar" style="background:rgba(34,201,122,0.1)">📸</div>
+        <div>
+          <div class="v-name">Ravi Frame Works</div>
+          <div class="v-loc">📍 Guntur, AP · travels to TS · Pro DSLR + Album</div>
+        </div>
+        <div class="ap-tag v-state">Andhra Pradesh</div>
+        <div class="v-price">
+          <div class="amount">₹24,000</div>
+          <div class="total">incl. ₹4,000 travel</div>
+        </div>
+        <div class="value-bar-wrap">
+          <div class="value-label">Value 88/100</div>
+          <div class="value-bar"><div class="value-fill fill-high" style="width:88%"></div></div>
+        </div>
+      </div>
+
+      <!-- VENDOR 3 - local -->
+      <div class="vendor-row">
+        <div class="v-avatar" style="background:rgba(155,109,255,0.1)">📸</div>
+        <div>
+          <div class="v-name">Sri Balaji Photos</div>
+          <div class="v-loc">📍 Nalgonda, TS · local vendor · Basic DSLR</div>
+        </div>
+        <div class="ts-tag v-state">Telangana (Local)</div>
+        <div class="v-price">
+          <div class="amount">₹30,000</div>
+          <div class="total">no travel cost</div>
+        </div>
+        <div class="value-bar-wrap">
+          <div class="value-label">Value 51/100</div>
+          <div class="value-bar"><div class="value-fill fill-mid" style="width:51%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <br/>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🧮 Value Score Formula</div>
+      <p>Value Score = (Quality Rating × 40%) + (Price Efficiency × 40%) + (Reviews × 20%)<br/><br/>
+      Price Efficiency = (Budget − Vendor Total Cost) / Budget × 100<br/><br/>
+      This sorts vendors so the customer always sees the best deal first — not who paid most to be listed.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🚗 Travel Cost Auto-Calculator</div>
+      <p>When vendor is from another district/state:<br/><br/>
+      Travel Cost = Distance (km) × ₹12 (fuel) + ₹800/night stay if event is far<br/><br/>
+      This is shown transparently on every card. Customer sees real final price before clicking.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">📦 Bundle Detector</div>
+      <p>If customer needs Photography + Decoration, and two AP vendors are from same city, app auto-suggests:<br/><br/>
+      "Book both from Vijayawada → share travel cost → save ₹5,000 extra"<br/><br/>
+      No competitor does bundle logic across vendors.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Availability Filter</div>
+      <p>Vendor marks which dates they are willing to travel to TS. Customer's selected date auto-filters only available vendors.<br/><br/>
+      Prevents the #1 problem in cross-state bookings — vendor unavailability discovered after interest.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ DB TAB ══════════════════════════════════ -->
+<div id="db" class="section content">
+  <div class="sec-label">Database Design</div>
+  <div class="sec-title">PostgreSQL Schema</div>
+  <div class="sec-sub">6 core tables. Designed for cross-state queries, value scoring, and travel cost calculation.</div>
+
+  <!-- USERS -->
+  <div class="db-table">
+    <div class="db-table-header">
+      <h4>👤 users</h4>
+      <span style="color:var(--muted);font-size:0.8rem">Customers & Vendors both stored here</span>
+    </div>
+    <div class="db-fields">
+      <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+      <div class="db-field"><div class="field-name">name</div><div class="field-type">VARCHAR</div><div class="field-note">Full name</div></div>
+      <div class="db-field"><div class="field-name">phone</div><div class="field-type">VARCHAR</div><div class="field-note">Primary login (OTP)</div></div>
+      <div class="db-field"><div class="field-name">role</div><div class="field-type">ENUM</div><div class="field-note">'customer' | 'vendor' | 'admin'</div></div>
+      <div class="db-field"><div class="field-name">district</div><div class="field-type">VARCHAR</div><div class="field-note">e.g. Nalgonda</div></div>
+      <div class="db-field"><div class="field-name">state</div><div class="field-type">ENUM</div><div class="field-note">'Telangana' | 'Andhra Pradesh'</div></div>
+      <div class="db-field"><div class="field-name">language_pref</div><div class="field-type">ENUM</div><div class="field-note">'Telugu' | 'English' | 'Hindi'</div></div>
+      <div class="db-field"><div class="field-name">created_at</div><div class="field-type">TIMESTAMP</div><div class="field-note">Auto-set</div></div>
+    </div>
+  </div>
+
+  <!-- VENDORS -->
+  <div class="db-table">
+    <div class="db-table-header">
+      <h4>🏪 vendor_profiles</h4>
+      <span style="color:var(--muted);font-size:0.8rem">Extended info for vendor role users</span>
+    </div>
+    <div class="db-fields">
+      <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+      <div class="db-field"><div class="field-name">user_id</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → users</div></div>
+      <div class="db-field"><div class="field-name">business_name</div><div class="field-type">VARCHAR</div><div class="field-note"></div></div>
+      <div class="db-field"><div class="field-name">category</div><div class="field-type">ENUM</div><div class="field-note">'photography'|'decoration'|'catering'|'dj'|'makeup'|...</div></div>
+      <div class="db-field"><div class="field-name">base_price</div><div class="field-type">INTEGER</div><div class="field-note">Starting price in ₹</div></div>
+      <div class="db-field"><div class="field-name">willing_to_travel</div><div class="field-type">BOOLEAN</div><div class="field-note">Key flag for cross-state</div></div>
+      <div class="db-field"><div class="field-name">travel_radius_km</div><div class="field-type">INTEGER</div><div class="field-note">Max travel distance</div></div>
+      <div class="db-field"><div class="field-name">travel_charge_per_km</div><div class="field-type">DECIMAL</div><div class="field-note">Used in cost calculator</div></div>
+      <div class="db-field"><div class="field-name">quality_score</div><div class="field-type">DECIMAL</div><div class="field-note">Computed from reviews (0-10)</div></div>
+      <div class="db-field"><div class="field-name">value_score</div><div class="field-type">DECIMAL</div><div class="field-note">Recomputed nightly (0-100)</div></div>
+      <div class="db-field"><div class="field-name">portfolio_urls</div><div class="field-type">TEXT[]</div><div class="field-note">Array of image links</div></div>
+      <div class="db-field"><div class="field-name">verified</div><div class="field-type">BOOLEAN</div><div class="field-note">Admin-verified vendor</div></div>
+      <div class="db-field"><div class="field-name">lat</div><div class="field-type">DECIMAL</div><div class="db-tag tag-idx">IDX</div></div>
+      <div class="db-field"><div class="field-name">lng</div><div class="field-type">DECIMAL</div><div class="db-tag tag-idx">IDX</div></div>
+    </div>
+  </div>
+
+  <!-- AVAILABILITY -->
+  <div class="db-table">
+    <div class="db-table-header">
+      <h4>📅 vendor_availability</h4>
+      <span style="color:var(--muted);font-size:0.8rem">Travel dates per vendor — the key cross-state filter</span>
+    </div>
+    <div class="db-fields">
+      <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+      <div class="db-field"><div class="field-name">vendor_id</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → vendor_profiles</div></div>
+      <div class="db-field"><div class="field-name">date</div><div class="field-type">DATE</div><div class="db-tag tag-idx">IDX</div></div>
+      <div class="db-field"><div class="field-name">is_available</div><div class="field-type">BOOLEAN</div><div class="field-note">false = booked/blocked</div></div>
+      <div class="db-field"><div class="field-name">willing_to_travel_on_date</div><div class="field-type">BOOLEAN</div><div class="field-note">Vendor can mark travel days separately</div></div>
+    </div>
+  </div>
+
+  <!-- BOOKINGS -->
+  <div class="db-table">
+    <div class="db-table-header">
+      <h4>📋 bookings</h4>
+      <span style="color:var(--muted);font-size:0.8rem">Core transaction table</span>
+    </div>
+    <div class="db-fields">
+      <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+      <div class="db-field"><div class="field-name">customer_id</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → users</div></div>
+      <div class="db-field"><div class="field-name">vendor_id</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → vendor_profiles</div></div>
+      <div class="db-field"><div class="field-name">event_date</div><div class="field-type">DATE</div><div class="field-note"></div></div>
+      <div class="db-field"><div class="field-name">event_location</div><div class="field-type">VARCHAR</div><div class="field-note">Customer's venue address</div></div>
+      <div class="db-field"><div class="field-name">service_amount</div><div class="field-type">INTEGER</div><div class="field-note">Vendor's service fee</div></div>
+      <div class="db-field"><div class="field-name">travel_amount</div><div class="field-type">INTEGER</div><div class="field-note">Calculated travel cost</div></div>
+      <div class="db-field"><div class="field-name">total_amount</div><div class="field-type">INTEGER</div><div class="field-note">service + travel</div></div>
+      <div class="db-field"><div class="field-name">status</div><div class="field-type">ENUM</div><div class="field-note">'pending'|'confirmed'|'completed'|'cancelled'</div></div>
+      <div class="db-field"><div class="field-name">payment_status</div><div class="field-type">ENUM</div><div class="field-note">'unpaid'|'advance_paid'|'full_paid'|'released'</div></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- REVIEWS -->
+    <div class="db-table">
+      <div class="db-table-header"><h4>⭐ reviews</h4></div>
+      <div class="db-fields">
+        <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+        <div class="db-field"><div class="field-name">booking_id</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → bookings</div></div>
+        <div class="db-field"><div class="field-name">rating</div><div class="field-type">DECIMAL</div><div class="field-note">1.0 to 5.0</div></div>
+        <div class="db-field"><div class="field-name">quality_rating</div><div class="field-type">DECIMAL</div><div class="field-note">Separate quality score</div></div>
+        <div class="db-field"><div class="field-name">value_rating</div><div class="field-type">DECIMAL</div><div class="field-note">"Was it worth the money?"</div></div>
+        <div class="db-field"><div class="field-name">comment</div><div class="field-type">TEXT</div><div class="field-note"></div></div>
+      </div>
+    </div>
+
+    <!-- BUNDLES -->
+    <div class="db-table">
+      <div class="db-table-header"><h4>📦 bundle_suggestions</h4></div>
+      <div class="db-fields">
+        <div class="db-field"><div class="field-name">id</div><div class="field-type">UUID</div><div class="db-tag tag-pk">PK</div></div>
+        <div class="db-field"><div class="field-name">vendor_id_1</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → vendor_profiles</div></div>
+        <div class="db-field"><div class="field-name">vendor_id_2</div><div class="field-type">UUID</div><div class="db-tag tag-fk">FK → vendor_profiles</div></div>
+        <div class="db-field"><div class="field-name">shared_travel_saving</div><div class="field-type">INTEGER</div><div class="field-note">₹ saved by sharing travel</div></div>
+        <div class="db-field"><div class="field-name">auto_detected</div><div class="field-type">BOOLEAN</div><div class="field-note">System auto-created this</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ API TAB ══════════════════════════════════ -->
+<div id="api" class="section content">
+  <div class="sec-label">FastAPI Backend</div>
+  <div class="sec-title">API Routes</div>
+  <div class="sec-sub">Built with FastAPI (Python) — your strongest stack. JWT auth, PostgreSQL via SQLAlchemy.</div>
+
+  <div style="margin-bottom:32px">
+    <div class="sec-label" style="font-size:0.68rem">AUTH</div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/auth/send-otp</div><div class="route-desc">Send OTP to phone number</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/auth/verify-otp</div><div class="route-desc">Verify OTP → return JWT token</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/auth/register</div><div class="route-desc">Complete profile after OTP verify</div></div>
+  </div>
+
+  <div style="margin-bottom:32px">
+    <div class="sec-label" style="font-size:0.68rem">⭐ CORE — BUDGET SEARCH</div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/search/vendors?budget=30000&category=photography&district=Nalgonda&date=2025-06-15</div><div class="route-desc">Returns vendors ranked by value_score, travel cost auto-added</div></div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/search/compare?vendor_ids=id1,id2,id3</div><div class="route-desc">Side-by-side comparison of selected vendors</div></div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/search/bundles?district=Nalgonda&date=2025-06-15&categories=photography,decoration</div><div class="route-desc">Returns bundle suggestions with shared travel savings</div></div>
+  </div>
+
+  <div style="margin-bottom:32px">
+    <div class="sec-label" style="font-size:0.68rem">VENDORS</div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/vendors/{id}</div><div class="route-desc">Full vendor profile + portfolio + reviews</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/vendors/register</div><div class="route-desc">Vendor registers business</div></div>
+    <div class="route"><div class="method put">PUT</div><div class="route-path">/vendors/{id}</div><div class="route-desc">Update vendor profile</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/vendors/{id}/availability</div><div class="route-desc">Vendor sets available/travel dates</div></div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/vendors/{id}/availability?month=2025-06</div><div class="route-desc">Get vendor calendar for a month</div></div>
+  </div>
+
+  <div style="margin-bottom:32px">
+    <div class="sec-label" style="font-size:0.68rem">BOOKINGS</div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/bookings</div><div class="route-desc">Customer creates booking request</div></div>
+    <div class="route"><div class="method put">PUT</div><div class="route-path">/bookings/{id}/confirm</div><div class="route-desc">Vendor confirms booking</div></div>
+    <div class="route"><div class="method get">GET</div><div class="route-path">/bookings/my</div><div class="route-desc">Customer's booking history</div></div>
+    <div class="route"><div class="method put">PUT</div><div class="route-path">/bookings/{id}/complete</div><div class="route-desc">Mark event done → trigger payment release</div></div>
+  </div>
+
+  <div style="margin-bottom:32px">
+    <div class="sec-label" style="font-size:0.68rem">REVIEWS & PAYMENTS</div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/reviews</div><div class="route-desc">Customer submits review post-event</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/payments/initiate</div><div class="route-desc">Create Razorpay order</div></div>
+    <div class="route"><div class="method post">POST</div><div class="route-path">/payments/webhook</div><div class="route-desc">Razorpay webhook → update payment status</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧠 Core Algorithm — /search/vendors</div>
+    <p style="font-family:monospace;font-size:0.82rem;line-height:2;color:var(--text)">
+      1. Filter vendors by: category + willing_to_travel + availability on date<br/>
+      2. For each vendor: distance = haversine(vendor.lat/lng, customer.lat/lng)<br/>
+      3. travel_cost = distance × vendor.travel_charge_per_km + stay_cost_if_needed<br/>
+      4. total_cost = base_price + travel_cost<br/>
+      5. IF total_cost > budget → exclude vendor<br/>
+      6. price_efficiency = (budget − total_cost) / budget × 100<br/>
+      7. value_score = (quality_score × 0.4) + (price_efficiency × 0.4) + (avg_review × 0.2)<br/>
+      8. Sort by value_score DESC → return results
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ STACK TAB ══════════════════════════════════ -->
+<div id="stack" class="section content">
+  <div class="sec-label">Technology</div>
+  <div class="sec-title">Tech Stack</div>
+  <div class="sec-sub">Chosen for your Python background. Lean, fast to build, easy to deploy.</div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Frontend</div>
+    <div class="stack-tech">
+      <span class="tech-chip">React.js</span>
+      <span class="tech-chip">Tailwind CSS</span>
+      <span class="tech-chip">React Query</span>
+      <span class="tech-chip">Zustand</span>
+    </div>
+    <div class="stack-why">Fast, component-based. You can build the budget UI as reusable React components.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Backend</div>
+    <div class="stack-tech">
+      <span class="tech-chip">FastAPI ⭐</span>
+      <span class="tech-chip">SQLAlchemy</span>
+      <span class="tech-chip">Pydantic</span>
+      <span class="tech-chip">Alembic</span>
+    </div>
+    <div class="stack-why">Your strongest stack. FastAPI = fast to build + auto docs + async support.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Database</div>
+    <div class="stack-tech">
+      <span class="tech-chip">PostgreSQL</span>
+      <span class="tech-chip">PostGIS (geo queries)</span>
+      <span class="tech-chip">Redis (cache)</span>
+    </div>
+    <div class="stack-why">PostGIS for distance/travel calculations. Redis to cache vendor search results.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Auth</div>
+    <div class="stack-tech">
+      <span class="tech-chip">Phone OTP</span>
+      <span class="tech-chip">MSG91 / Twilio</span>
+      <span class="tech-chip">JWT Tokens</span>
+    </div>
+    <div class="stack-why">Phone OTP is best for rural Telugu users — no email dependency.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Payments</div>
+    <div class="stack-tech">
+      <span class="tech-chip">Razorpay</span>
+      <span class="tech-chip">Escrow Logic</span>
+    </div>
+    <div class="stack-why">Razorpay supports UPI (most-used in TS/AP). Escrow = release payment after event done.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Storage</div>
+    <div class="stack-tech">
+      <span class="tech-chip">AWS S3 / Cloudflare R2</span>
+      <span class="tech-chip">Pillow (image resize)</span>
+    </div>
+    <div class="stack-why">Vendor portfolio photos. R2 is cheaper than S3 for Indian startups.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Deploy</div>
+    <div class="stack-tech">
+      <span class="tech-chip">Railway.app</span>
+      <span class="tech-chip">Vercel (frontend)</span>
+      <span class="tech-chip">GitHub Actions</span>
+    </div>
+    <div class="stack-why">Railway = cheapest full-stack deploy for FastAPI + PostgreSQL. Free tier to start.</div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-layer">Maps</div>
+    <div class="stack-tech">
+      <span class="tech-chip">Google Maps API</span>
+      <span class="tech-chip">Haversine formula</span>
+    </div>
+    <div class="stack-why">Distance calculation for travel cost. Haversine runs in Python without API calls.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ ROADMAP TAB ══════════════════════════════════ -->
+<div id="roadmap" class="section content">
+  <div class="sec-label">Build Order</div>
+  <div class="sec-title">Development Roadmap</div>
+  <div class="sec-sub">4 phases. Start small, validate fast, then expand. Solo developer friendly.</div>
+
+  <div class="timeline">
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-title">MVP — Core Search</div>
+        <div class="phase-time">6–8 weeks</div>
+      </div>
+      <div class="card">
+        <div class="task-list">
+          <div class="task">Database schema setup (PostgreSQL + SQLAlchemy models)</div>
+          <div class="task">FastAPI project structure + auth (OTP login)</div>
+          <div class="task">Vendor registration + profile API</div>
+          <div class="task">Budget search API with value score algorithm</div>
+          <div class="task">Travel cost calculator (Haversine distance)</div>
+          <div class="task">Basic React frontend — search page + vendor cards</div>
+          <div class="task">Manual onboarding — call 20 AP vendors, add them yourself</div>
+          <div class="task">Deploy on Railway (free) + Vercel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-title">Bookings + Payments</div>
+        <div class="phase-time">4–6 weeks</div>
+      </div>
+      <div class="card">
+        <div class="task-list">
+          <div class="task">Booking request + vendor confirmation flow</div>
+          <div class="task">Razorpay integration (UPI + card)</div>
+          <div class="task">Escrow logic — hold payment, release after event</div>
+          <div class="task">Vendor availability calendar UI</div>
+          <div class="task">WhatsApp notifications (via Twilio or WATI) for booking updates</div>
+          <div class="task">Customer booking history page</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-title">Reviews + Bundles</div>
+        <div class="phase-time">3–4 weeks</div>
+      </div>
+      <div class="card">
+        <div class="task-list">
+          <div class="task">Post-event review system (quality + value rating)</div>
+          <div class="task">Value score recalculation nightly (cron job)</div>
+          <div class="task">Bundle detection algorithm — same-city vendors, shared travel</div>
+          <div class="task">Bundle suggestion UI on search results</div>
+          <div class="task">Vendor dashboard — earnings, bookings, calendar</div>
+          <div class="task">Admin panel — verify vendors, manage disputes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-title">Scale + Expand</div>
+        <div class="phase-time">Ongoing</div>
+      </div>
+      <div class="card">
+        <div class="task-list">
+          <div class="task">Telugu language UI option</div>
+          <div class="task">Mobile app (React Native — reuse existing components)</div>
+          <div class="task">Expand to Karnataka ↔ Tamil Nadu corridor</div>
+          <div class="task">Vendor subscription tiers (₹500/mo for featured listing)</div>
+          <div class="task">AI-powered budget recommendation ("For ₹50,000 wedding, here's optimal split")</div>
+          <div class="task">Instagram portfolio import for vendors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ MONEY TAB ══════════════════════════════════ -->
+<div id="money" class="section content">
+  <div class="sec-label">Business Model</div>
+  <div class="sec-title">How UtsavLink Makes Money</div>
+  <div class="sec-sub">Multiple revenue streams. Start free to grow vendor base, monetize after trust is built.</div>
+
+  <div class="grid-2">
+    <div class="money-card">
+      <h4>💸 Booking Commission <span class="money-tag tag-early">Start Here</span></h4>
+      <p>Charge 5–8% on every completed booking. Razorpay handles escrow. Money releases after event = zero fraud risk.</p>
+      <div style="font-size:0.82rem;color:var(--text)">₹30,000 booking → ₹1,500–2,400 per transaction</div>
+    </div>
+
+    <div class="money-card">
+      <h4>📋 Vendor Subscription <span class="money-tag tag-early">Month 3+</span></h4>
+      <p>Free tier: 3 bookings/month. Paid tier ₹799/month: unlimited bookings + featured listing + analytics dashboard.</p>
+      <div style="font-size:0.82rem;color:var(--text)">50 vendors × ₹799 = ₹39,950/month recurring</div>
+    </div>
+
+    <div class="money-card">
+      <h4>🔝 Featured Placement <span class="money-tag tag-later">Month 6+</span></h4>
+      <p>Vendors pay ₹299–999 to appear at top of search results for specific districts on specific dates (like wedding season).</p>
+      <div style="font-size:0.82rem;color:var(--text)">Works like Google Ads but for wedding season slots</div>
+    </div>
+
+    <div class="money-card">
+      <h4>📦 Bundle Commission <span class="money-tag tag-later">Month 6+</span></h4>
+      <p>When a customer books 2+ vendors through a bundle suggestion, charge extra 2% bundle fee. Customer still saves money overall.</p>
+      <div style="font-size:0.82rem;color:var(--text)">Win-win: customer saves ₹5,000, you earn extra ₹600</div>
+    </div>
+  </div>
+
+  <br/>
+  <div class="card">
+    <div class="card-title">📊 Revenue Projection (Conservative)</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px;text-align:center">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue)">Month 3</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">20 bookings × ₹1,800 avg commission</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--green);margin-top:6px">₹36,000</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue)">Month 6</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">60 bookings + 30 subscriptions</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--green);margin-top:6px">₹1,32,000</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue)">Month 12</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">200 bookings + 100 subscriptions</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--green);margin-top:6px">₹4,40,000</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blue)">Year 2</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">Expand to 3 state corridors</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--green);margin-top:6px">₹15L+/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <div class="card">
+    <div class="card-title">🎯 First 90 Days Action Plan</div>
+    <div class="task-list" style="margin-top:8px">
+      <div class="task">Week 1–2: Build DB + FastAPI skeleton + deploy on Railway</div>
+      <div class="task">Week 3–4: Budget search API + basic React UI working end-to-end</div>
+      <div class="task">Week 5–6: Call 30 photographers & decorators in Vijayawada/Guntur — onboard 15</div>
+      <div class="task">Week 7–8: WhatsApp groups in Nalgonda/Warangal — share app with 100 families planning events</div>
+      <div class="task">Week 9–10: First real bookings → collect feedback → fix pain points</div>
+      <div class="task">Week 11–12: Add payments + reviews → start charging commission</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:document.querySelector('.tabs').offsetTop - 10, behavior:'smooth'});
+}
+</script>
+</body>
+</html>

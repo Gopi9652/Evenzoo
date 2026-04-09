@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UtsavLink — Complete UI Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Design tokens */
+  --bg:#F5F0E8;
+  --surface:#FFFFFF;
+  --card:#FDFAF5;
+  --dark:#1A1208;
+  --dark2:#2D2416;
+  --text:#1A1208;
+  --muted:#7A6E5F;
+  --border:#E2D9C8;
+  --gold:#C9810A;
+  --gold-light:#F5B731;
+  --gold-bg:rgba(201,129,10,0.08);
+  --green:#1E7A4A;
+  --green-bg:rgba(30,122,74,0.08);
+  --red:#C0392B;
+  --red-bg:rgba(192,57,43,0.08);
+  --blue:#1A5CB8;
+  --blue-bg:rgba(26,92,184,0.08);
+  --purple:#6B3FA0;
+  --ap-color:#1E7A4A;
+  --ts-color:#7B2D8B;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 2px 12px rgba(26,18,8,0.08);
+  --shadow-lg:0 8px 32px rgba(26,18,8,0.14);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--text);
+  line-height:1.5;
+}
+
+/* ── DESIGN SYSTEM TOP BAR ── */
+.ds-topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--dark);
+  color:white;
+  display:flex;align-items:center;gap:0;
+  overflow-x:auto;
+  border-bottom:2px solid var(--gold);
+}
+.ds-logo{
+  padding:14px 24px;
+  font-family:'Fraunces',serif;
+  font-size:1rem;font-weight:900;
+  color:var(--gold-light);
+  white-space:nowrap;
+  border-right:1px solid rgba(255,255,255,0.1);
+}
+.ds-screens{display:flex;gap:0;}
+.ds-btn{
+  padding:14px 20px;
+  font-size:0.78rem;font-weight:600;
+  color:rgba(255,255,255,0.55);
+  cursor:pointer;white-space:nowrap;
+  border:none;background:none;
+  border-bottom:2px solid transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all 0.2s;
+  letter-spacing:0.3px;
+}
+.ds-btn:hover{color:rgba(255,255,255,0.85);}
+.ds-btn.active{color:var(--gold-light);border-bottom-color:var(--gold-light);}
+
+/* ── SCREEN WRAPPER ── */
+.screen{display:none;animation:fadeIn 0.3s ease;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FIGMA-LIKE CANVAS ── */
+.canvas{
+  max-width:1400px;margin:0 auto;
+  padding:32px 24px;
+}
+.canvas-title{
+  font-family:'Fraunces',serif;
+  font-size:2rem;font-weight:900;
+  margin-bottom:6px;
+}
+.canvas-sub{color:var(--muted);font-size:0.9rem;margin-bottom:32px;}
+
+/* SCREEN FRAMES */
+.frames-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+  gap:40px;
+  align-items:start;
+}
+.frame{
+  display:flex;flex-direction:column;gap:0;
+}
+.frame-label{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.frame-name{
+  font-size:0.78rem;font-weight:700;
+  color:var(--muted);letter-spacing:1px;
+  text-transform:uppercase;
+}
+.frame-state{
+  font-size:0.7rem;padding:3px 10px;
+  border-radius:100px;font-weight:600;
+  background:var(--gold-bg);color:var(--gold);
+  border:1px solid rgba(201,129,10,0.2);
+}
+
+/* PHONE MOCKUP */
+.phone{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  position:relative;
+}
+.phone-bar{
+  height:44px;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+}
+.phone-bar .time{color:white;font-size:0.75rem;font-weight:700;}
+.phone-bar .icons{color:white;font-size:0.7rem;opacity:0.8;}
+.phone-body{padding:0;overflow:hidden;}
+
+/* WEB MOCKUP */
+.web-frame{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.browser-bar{
+  height:44px;background:#F0EDE8;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;padding:0 16px;
+}
+.brdot{width:10px;height:10px;border-radius:50%;}
+.url-bar{
+  flex:1;background:white;border:1px solid var(--border);
+  border-radius:6px;padding:5px 12px;
+  font-size:0.75rem;color:var(--muted);
+  margin:0 8px;
+}
+
+/* ── ANNOTATIONS ── */
+.annotation{
+  display:flex;align-items:flex-start;gap:8px;
+  margin-top:12px;padding:10px 14px;
+  background:rgba(255,255,255,0.7);
+  border-left:3px solid var(--gold);
+  border-radius:0 8px 8px 0;
+  font-size:0.78rem;color:var(--dark2);
+  line-height:1.5;
+}
+.ann-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.ann-action{font-weight:700;color:var(--gold);}
+
+/* ── FLOW ARROWS ── */
+.flow-connector{
+  display:flex;align-items:center;justify-content:center;
+  padding:8px 0;gap:8px;font-size:0.75rem;color:var(--muted);
+}
+.flow-arrow{
+  color:var(--gold);font-size:1.2rem;
+}
+
+/* ── COMPONENT LIBRARY ── */
+/* Buttons */
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--dark);color:white;
+  padding:14px 24px;border-radius:var(--radius-sm);
+  font-weight:700;font-size:0.9rem;border:none;cursor:pointer;
+  width:100%;font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all 0.2s;
+}
+.btn-primary:hover{background:var(--dark2);}
+.btn-gold{
+  background:var(--gold);color:white;
+}
+.btn-ghost{
+  background:transparent;color:var(--dark);
+  border:2px solid var(--border);
+}
+.btn-sm{padding:9px 16px;font-size:0.82rem;}
+
+/* Inputs */
+.input-group{margin-bottom:16px;}
+.input-label{font-size:0.78rem;font-weight:600;color:var(--muted);margin-bottom:6px;display:block;}
+.input-field{
+  width:100%;padding:13px 16px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--card);color:var(--text);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.2s;
+}
+.input-field:focus{border-color:var(--gold);}
+.input-field.focused{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,129,10,0.1);}
+.input-icon{position:relative;}
+.input-icon .icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:1rem;color:var(--muted);
+}
+.input-icon .input-field{padding-left:40px;}
+
+/* Cards */
+.vendor-card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;margin-bottom:12px;
+  cursor:pointer;transition:all 0.2s;
+  position:relative;
+}
+.vendor-card:hover,.vendor-card.selected{
+  border-color:var(--gold);
+  box-shadow:0 4px 20px rgba(201,129,10,0.12);
+}
+.vendor-card.best-value::before{
+  content:'BEST VALUE';
+  position:absolute;top:-1px;right:16px;
+  background:var(--green);color:white;
+  font-size:0.62rem;font-weight:800;
+  padding:4px 10px;border-radius:0 0 8px 8px;
+  letter-spacing:0.5px;
+}
+
+/* Tags */
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:100px;
+  font-size:0.72rem;font-weight:700;
+}
+.tag-ap{background:var(--green-bg);color:var(--green);border:1px solid rgba(30,122,74,0.2);}
+.tag-ts{background:rgba(123,45,139,0.08);color:var(--ts-color);border:1px solid rgba(123,45,139,0.2);}
+.tag-gold{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(201,129,10,0.2);}
+
+/* Value bar */
+.value-bar-wrap{margin-top:8px;}
+.value-bar-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:4px;}
+.value-bar-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.value-bar-fill{height:100%;border-radius:3px;}
+.fill-high{background:var(--green);}
+.fill-mid{background:var(--gold);}
+
+/* Nav */
+.bottom-nav{
+  display:flex;border-top:1px solid var(--border);
+  background:white;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:10px 4px 12px;gap:4px;cursor:pointer;
+  font-size:0.65rem;font-weight:600;color:var(--muted);
+}
+.nav-item.active{color:var(--gold);}
+.nav-icon{font-size:1.3rem;}
+
+/* Sections inside screens */
+.screen-section{padding:16px;}
+.screen-section-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+
+/* Category chips */
+.chips-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
+.chip{
+  flex-shrink:0;padding:8px 16px;border-radius:100px;
+  font-size:0.78rem;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--border);background:white;color:var(--muted);
+  transition:all 0.2s;white-space:nowrap;
+}
+.chip.active{
+  background:var(--dark);color:white;border-color:var(--dark);
+}
+
+/* Header bar inside phone */
+.app-header{
+  background:var(--dark);
+  padding:16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.app-header .logo{
+  font-family:'Fraunces',serif;font-size:1.1rem;
+  font-weight:900;color:var(--gold-light);
+}
+.app-header .loc{font-size:0.72rem;color:rgba(255,255,255,0.55);}
+
+/* Savings banner */
+.savings-strip{
+  background:linear-gradient(135deg,var(--green),#2EAA68);
+  color:white;padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  font-size:0.8rem;
+}
+.savings-strip strong{font-size:1rem;}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:12px 0;}
+
+/* Avatar */
+.avatar{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+}
+
+/* Price display */
+.price-main{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--dark);}
+.price-sub{font-size:0.7rem;color:var(--muted);}
+
+/* Stat boxes */
+.stat-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px;
+  text-align:center;
+}
+.stat-val{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--dark);}
+.stat-lbl{font-size:0.72rem;color:var(--muted);margin-top:2px;}
+
+/* Progress steps */
+.progress-steps{display:flex;align-items:center;padding:16px;}
+.step-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:800;flex-shrink:0;
+}
+.step-dot.done{background:var(--green);color:white;}
+.step-dot.current{background:var(--dark);color:white;}
+.step-dot.pending{background:var(--border);color:var(--muted);}
+.step-line{flex:1;height:2px;background:var(--border);}
+.step-line.done{background:var(--green);}
+
+/* OTP inputs */
+.otp-row{display:flex;gap:10px;justify-content:center;margin:16px 0;}
+.otp-box{
+  width:48px;height:52px;border-radius:var(--radius-sm);
+  border:2px solid var(--border);background:var(--card);
+  font-size:1.3rem;font-weight:700;text-align:center;
+  font-family:'Fraunces',serif;
+}
+.otp-box.filled{border-color:var(--gold);background:var(--gold-bg);}
+
+/* Map placeholder */
+.map-placeholder{
+  background:linear-gradient(135deg,#E8F5EE,#D4EDDA);
+  height:140px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.map-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 20px,rgba(30,122,74,0.05) 20px,rgba(30,122,74,0.05) 21px
+  ),repeating-linear-gradient(
+    90deg,transparent,transparent 20px,rgba(30,122,74,0.05) 20px,rgba(30,122,74,0.05) 21px
+  );
+}
+.map-pin{font-size:2rem;position:relative;z-index:1;}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:12px;}
+.cal-day{
+  aspect-ratio:1;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:600;cursor:pointer;
+}
+.cal-day.available{background:var(--green-bg);color:var(--green);}
+.cal-day.booked{background:var(--red-bg);color:var(--red);text-decoration:line-through;}
+.cal-day.selected{background:var(--dark);color:white;}
+.cal-day.today{border:2px solid var(--gold);}
+.cal-day.empty{opacity:0;}
+
+/* Review stars */
+.stars{color:var(--gold-light);font-size:0.9rem;letter-spacing:1px;}
+
+/* Badge */
+.badge{
+  display:inline-flex;align-items:center;
+  background:var(--red);color:white;
+  border-radius:100px;padding:2px 7px;
+  font-size:0.65rem;font-weight:800;
+}
+
+/* Section divider with label */
+.sec-divider{
+  display:flex;align-items:center;gap:12px;margin:16px 0 12px;
+}
+.sec-divider span{font-size:0.72rem;font-weight:700;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── FLOW DIAGRAM ── */
+.flow-diagram{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:16px;padding:32px;
+  margin-bottom:40px;
+  overflow-x:auto;
+}
+.flow-row{display:flex;align-items:center;gap:0;flex-wrap:nowrap;min-width:600px;}
+.flow-node{
+  display:flex;flex-direction:column;align-items:center;
+  gap:6px;
+}
+.flow-box{
+  padding:12px 20px;border-radius:var(--radius-sm);
+  font-size:0.8rem;font-weight:600;text-align:center;
+  border:2px solid;min-width:120px;
+}
+.fn-dark{background:var(--dark);color:white;border-color:var(--dark);}
+.fn-gold{background:var(--gold-bg);color:var(--gold);border-color:rgba(201,129,10,0.3);}
+.fn-green{background:var(--green-bg);color:var(--green);border-color:rgba(30,122,74,0.3);}
+.fn-blue{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,92,184,0.3);}
+.flow-lbl{font-size:0.65rem;color:var(--muted);font-weight:600;}
+.flow-edge{
+  font-size:1.4rem;color:var(--gold);padding:0 6px;margin-top:-20px;
+}
+
+/* Swimlane */
+.swimlane{display:grid;grid-template-columns:100px 1fr;gap:0;border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.swim-label{
+  background:var(--dark);color:white;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px 8px;font-size:0.72rem;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  writing-mode:vertical-lr;transform:rotate(180deg);
+  text-align:center;
+}
+.swim-content{padding:16px;border-left:2px solid var(--border);}
+.swim-steps{display:flex;gap:10px;flex-wrap:wrap;}
+.swim-step{
+  padding:8px 14px;border-radius:var(--radius-sm);
+  font-size:0.78rem;font-weight:600;
+  border:1.5px solid var(--border);background:var(--card);
+  white-space:nowrap;
+}
+.swim-step.action{background:var(--gold-bg);border-color:rgba(201,129,10,0.3);color:var(--gold);}
+.swim-step.api{background:var(--blue-bg);border-color:rgba(26,92,184,0.3);color:var(--blue);}
+.swim-step.db{background:var(--green-bg);border-color:rgba(30,122,74,0.3);color:var(--green);}
+.swim-arrow{color:var(--muted);display:flex;align-items:center;font-size:0.8rem;}
+
+/* ── COMPONENT SPEC TABLE ── */
+.spec-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.spec-table th{
+  background:var(--dark);color:white;
+  padding:10px 16px;text-align:left;font-size:0.75rem;letter-spacing:0.5px;
+}
+.spec-table td{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.spec-table tr:hover td{background:var(--gold-bg);}
+.spec-component{font-weight:700;color:var(--dark);}
+.spec-trigger{color:var(--blue);font-size:0.78rem;}
+.spec-action{color:var(--green);font-size:0.78rem;}
+.spec-api{font-family:monospace;font-size:0.75rem;color:var(--muted);background:var(--card);padding:2px 6px;border-radius:4px;}
+
+/* Responsive */
+@media(max-width:768px){
+  .frames-grid{grid-template-columns:1fr;}
+  .canvas{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="ds-topbar">
+  <div class="ds-logo">UtsavLink UI</div>
+  <div class="ds-screens">
+    <button class="ds-btn active" onclick="showScreen('flow')">🗺 User Flow</button>
+    <button class="ds-btn" onclick="showScreen('onboard')">1 · Onboarding</button>
+    <button class="ds-btn" onclick="showScreen('home')">2 · Home</button>
+    <button class="ds-btn" onclick="showScreen('search')">3 · Search</button>
+    <button class="ds-btn" onclick="showScreen('results')">4 · Results</button>
+    <button class="ds-btn" onclick="showScreen('vendor')">5 · Vendor Detail</button>
+    <button class="ds-btn" onclick="showScreen('booking')">6 · Booking</button>
+    <button class="ds-btn" onclick="showScreen('payment')">7 · Payment</button>
+    <button class="ds-btn" onclick="showScreen('vendor-dash')">8 · Vendor Dashboard</button>
+    <button class="ds-btn" onclick="showScreen('components')">🧩 Components</button>
+    <button class="ds-btn" onclick="showScreen('actions')">⚡ All Actions</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════ SCREEN: USER FLOW ════════════════════════════ -->
+<div id="flow" class="screen active">
+<div class="canvas">
+  <div class="canvas-title">Complete User Flow</div>
+  <div class="canvas-sub">End-to-end journey for Customer & Vendor. Every arrow = screen transition.</div>
+
+  <!-- CUSTOMER FLOW -->
+  <div class="flow-diagram">
+    <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">👤 CUSTOMER JOURNEY</div>
+    <div class="flow-row">
+      <div class="flow-node"><div class="flow-box fn-dark">App Open</div><div class="flow-lbl">Splash</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Enter Phone</div><div class="flow-lbl">OTP Screen</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Verify OTP</div><div class="flow-lbl">6-digit OTP</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Set Location</div><div class="flow-lbl">District + State</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-dark">Home Feed</div><div class="flow-lbl">Dashboard</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Budget Search</div><div class="flow-lbl">Core Screen</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Results List</div><div class="flow-lbl">Value Ranked</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Vendor Profile</div><div class="flow-lbl">Portfolio</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Book Vendor</div><div class="flow-lbl">Confirm</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-dark">Pay + Done ✓</div><div class="flow-lbl">Razorpay</div></div>
+    </div>
+  </div>
+
+  <!-- VENDOR FLOW -->
+  <div class="flow-diagram">
+    <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">🏪 VENDOR JOURNEY</div>
+    <div class="flow-row">
+      <div class="flow-node"><div class="flow-box fn-dark">Register</div><div class="flow-lbl">OTP + Role</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Setup Profile</div><div class="flow-lbl">Business Info</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Set Services</div><div class="flow-lbl">Category + Price</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Upload Portfolio</div><div class="flow-lbl">Photos</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-gold">Set Availability</div><div class="flow-lbl">Calendar</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Get Requests</div><div class="flow-lbl">Notifications</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Accept/Reject</div><div class="flow-lbl">Booking Mgmt</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-green">Event Day</div><div class="flow-lbl">Deliver Service</div></div>
+      <div class="flow-edge">→</div>
+      <div class="flow-node"><div class="flow-box fn-dark">Get Paid 💰</div><div class="flow-lbl">Escrow Release</div></div>
+    </div>
+  </div>
+
+  <!-- SWIMLANE FLOW -->
+  <div style="margin-top:32px;margin-bottom:12px;">
+    <div class="canvas-title" style="font-size:1.3rem;">Search → Book → Pay Flow (3-layer)</div>
+  </div>
+
+  <div class="swimlane">
+    <div class="swim-label" style="background:#1A5CB8;">Frontend</div>
+    <div class="swim-content">
+      <div class="swim-steps">
+        <div class="swim-step action">User enters budget</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Selects category</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Picks date</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Taps "Find"</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Views results</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Selects vendor</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Taps "Book"</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step action">Pays via UPI</div>
+      </div>
+    </div>
+  </div>
+  <div class="swimlane">
+    <div class="swim-label" style="background:var(--gold);">FastAPI</div>
+    <div class="swim-content">
+      <div class="swim-steps">
+        <div class="swim-step api">POST /auth/otp</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step api">GET /search/vendors</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step api">GET /vendors/:id</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step api">POST /bookings</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step api">POST /payments</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step api">POST /payments/webhook</div>
+      </div>
+    </div>
+  </div>
+  <div class="swimlane">
+    <div class="swim-label" style="background:var(--green);">PostgreSQL</div>
+    <div class="swim-content">
+      <div class="swim-steps">
+        <div class="swim-step db">users INSERT</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step db">vendor_profiles SELECT</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step db">availability CHECK</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step db">bookings INSERT</div>
+        <div class="swim-arrow">→</div>
+        <div class="swim-step db">payments UPDATE</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 1: ONBOARDING ════════════════════════════ -->
+<div id="onboard" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 1 — Onboarding</div>
+  <div class="canvas-sub">Splash → Phone Entry → OTP → Location → Role Selection (5 screens)</div>
+
+  <div class="frames-grid">
+
+    <!-- SPLASH -->
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">1A · Splash Screen</span><span class="frame-state">Auto 2s</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);min-height:500px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+          <div style="font-family:'Fraunces',serif;font-size:3rem;font-weight:900;color:var(--gold-light);">Utsav<span style="color:white">Link</span></div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">Cross-state event marketplace</div>
+          <div style="margin-top:32px;display:flex;gap:6px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--gold-light);"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);"></div>
+          </div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:40px;">TS ↔ AP</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">⏱</span><div><span class="ann-action">AUTO →</span> After 2 seconds, navigate to 1B (Phone screen). Check JWT token in localStorage. If exists → skip to Home.</div></div>
+    </div>
+
+    <!-- PHONE -->
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">1B · Phone Login</span><span class="frame-state">Entry Point</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div class="phone-body" style="padding:28px 20px;min-height:500px;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;margin-bottom:6px;">Welcome! 👋</div>
+          <div style="font-size:0.85rem;color:var(--muted);margin-bottom:32px;">Enter your phone number to continue</div>
+          <div class="input-group">
+            <label class="input-label">Phone Number</label>
+            <div style="display:flex;gap:8px;">
+              <div style="background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:13px 14px;font-size:0.9rem;font-weight:700;flex-shrink:0;">🇮🇳 +91</div>
+              <input class="input-field" placeholder="98XXXXXXXX" style="flex:1"/>
+            </div>
+          </div>
+          <button class="btn-primary btn-gold" style="margin-top:8px;">Send OTP →</button>
+          <div style="text-align:center;margin-top:20px;font-size:0.78rem;color:var(--muted);">By continuing you agree to our Terms & Privacy</div>
+          <div style="margin-top:32px;padding:14px;background:var(--gold-bg);border-radius:var(--radius-sm);border:1px solid rgba(201,129,10,0.2);">
+            <div style="font-size:0.78rem;font-weight:700;color:var(--gold);margin-bottom:4px;">Are you a vendor?</div>
+            <div style="font-size:0.75rem;color:var(--muted);">Register your event business and reach customers across TS & AP</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--gold);margin-top:8px;cursor:pointer;">Register as Vendor →</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📲</span><div><span class="ann-action">TAP "Send OTP"</span> → Validate phone (10 digits). Call <code>POST /auth/send-otp</code>. Show loading spinner. Navigate to 1C.</div></div>
+      <div class="annotation"><span class="ann-icon">🏪</span><div><span class="ann-action">TAP "Register as Vendor"</span> → Same phone entry but sets role='vendor' flag before OTP. Navigate to vendor onboarding after verify.</div></div>
+    </div>
+
+    <!-- OTP -->
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">1C · OTP Verify</span><span class="frame-state">6-digit</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div class="phone-body" style="padding:28px 20px;min-height:500px;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;margin-bottom:6px;">Verify OTP</div>
+          <div style="font-size:0.85rem;color:var(--muted);margin-bottom:32px;">Sent to +91 98XX XXX XXX</div>
+          <div class="otp-row">
+            <div class="otp-box filled">4</div>
+            <div class="otp-box filled">7</div>
+            <div class="otp-box filled">2</div>
+            <div class="otp-box" style="border-color:var(--gold);">_</div>
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--muted);text-align:center;margin-bottom:24px;">Resend OTP in <strong style="color:var(--dark);">42s</strong></div>
+          <button class="btn-primary" style="background:var(--border);color:var(--muted);" disabled>Verify OTP</button>
+          <div style="margin-top:12px;text-align:center;font-size:0.78rem;color:var(--muted);">← Change number</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">🔢</span><div><span class="ann-action">6 DIGITS ENTERED</span> → Button activates. Auto-submit on 6th digit (no need to tap). Call <code>POST /auth/verify-otp</code>. Store JWT token. Navigate to 1D if new user, Home if returning.</div></div>
+      <div class="annotation"><span class="ann-icon">⏰</span><div><span class="ann-action">RESEND TAP</span> (after 60s timer) → Call <code>POST /auth/send-otp</code> again. Reset timer.</div></div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">1D · Set Location</span><span class="frame-state">New User Only</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div class="phone-body" style="padding:20px;min-height:500px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;margin-bottom:4px;">Where are you?</div>
+          <div style="font-size:0.82rem;color:var(--muted);margin-bottom:20px;">We show vendors that can travel to you</div>
+          <div class="input-group">
+            <label class="input-label">State</label>
+            <select class="input-field">
+              <option selected>Telangana</option>
+              <option>Andhra Pradesh</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">District</label>
+            <select class="input-field">
+              <option>Nalgonda</option>
+              <option>Warangal</option>
+              <option>Khammam</option>
+              <option>Hyderabad</option>
+              <option>Nizamabad</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Your Name</label>
+            <input class="input-field" placeholder="Full name"/>
+          </div>
+          <div style="margin:16px 0;display:flex;align-items:center;gap:10px;">
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+            <div style="font-size:0.72rem;color:var(--muted);">or</div>
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+          </div>
+          <button class="btn-primary btn-ghost" style="margin-bottom:12px;">📍 Use My GPS Location</button>
+          <button class="btn-primary btn-gold">Continue →</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📍</span><div><span class="ann-action">TAP GPS</span> → Request browser geolocation. Reverse geocode to district. Auto-fill dropdowns.</div></div>
+      <div class="annotation"><span class="ann-icon">➡️</span><div><span class="ann-action">TAP "Continue"</span> → Call <code>POST /auth/register</code> with name + district + state. Navigate to Home screen.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 2: HOME ════════════════════════════ -->
+<div id="home" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 2 — Home Dashboard</div>
+  <div class="canvas-sub">Default landing after login. Shows budget prompt, categories, and nearby vendors.</div>
+  <div class="frames-grid">
+
+    <!-- HOME MAIN -->
+    <div class="frame" style="grid-column:span 2">
+      <div class="frame-label"><span class="frame-name">2A · Home Feed</span><span class="frame-state">Default State</span></div>
+      <div class="web-frame">
+        <div class="browser-bar">
+          <div class="brdot" style="background:#F05A5A"></div>
+          <div class="brdot" style="background:#F5A623"></div>
+          <div class="brdot" style="background:#22C97A"></div>
+          <div class="url-bar">utsavlink.in/home</div>
+        </div>
+        <!-- NAV -->
+        <div style="background:var(--dark);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--gold-light);">UtsavLink</div>
+          <div style="display:flex;gap:24px;font-size:0.85rem;color:rgba(255,255,255,0.6);">
+            <span>📍 Nalgonda, TS</span>
+            <span style="color:white;font-weight:600;">Home</span>
+            <span>My Bookings</span>
+            <span>Notifications <span class="badge">2</span></span>
+            <span style="background:var(--gold);color:white;padding:6px 14px;border-radius:6px;font-weight:700;cursor:pointer;">+ Book Event</span>
+          </div>
+        </div>
+        <!-- HERO SEARCH -->
+        <div style="background:linear-gradient(135deg,#1A1208,#2D1F0A);padding:40px 32px;">
+          <div style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:6px;">Find better vendors<br/><span style="color:var(--gold-light);">for your budget</span></div>
+          <div style="font-size:0.88rem;color:rgba(255,255,255,0.55);margin-bottom:24px;">Same ₹30,000. Ultra quality from AP vendors.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:white;font-size:0.88rem;flex:1;min-width:140px;">🎪 What service?</div>
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:white;font-size:0.88rem;flex:1;min-width:120px;">💰 Your budget</div>
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:white;font-size:0.88rem;flex:1;min-width:120px;">📅 Event date</div>
+            <button style="background:var(--gold);color:white;border:none;border-radius:8px;padding:12px 28px;font-weight:700;font-size:0.9rem;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;">Find →</button>
+          </div>
+        </div>
+        <!-- CATEGORIES -->
+        <div style="padding:24px 32px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;">Browse by service</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <div class="chip active">📸 Photography</div>
+            <div class="chip">🌸 Decoration</div>
+            <div class="chip">🍽️ Catering</div>
+            <div class="chip">💄 Bridal Makeup</div>
+            <div class="chip">🎤 DJ & Music</div>
+            <div class="chip">🏟️ Venue</div>
+            <div class="chip">🎬 Videography</div>
+            <div class="chip">🪔 Mehendi</div>
+          </div>
+        </div>
+        <!-- SAVINGS BANNER -->
+        <div style="margin:0 32px;padding:16px 20px;background:var(--green-bg);border:1px solid rgba(30,122,74,0.2);border-radius:var(--radius);display:flex;align-items:center;gap:16px;">
+          <div style="font-size:2rem;">💡</div>
+          <div>
+            <div style="font-weight:700;color:var(--green);margin-bottom:2px;">Customers in Nalgonda save avg ₹8,200 booking AP vendors</div>
+            <div style="font-size:0.8rem;color:var(--muted);">Travel cost already included in all prices. No surprises.</div>
+          </div>
+          <button style="margin-left:auto;background:var(--green);color:white;border:none;border-radius:8px;padding:10px 20px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;">See How →</button>
+        </div>
+        <!-- FEATURED -->
+        <div style="padding:24px 32px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;">Top Value Vendors near you</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+            <div class="vendor-card best-value">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div class="avatar" style="background:var(--green-bg);">📸</div>
+                <div><div style="font-weight:700;font-size:0.9rem;">Krishna Studios</div><div style="font-size:0.72rem;color:var(--muted);">Vijayawada, AP</div></div>
+                <div class="tag tag-ap" style="margin-left:auto;">AP</div>
+              </div>
+              <div class="value-bar-wrap"><div class="value-bar-label"><span>Value Score</span><span style="color:var(--green);font-weight:700;">96/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-high" style="width:96%"></div></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:center;">
+                <div><div class="price-main">₹21,000</div><div class="price-sub">incl. ₹3k travel</div></div>
+                <div class="stars">★★★★★</div>
+              </div>
+            </div>
+            <div class="vendor-card">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div class="avatar" style="background:#FFF0E8;">🌸</div>
+                <div><div style="font-weight:700;font-size:0.9rem;">Shree Decors</div><div style="font-size:0.72rem;color:var(--muted);">Guntur, AP</div></div>
+                <div class="tag tag-ap" style="margin-left:auto;">AP</div>
+              </div>
+              <div class="value-bar-wrap"><div class="value-bar-label"><span>Value Score</span><span style="color:var(--green);font-weight:700;">88/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-high" style="width:88%"></div></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:center;">
+                <div><div class="price-main">₹18,000</div><div class="price-sub">incl. ₹4k travel</div></div>
+                <div class="stars">★★★★☆</div>
+              </div>
+            </div>
+            <div class="vendor-card">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div class="avatar" style="background:var(--blue-bg);">🎬</div>
+                <div><div style="font-weight:700;font-size:0.9rem;">Ravi Films</div><div style="font-size:0.72rem;color:var(--muted);">Nalgonda, TS</div></div>
+                <div class="tag tag-ts" style="margin-left:auto;">TS</div>
+              </div>
+              <div class="value-bar-wrap"><div class="value-bar-label"><span>Value Score</span><span style="color:var(--gold);font-weight:700;">61/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-mid" style="width:61%"></div></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:center;">
+                <div><div class="price-main">₹28,000</div><div class="price-sub">local vendor</div></div>
+                <div class="stars">★★★☆☆</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">🔍</span><div><span class="ann-action">TAP "Find" in hero</span> → Navigate to Search screen (3A) with pre-filled values if any entered.</div></div>
+      <div class="annotation"><span class="ann-icon">🏷️</span><div><span class="ann-action">TAP category chip</span> → Navigate to Results screen (4A) with that category pre-selected.</div></div>
+      <div class="annotation"><span class="ann-icon">🃏</span><div><span class="ann-action">TAP vendor card</span> → Navigate to Vendor Detail screen (5A).</div></div>
+      <div class="annotation"><span class="ann-icon">🔔</span><div><span class="ann-action">TAP Notifications badge</span> → Slide-in notification panel from right. Shows booking updates.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 3: SEARCH ════════════════════════════ -->
+<div id="search" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 3 — Budget Search</div>
+  <div class="canvas-sub">The core differentiator screen. Budget-first approach, not city-first.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">3A · Search Form</span><span class="frame-state">Default</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div class="app-header">
+          <div><div class="logo">UtsavLink</div><div class="loc">📍 Nalgonda, TS</div></div>
+          <div style="color:var(--gold-light);font-size:1.2rem;">🔔</div>
+        </div>
+        <div class="phone-body" style="padding:16px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:4px;">Find best vendors</div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Budget-first search across TS & AP</div>
+
+          <div class="input-group">
+            <label class="input-label">Service Category</label>
+            <select class="input-field">
+              <option>📸 Photography</option>
+              <option>🌸 Decoration</option>
+              <option>🍽️ Catering</option>
+              <option>💄 Bridal Makeup</option>
+              <option>🎤 DJ & Music</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Your Total Budget (₹)</label>
+            <input class="input-field focused" value="₹ 30,000" style="font-weight:700;font-size:1rem;"/>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <div style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹15,000</div>
+              <div style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹25,000</div>
+              <div style="padding:6px 12px;background:var(--dark);color:white;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹30,000</div>
+              <div style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;">₹50,000</div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Event Date</label>
+            <input class="input-field" type="date" value="2025-06-15"/>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Show vendors from</label>
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1;padding:10px;border:2px solid var(--dark);border-radius:8px;text-align:center;font-size:0.8rem;font-weight:700;cursor:pointer;background:var(--dark);color:white;">TS + AP</div>
+              <div style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;text-align:center;font-size:0.8rem;font-weight:600;cursor:pointer;color:var(--muted);">Local only</div>
+              <div style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;text-align:center;font-size:0.8rem;font-weight:600;cursor:pointer;color:var(--muted);">AP only</div>
+            </div>
+          </div>
+
+          <button class="btn-primary btn-gold">🔍 Find Best Value Vendors</button>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">🏠</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">🔍</div>Search</div>
+          <div class="nav-item"><div class="nav-icon">📋</div>Bookings</div>
+          <div class="nav-item"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">💰</span><div><span class="ann-action">TAP quick budget chip</span> → Auto-fill budget input with that amount.</div></div>
+      <div class="annotation"><span class="ann-icon">🔍</span><div><span class="ann-action">TAP "Find Best Value"</span> → Validate all fields. Call <code>GET /search/vendors?budget=30000&category=photography&district=Nalgonda&date=2025-06-15&scope=both</code>. Show loading. Navigate to Results (4A).</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">3B · Multi-Service (Bundle)</span><span class="frame-state">Bundle Mode</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div class="app-header">
+          <div><div class="logo">UtsavLink</div><div class="loc">📍 Nalgonda, TS</div></div>
+        </div>
+        <div class="phone-body" style="padding:16px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;">Plan full event 🎉</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-bottom:14px;">Select multiple services — we detect bundle savings</div>
+
+          <div class="input-group">
+            <label class="input-label">Total Budget for All Services</label>
+            <input class="input-field" value="₹ 80,000" style="font-weight:700;font-size:1rem;"/>
+          </div>
+
+          <label class="input-label">Select Services Needed</label>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark);color:white;border-radius:8px;">
+              <span>📸 Photography</span>
+              <span style="font-size:0.8rem;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:100px;">✓ Added</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark);color:white;border-radius:8px;">
+              <span>🌸 Decoration</span>
+              <span style="font-size:0.8rem;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:100px;">✓ Added</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--card);border:1.5px dashed var(--border);border-radius:8px;color:var(--muted);">
+              <span>+ Add another service</span>
+            </div>
+          </div>
+
+          <div style="background:var(--green-bg);border:1px solid rgba(30,122,74,0.2);border-radius:8px;padding:12px 14px;margin-bottom:16px;">
+            <div style="font-size:0.78rem;font-weight:700;color:var(--green);">🎁 Bundle detected!</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Both from Vijayawada, AP → shared travel → save ₹5,000 extra</div>
+          </div>
+
+          <button class="btn-primary btn-gold">Find Bundle Vendors →</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📦</span><div><span class="ann-action">2+ services selected</span> → Call <code>GET /search/bundles</code>. If vendors from same city found → show green bundle banner with savings amount.</div></div>
+      <div class="annotation"><span class="ann-icon">➕</span><div><span class="ann-action">TAP "+ Add service"</span> → Show service picker bottom sheet modal.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 4: RESULTS ════════════════════════════ -->
+<div id="results" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 4 — Search Results</div>
+  <div class="canvas-sub">Vendors ranked by value score. Cross-state clearly labeled. Savings visible upfront.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">4A · Results List</span><span class="frame-state">Value Ranked</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="color:rgba(255,255,255,0.6);font-size:1.1rem;cursor:pointer;">←</span>
+          <div style="flex:1;background:rgba(255,255,255,0.1);border-radius:8px;padding:9px 14px;font-size:0.82rem;color:rgba(255,255,255,0.7);">📸 Photography · ₹30,000 · 15 Jun</div>
+          <span style="color:var(--gold-light);font-size:0.8rem;font-weight:700;">Filter</span>
+        </div>
+        <div class="savings-strip">
+          <span>💡</span>
+          <div><strong>Save ₹9,000</strong> — AP vendors beat local quality here</div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-size:0.8rem;color:var(--muted);">12 vendors · sorted by value</div>
+            <div style="display:flex;gap:6px;">
+              <div style="padding:5px 10px;border:1.5px solid var(--dark);border-radius:100px;font-size:0.72rem;font-weight:700;cursor:pointer;background:var(--dark);color:white;">All</div>
+              <div style="padding:5px 10px;border:1.5px solid var(--border);border-radius:100px;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--muted);">AP</div>
+              <div style="padding:5px 10px;border:1.5px solid var(--border);border-radius:100px;font-size:0.72rem;font-weight:600;cursor:pointer;color:var(--muted);">TS</div>
+            </div>
+          </div>
+
+          <div class="vendor-card best-value">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div class="avatar" style="background:var(--green-bg);">📸</div>
+              <div style="flex:1"><div style="font-weight:700;font-size:0.88rem;">Krishna Studios</div><div style="font-size:0.7rem;color:var(--muted);">Vijayawada · 4K + Drone + Reels</div></div>
+              <div class="tag tag-ap">AP</div>
+            </div>
+            <div class="value-bar-wrap"><div class="value-bar-label"><span>Value</span><span style="color:var(--green);font-weight:700;">96/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-high" style="width:96%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div class="price-main">₹21,000</div><div class="price-sub">incl. ₹3,000 travel</div></div>
+              <div class="stars" style="font-size:0.75rem;">★★★★★ 4.9</div>
+            </div>
+          </div>
+
+          <div class="vendor-card">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div class="avatar" style="background:var(--green-bg);">📸</div>
+              <div style="flex:1"><div style="font-weight:700;font-size:0.88rem;">Ravi Frames</div><div style="font-size:0.7rem;color:var(--muted);">Guntur · Pro DSLR + Album</div></div>
+              <div class="tag tag-ap">AP</div>
+            </div>
+            <div class="value-bar-wrap"><div class="value-bar-label"><span>Value</span><span style="color:var(--green);font-weight:700;">88/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-high" style="width:88%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div class="price-main">₹24,000</div><div class="price-sub">incl. ₹4,000 travel</div></div>
+              <div class="stars" style="font-size:0.75rem;">★★★★☆ 4.7</div>
+            </div>
+          </div>
+
+          <div class="vendor-card">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div class="avatar" style="background:rgba(123,45,139,0.1);">📸</div>
+              <div style="flex:1"><div style="font-weight:700;font-size:0.88rem;">Sri Balaji Photos</div><div style="font-size:0.7rem;color:var(--muted);">Nalgonda · Basic DSLR</div></div>
+              <div class="tag tag-ts">TS Local</div>
+            </div>
+            <div class="value-bar-wrap"><div class="value-bar-label"><span>Value</span><span style="color:var(--gold);font-weight:700;">51/100</span></div><div class="value-bar-track"><div class="value-bar-fill fill-mid" style="width:51%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;align-items:flex-end;">
+              <div><div class="price-main">₹30,000</div><div class="price-sub">no travel cost</div></div>
+              <div class="stars" style="font-size:0.75rem;">★★★☆☆ 3.4</div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div>Home</div>
+          <div class="nav-item active"><div class="nav-icon">🔍</div>Search</div>
+          <div class="nav-item"><div class="nav-icon">📋</div>Bookings</div>
+          <div class="nav-item"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">🃏</span><div><span class="ann-action">TAP vendor card</span> → Navigate to Vendor Detail (5A) passing vendor_id.</div></div>
+      <div class="annotation"><span class="ann-icon">🗂</span><div><span class="ann-action">TAP AP / TS filter</span> → Filter results client-side (no new API call). Re-render list.</div></div>
+      <div class="annotation"><span class="ann-icon">🔧</span><div><span class="ann-action">TAP "Filter"</span> → Open bottom sheet with: price range slider, rating filter, travel distance max, sort by (value/price/rating).</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">4B · Filter Bottom Sheet</span><span class="frame-state">Modal</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="position:relative;min-height:540px;">
+          <!-- dimmed background -->
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:1;"></div>
+          <!-- sheet -->
+          <div style="position:absolute;bottom:0;left:0;right:0;background:white;border-radius:20px 20px 0 0;z-index:2;padding:20px;">
+            <div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;"></div>
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;">Filter Vendors</div>
+
+            <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:8px;">SORT BY</div>
+            <div style="display:flex;gap:8px;margin-bottom:16px;">
+              <div style="padding:8px 14px;background:var(--dark);color:white;border-radius:6px;font-size:0.78rem;font-weight:700;cursor:pointer;">Value Score</div>
+              <div style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted);">Price ↑</div>
+              <div style="padding:8px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted);">Rating</div>
+            </div>
+
+            <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:8px;">MAX PRICE</div>
+            <input type="range" min="5000" max="30000" value="30000" style="width:100%;accent-color:var(--gold);margin-bottom:4px;"/>
+            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:16px;"><span>₹5,000</span><span style="font-weight:700;color:var(--dark);">₹30,000</span></div>
+
+            <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:8px;">MIN RATING</div>
+            <div style="display:flex;gap:6px;margin-bottom:16px;">
+              <div style="padding:6px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:6px;font-size:0.78rem;cursor:pointer;">Any</div>
+              <div style="padding:6px 12px;background:var(--dark);color:white;border-radius:6px;font-size:0.78rem;cursor:pointer;">4+</div>
+              <div style="padding:6px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:6px;font-size:0.78rem;cursor:pointer;">4.5+</div>
+              <div style="padding:6px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:6px;font-size:0.78rem;cursor:pointer;">Only 5★</div>
+            </div>
+
+            <div style="display:flex;gap:10px;">
+              <button class="btn-primary btn-ghost" style="flex:1;padding:12px;">Reset</button>
+              <button class="btn-primary btn-gold" style="flex:2;padding:12px;">Apply Filters</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">⚡</span><div><span class="ann-action">TAP "Apply Filters"</span> → Filter + re-sort existing results in state. No new API call. Dismiss sheet. Update result count badge.</div></div>
+      <div class="annotation"><span class="ann-icon">🔄</span><div><span class="ann-action">TAP "Reset"</span> → Clear all filters. Restore original sorted list.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 5: VENDOR DETAIL ════════════════════════════ -->
+<div id="vendor" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 5 — Vendor Detail</div>
+  <div class="canvas-sub">Full portfolio, reviews, availability calendar, and booking CTA.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">5A · Vendor Profile</span><span class="frame-state">Top Section</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="color:rgba(255,255,255,0.7);cursor:pointer;">←</span>
+          <span style="color:white;font-weight:700;font-size:0.9rem;flex:1;">Krishna Studios</span>
+          <span style="color:rgba(255,255,255,0.7);">🔗</span>
+          <span style="color:rgba(255,255,255,0.7);">♡</span>
+        </div>
+        <!-- Portfolio gallery -->
+        <div style="background:#E8E0D0;height:180px;display:flex;align-items:center;justify-content:center;position:relative;">
+          <div style="font-size:2.5rem;">📸</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.6);color:white;padding:4px 10px;border-radius:100px;font-size:0.72rem;font-weight:600;">+14 photos</div>
+          <div style="position:absolute;bottom:12px;left:12px;display:flex;gap:4px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:white;"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);"></div>
+          </div>
+        </div>
+        <div style="padding:16px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;">Krishna Studios</div>
+              <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">📍 Vijayawada, AP · 💼 8 yrs exp</div>
+            </div>
+            <div class="tag tag-ap">AP Vendor</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+            <div class="tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid rgba(26,92,184,0.2);">4K Camera</div>
+            <div class="tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid rgba(26,92,184,0.2);">Drone</div>
+            <div class="tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid rgba(26,92,184,0.2);">Reels</div>
+            <div class="tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid rgba(26,92,184,0.2);">Album</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div class="stat-box"><div class="stat-val">4.9</div><div class="stat-lbl">Rating</div></div>
+            <div class="stat-box"><div class="stat-val">127</div><div class="stat-lbl">Events</div></div>
+            <div class="stat-box"><div class="stat-val" style="color:var(--green);">96</div><div class="stat-lbl">Value Score</div></div>
+          </div>
+
+          <div class="divider"></div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px;">Pricing for your event</div>
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;"><span style="color:var(--muted);">Service fee</span><span style="font-weight:600;">₹18,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;"><span style="color:var(--muted);">Travel (Vjw→Nalgonda)</span><span style="font-weight:600;">₹3,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;font-weight:700;border-top:1px solid var(--border);padding-top:8px;"><span>Total</span><span style="color:var(--green);">₹21,000</span></div>
+          </div>
+          <button class="btn-primary btn-gold">📅 Check Availability & Book</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">🖼</span><div><span class="ann-action">SWIPE gallery</span> → Navigate between portfolio photos. Tap to open fullscreen lightbox.</div></div>
+      <div class="annotation"><span class="ann-icon">♡</span><div><span class="ann-action">TAP heart icon</span> → Add to saved vendors list (localStorage + POST /saved-vendors). Icon turns filled red.</div></div>
+      <div class="annotation"><span class="ann-icon">📅</span><div><span class="ann-action">TAP "Check Availability & Book"</span> → Scroll to calendar section OR navigate to Booking screen (6A) with vendor_id pre-filled.</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">5B · Reviews Section</span><span class="frame-state">Scroll Down</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="padding:16px;min-height:520px;">
+          <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:14px;">Customer Reviews</div>
+
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:16px;">
+            <div style="text-align:center;">
+              <div style="font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:var(--dark);">4.9</div>
+              <div class="stars">★★★★★</div>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:2px;">127 reviews</div>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:0.72rem;color:var(--muted);width:12px;">5</span><div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:85%;height:100%;background:var(--gold-light);border-radius:3px;"></div></div></div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:0.72rem;color:var(--muted);width:12px;">4</span><div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:10%;height:100%;background:var(--gold-light);border-radius:3px;"></div></div></div>
+              <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:0.72rem;color:var(--muted);width:12px;">3</span><div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:3%;height:100%;background:var(--gold-light);border-radius:3px;"></div></div></div>
+            </div>
+          </div>
+
+          <div style="padding:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:32px;height:32px;background:var(--gold-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">R</div>
+              <div><div style="font-size:0.82rem;font-weight:700;">Ramesh K.</div><div style="font-size:0.68rem;color:var(--muted);">Nalgonda, TS · Mar 2025</div></div>
+              <div class="stars" style="margin-left:auto;font-size:0.75rem;">★★★★★</div>
+            </div>
+            <div style="font-size:0.8rem;color:var(--muted);line-height:1.6;">Excellent work! Came from Vijayawada, very professional. Quality was 10x better than local options for same price. Highly recommend for AP vendors.</div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <div class="tag tag-gold">Quality ★★★★★</div>
+              <div class="tag" style="background:var(--green-bg);color:var(--green);border:1px solid rgba(30,122,74,0.2);">Value ★★★★★</div>
+            </div>
+          </div>
+
+          <div style="padding:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:32px;height:32px;background:var(--blue-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">S</div>
+              <div><div style="font-size:0.82rem;font-weight:700;">Sunitha M.</div><div style="font-size:0.68rem;color:var(--muted);">Khammam, TS · Feb 2025</div></div>
+              <div class="stars" style="margin-left:auto;font-size:0.75rem;">★★★★★</div>
+            </div>
+            <div style="font-size:0.8rem;color:var(--muted);line-height:1.6;">Used for daughter's engagement. Photos were cinema-quality. Saved ₹12,000 vs local photographer. Will use again for wedding!</div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <button class="btn-primary btn-ghost btn-sm" style="width:100%;">View all 127 reviews</button>
+          </div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📊</span><div>Reviews loaded on scroll via <code>GET /vendors/:id/reviews?page=1</code>. Paginated 10 at a time.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 6: BOOKING ════════════════════════════ -->
+<div id="booking" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 6 — Booking Flow</div>
+  <div class="canvas-sub">Date selection → Details form → Confirm. 3-step progress.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">6A · Date Selection</span><span class="frame-state">Step 1/3</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="color:rgba(255,255,255,0.7);cursor:pointer;">←</span>
+          <span style="color:white;font-weight:700;font-size:0.9rem;">Book Krishna Studios</span>
+        </div>
+        <div class="progress-steps">
+          <div class="step-dot current">1</div>
+          <div class="step-line"></div>
+          <div class="step-dot pending">2</div>
+          <div class="step-line"></div>
+          <div class="step-dot pending">3</div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-left:8px;">Date → Details → Confirm</div>
+        </div>
+        <div style="padding:0 16px;">
+          <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-align:center;margin-bottom:4px;">JUNE 2025</div>
+          <div style="display:flex;justify-content:space-between;padding:0 4px;font-size:0.7rem;font-weight:700;color:var(--muted);margin-bottom:4px;">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div>
+            <div class="cal-day available">2</div><div class="cal-day available">3</div>
+            <div class="cal-day booked">4</div><div class="cal-day available">5</div>
+            <div class="cal-day available">6</div><div class="cal-day available">7</div>
+            <div class="cal-day booked">8</div><div class="cal-day available">9</div>
+            <div class="cal-day">10</div><div class="cal-day available">11</div>
+            <div class="cal-day available">12</div><div class="cal-day">13</div>
+            <div class="cal-day available">14</div><div class="cal-day selected">15</div>
+            <div class="cal-day available">16</div><div class="cal-day booked">17</div>
+            <div class="cal-day available">18</div><div class="cal-day available">19</div>
+            <div class="cal-day">20</div>
+          </div>
+          <div style="display:flex;gap:12px;margin:12px 0;font-size:0.7rem;">
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:3px;background:var(--green-bg);border:1px solid var(--green);"></div><span style="color:var(--muted);">Available</span></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:3px;background:var(--red-bg);border:1px solid var(--red);"></div><span style="color:var(--muted);">Booked</span></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:3px;background:var(--dark);"></div><span style="color:var(--muted);">Your pick</span></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span style="color:var(--muted);">Selected date</span><span style="font-weight:700;">Sun, 15 June 2025</span></div>
+          </div>
+          <button class="btn-primary btn-gold">Next: Event Details →</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📅</span><div>Calendar data from <code>GET /vendors/:id/availability?month=2025-06</code>. Green = available+willing to travel. Red = booked.</div></div>
+      <div class="annotation"><span class="ann-icon">✅</span><div><span class="ann-action">TAP available date</span> → Highlight it. Enable "Next" button. <span class="ann-action">TAP "Next"</span> → Navigate to 6B.</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">6B · Event Details</span><span class="frame-state">Step 2/3</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:12px 16px;">
+          <span style="color:white;font-weight:700;font-size:0.9rem;">Event Details</span>
+        </div>
+        <div class="progress-steps">
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot current">2</div>
+          <div class="step-line"></div>
+          <div class="step-dot pending">3</div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div class="input-group">
+            <label class="input-label">Event Type</label>
+            <select class="input-field">
+              <option>💒 Wedding</option>
+              <option>💍 Engagement</option>
+              <option>🎂 Birthday</option>
+              <option>🎓 Graduation</option>
+              <option>🪔 Naming Ceremony</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Venue Address</label>
+            <textarea class="input-field" rows="2" placeholder="Hall name, area, Nalgonda..."></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="input-group">
+              <label class="input-label">Event Start Time</label>
+              <input class="input-field" type="time" value="10:00"/>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Expected Duration</label>
+              <select class="input-field"><option>4 hours</option><option>6 hours</option><option>8 hours</option></select>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Special Requests (optional)</label>
+            <textarea class="input-field" rows="2" placeholder="Candid shots, specific poses, drone coverage..."></textarea>
+          </div>
+          <div style="background:var(--gold-bg);border:1px solid rgba(201,129,10,0.2);border-radius:8px;padding:12px;margin-bottom:12px;font-size:0.78rem;">
+            <div style="font-weight:700;color:var(--gold);margin-bottom:4px;">📍 Travel Note</div>
+            <div style="color:var(--muted);">Vendor travels from Vijayawada (180km). Please share exact venue pin on day of event.</div>
+          </div>
+          <button class="btn-primary btn-gold">Next: Confirm Booking →</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">➡️</span><div><span class="ann-action">TAP "Next"</span> → Validate required fields (event type + venue). Navigate to 6C (Confirmation).</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">6C · Confirm & Pay</span><span class="frame-state">Step 3/3</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:12px 16px;">
+          <span style="color:white;font-weight:700;font-size:0.9rem;">Confirm Booking</span>
+        </div>
+        <div class="progress-steps">
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot current">3</div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
+            <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:10px;">BOOKING SUMMARY</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div class="avatar" style="background:var(--green-bg);">📸</div>
+              <div><div style="font-weight:700;font-size:0.88rem;">Krishna Studios</div><div style="font-size:0.72rem;color:var(--muted);">Vijayawada, AP</div></div>
+              <div class="tag tag-ap" style="margin-left:auto;">AP</div>
+            </div>
+            <div class="divider"></div>
+            <div style="font-size:0.82rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--muted);">Wedding · 15 Jun 2025</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--muted);">Service fee</span><span>₹18,000</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--muted);">Travel cost</span><span>₹3,000</span></div>
+              <div style="display:flex;justify-content:space-between;font-weight:700;font-size:0.9rem;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;"><span>Total</span><span style="color:var(--green);">₹21,000</span></div>
+            </div>
+          </div>
+
+          <div style="background:var(--green-bg);border:1px solid rgba(30,122,74,0.2);border-radius:8px;padding:12px;margin-bottom:12px;font-size:0.78rem;">
+            <div style="font-weight:700;color:var(--green);margin-bottom:4px;">🔒 Secure Escrow Payment</div>
+            <div style="color:var(--muted);">Pay 30% advance now (₹6,300). Remaining ₹14,700 released to vendor only after event is complete.</div>
+          </div>
+
+          <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;text-align:center;">By booking you agree to our cancellation policy</div>
+          <button class="btn-primary btn-gold">Pay ₹6,300 Advance →</button>
+          <button class="btn-primary btn-ghost" style="margin-top:8px;font-size:0.82rem;">← Edit Details</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">💳</span><div><span class="ann-action">TAP "Pay Advance"</span> → Call <code>POST /bookings</code> to create booking. Then <code>POST /payments/initiate</code> → Get Razorpay order_id. Open Razorpay UPI modal. On success → navigate to Payment Success (7A).</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 7: PAYMENT ════════════════════════════ -->
+<div id="payment" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 7 — Payment & Success</div>
+  <div class="canvas-sub">Razorpay UPI flow + success confirmation + booking tracking.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">7A · Payment Success</span><span class="frame-state">After Pay</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;">
+          <div style="width:80px;height:80px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:20px;border:3px solid var(--green);">✓</div>
+          <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;margin-bottom:8px;">Booking Confirmed!</div>
+          <div style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:24px;">Krishna Studios has been notified.<br/>They will confirm within 2 hours.</div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;width:100%;margin-bottom:20px;text-align:left;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.82rem;"><span style="color:var(--muted);">Booking ID</span><span style="font-weight:700;font-family:monospace;">#UTL-2025-4821</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.82rem;"><span style="color:var(--muted);">Advance paid</span><span style="font-weight:700;color:var(--green);">₹6,300</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span style="color:var(--muted);">Balance (post-event)</span><span style="font-weight:700;">₹14,700</span></div>
+          </div>
+          <button class="btn-primary btn-gold" style="width:100%;margin-bottom:10px;">View My Booking</button>
+          <button class="btn-primary btn-ghost" style="width:100%;">Back to Home</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📱</span><div>On load: WhatsApp message sent to customer + vendor via WATI API. Vendor's availability updated (date blocked). Confetti animation plays.</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">7B · My Bookings</span><span class="frame-state">Tracking</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:14px 16px;">
+          <span style="color:white;font-weight:700;font-size:0.95rem;">My Bookings</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="display:flex;gap:8px;margin-bottom:16px;">
+            <div class="chip active">Active</div>
+            <div class="chip">Completed</div>
+            <div class="chip">Cancelled</div>
+          </div>
+
+          <!-- Active booking card -->
+          <div style="background:var(--card);border:1px solid var(--green);border-radius:10px;padding:14px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div class="avatar" style="background:var(--green-bg);">📸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.88rem;">Krishna Studios</div><div style="font-size:0.7rem;color:var(--muted);">Photography · 15 Jun 2025</div></div>
+              <div style="background:var(--green-bg);color:var(--green);font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:100px;">Confirmed</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <div style="flex:1;background:white;border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.72rem;"><div style="color:var(--muted);">Advance</div><div style="font-weight:700;color:var(--green);">₹6,300 Paid</div></div>
+              <div style="flex:1;background:white;border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.72rem;"><div style="color:var(--muted);">Balance</div><div style="font-weight:700;">₹14,700</div></div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:6px;background:white;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">💬 Chat</button>
+              <button style="flex:1;padding:8px;border:none;border-radius:6px;background:var(--dark);color:white;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">Track →</button>
+            </div>
+          </div>
+
+          <!-- Completed booking -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;opacity:0.7;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <div class="avatar" style="background:#F0EDE8;">🌸</div>
+              <div style="flex:1;"><div style="font-weight:700;font-size:0.88rem;">Shree Decors</div><div style="font-size:0.7rem;color:var(--muted);">Decoration · 2 Mar 2025</div></div>
+              <div style="background:var(--blue-bg);color:var(--blue);font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:100px;">Completed</div>
+            </div>
+            <button style="width:100%;padding:8px;border:1.5px solid var(--gold);border-radius:6px;background:var(--gold-bg);color:var(--gold);font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">★ Leave Review</button>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">🔍</div>Search</div>
+          <div class="nav-item active"><div class="nav-icon">📋</div>Bookings</div>
+          <div class="nav-item"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">💬</span><div><span class="ann-action">TAP "Chat"</span> → Open in-app chat with vendor (WebSocket or WhatsApp redirect).</div></div>
+      <div class="annotation"><span class="ann-icon">★</span><div><span class="ann-action">TAP "Leave Review"</span> → Open review modal with quality + value + comment fields. <code>POST /reviews</code> on submit.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ SCREEN 8: VENDOR DASHBOARD ════════════════════════════ -->
+<div id="vendor-dash" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Screen 8 — Vendor Dashboard</div>
+  <div class="canvas-sub">Vendor's command center — bookings, earnings, availability management.</div>
+  <div class="frames-grid">
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">8A · Vendor Home</span><span class="frame-state">Dashboard</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--gold-light);">UtsavLink</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Vendor Panel</div></div>
+          <div style="display:flex;gap:10px;">
+            <span style="color:rgba(255,255,255,0.7);position:relative;">🔔<span class="badge" style="position:absolute;top:-4px;right:-4px;">3</span></span>
+          </div>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:12px;">This Month</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+            <div class="stat-box" style="border-color:rgba(30,122,74,0.3);background:var(--green-bg);"><div class="stat-val" style="color:var(--green);">₹84,000</div><div class="stat-lbl">Earnings</div></div>
+            <div class="stat-box"><div class="stat-val">7</div><div class="stat-lbl">Bookings</div></div>
+            <div class="stat-box"><div class="stat-val">4.9</div><div class="stat-lbl">Avg Rating</div></div>
+            <div class="stat-box" style="border-color:rgba(201,129,10,0.3);background:var(--gold-bg);"><div class="stat-val" style="color:var(--gold);">96</div><div class="stat-lbl">Value Score</div></div>
+          </div>
+
+          <!-- New request -->
+          <div style="background:var(--gold-bg);border:1.5px solid rgba(201,129,10,0.3);border-radius:10px;padding:14px;margin-bottom:12px;">
+            <div style="font-size:0.72rem;font-weight:800;color:var(--gold);letter-spacing:0.5px;margin-bottom:8px;">NEW REQUEST ●</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;background:var(--dark);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">R</div>
+              <div><div style="font-weight:700;font-size:0.88rem;">Ramesh Kumar</div><div style="font-size:0.72rem;color:var(--muted);">Wedding · 22 Jun · Nalgonda</div></div>
+            </div>
+            <div style="font-size:0.8rem;font-weight:700;color:var(--dark);margin-bottom:10px;">Budget: ₹25,000 · Your quote: ₹21,000</div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:10px;border:none;border-radius:6px;background:var(--dark);color:white;font-weight:700;font-size:0.82rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✓ Accept</button>
+              <button style="flex:1;padding:10px;border:1.5px solid var(--red);border-radius:6px;background:white;color:var(--red);font-weight:700;font-size:0.82rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✗ Decline</button>
+            </div>
+          </div>
+
+          <!-- Upcoming -->
+          <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:8px;">UPCOMING</div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;gap:10px;">
+            <div style="background:var(--dark);color:white;border-radius:6px;padding:6px 10px;text-align:center;flex-shrink:0;"><div style="font-size:0.62rem;font-weight:700;opacity:0.7;">JUN</div><div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;">15</div></div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:0.85rem;">Suresh Wedding</div><div style="font-size:0.72rem;color:var(--muted);">📍 Nalgonda · 4h drive</div></div>
+            <div style="text-align:right;"><div style="font-weight:700;color:var(--green);font-size:0.85rem;">₹21,000</div><div style="font-size:0.7rem;color:var(--muted);">confirmed</div></div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">🏠</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">📅</div>Calendar</div>
+          <div class="nav-item"><div class="nav-icon">💰</div>Earnings</div>
+          <div class="nav-item"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">✅</span><div><span class="ann-action">TAP "Accept"</span> → Call <code>PUT /bookings/:id/confirm</code>. Block date in availability. Send WhatsApp to customer. Remove request card.</div></div>
+      <div class="annotation"><span class="ann-icon">❌</span><div><span class="ann-action">TAP "Decline"</span> → Call <code>PUT /bookings/:id/decline</code> with reason. Customer gets notification. Booking status = declined.</div></div>
+    </div>
+
+    <div class="frame">
+      <div class="frame-label"><span class="frame-name">8B · Availability Calendar</span><span class="frame-state">Vendor Sets Dates</span></div>
+      <div class="phone">
+        <div class="phone-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+        <div style="background:var(--dark);padding:14px 16px;">
+          <span style="color:white;font-weight:700;">Set Availability</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:14px;">Tap dates to toggle available / blocked. Green = you will travel. Red = blocked.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:0.78rem;font-weight:700;">June 2025</span>
+            <div style="display:flex;gap:8px;">
+              <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-size:0.72rem;cursor:pointer;">◀ May</button>
+              <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-size:0.72rem;cursor:pointer;">Jul ▶</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.7rem;font-weight:700;color:var(--muted);margin-bottom:4px;padding:0 4px;">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day empty"></div><div class="cal-day empty"></div>
+            <div class="cal-day available">2</div><div class="cal-day available">3</div>
+            <div class="cal-day booked">4</div><div class="cal-day available">5</div>
+            <div class="cal-day available">6</div><div class="cal-day available">7</div>
+            <div class="cal-day booked">8</div><div class="cal-day available">9</div>
+            <div class="cal-day">10</div><div class="cal-day available">11</div>
+            <div class="cal-day available">12</div><div class="cal-day">13</div>
+            <div class="cal-day available">14</div><div class="cal-day selected">15 ✓</div>
+            <div class="cal-day available">16</div><div class="cal-day booked">17</div>
+            <div class="cal-day available">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px;">
+            <button style="flex:1;padding:10px;border:none;background:var(--green);color:white;border-radius:6px;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">Mark Available</button>
+            <button style="flex:1;padding:10px;border:none;background:var(--red);color:white;border-radius:6px;font-weight:700;font-size:0.8rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">Block Date</button>
+          </div>
+          <button class="btn-primary" style="margin-top:10px;background:var(--dark);">Save Availability</button>
+        </div>
+      </div>
+      <div class="annotation"><span class="ann-icon">📅</span><div><span class="ann-action">TAP date + "Mark Available"</span> → <code>POST /vendors/:id/availability</code> with date + is_available=true + willing_to_travel=true. This date now appears green for customers searching.</div></div>
+      <div class="annotation"><span class="ann-icon">💾</span><div><span class="ann-action">TAP "Save Availability"</span> → Batch update all changed dates in one API call to reduce requests.</div></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ COMPONENTS ════════════════════════════ -->
+<div id="components" class="screen">
+<div class="canvas">
+  <div class="canvas-title">Component Library</div>
+  <div class="canvas-sub">Reusable UI components. Build these once, use everywhere.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:24px;">
+      <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:16px;">BUTTONS</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-primary btn-gold" style="width:auto;display:inline-flex;">Primary Gold Button</button>
+        <button class="btn-primary" style="width:auto;display:inline-flex;">Dark Button</button>
+        <button class="btn-primary btn-ghost" style="width:auto;display:inline-flex;">Ghost Button</button>
+        <button class="btn-primary btn-ghost btn-sm" style="width:auto;display:inline-flex;">Small Ghost</button>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:24px;">
+      <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:16px;">TAGS & BADGES</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <div class="tag tag-ap">Andhra Pradesh</div>
+        <div class="tag tag-ts">Telangana</div>
+        <div class="tag tag-gold">Best Value</div>
+        <div class="badge">3</div>
+        <div style="background:var(--green-bg);color:var(--green);font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:100px;">Confirmed</div>
+        <div style="background:var(--red-bg);color:var(--red);font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:100px;">Declined</div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:24px;">
+      <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:16px;">VALUE BAR COMPONENT</div>
+      <div class="value-bar-wrap"><div class="value-bar-label"><span>96/100 — Best Value</span><span style="color:var(--green);">●</span></div><div class="value-bar-track"><div class="value-bar-fill fill-high" style="width:96%"></div></div></div>
+      <div class="value-bar-wrap" style="margin-top:10px;"><div class="value-bar-label"><span>72/100 — Good Value</span><span style="color:var(--gold);">●</span></div><div class="value-bar-track"><div class="value-bar-fill fill-mid" style="width:72%"></div></div></div>
+    </div>
+
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:24px;">
+      <div style="font-size:0.72rem;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:16px;">STAT BOXES</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="stat-box"><div class="stat-val">4.9</div><div class="stat-lbl">Rating</div></div>
+        <div class="stat-box"><div class="stat-val">127</div><div class="stat-lbl">Events</div></div>
+        <div class="stat-box" style="border-color:rgba(30,122,74,0.3);background:var(--green-bg);"><div class="stat-val" style="color:var(--green);">96</div><div class="stat-lbl">Value</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════ ALL ACTIONS ════════════════════════════ -->
+<div id="actions" class="screen">
+<div class="canvas">
+  <div class="canvas-title">⚡ Every Action → What Happens</div>
+  <div class="canvas-sub">Complete reference. Every tap, every API call, every state change.</div>
+
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:16px;overflow:hidden;">
+    <table class="spec-table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>User Action</th>
+          <th>Frontend</th>
+          <th>API Call</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5" style="background:var(--dark);color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 16px;">ONBOARDING</td></tr>
+        <tr><td>Splash</td><td class="spec-trigger">Auto 2s</td><td>Check localStorage for JWT</td><td>—</td><td class="spec-action">If token → Home. Else → Phone screen</td></tr>
+        <tr><td>Phone</td><td class="spec-trigger">Tap "Send OTP"</td><td>Validate 10-digit number</td><td class="spec-api">POST /auth/send-otp</td><td class="spec-action">Navigate to OTP screen</td></tr>
+        <tr><td>OTP</td><td class="spec-trigger">6th digit entered</td><td>Auto-submit (no button tap needed)</td><td class="spec-api">POST /auth/verify-otp</td><td class="spec-action">Store JWT. New user → Location. Returning → Home</td></tr>
+        <tr><td>OTP</td><td class="spec-trigger">Tap "Resend" (after 60s)</td><td>Reset 60s timer</td><td class="spec-api">POST /auth/send-otp</td><td class="spec-action">New OTP sent. Show toast.</td></tr>
+        <tr><td>Location</td><td class="spec-trigger">Tap GPS button</td><td>navigator.geolocation.getCurrentPosition()</td><td>Reverse geocode API</td><td class="spec-action">Auto-fill district + state dropdowns</td></tr>
+        <tr><td>Location</td><td class="spec-trigger">Tap "Continue"</td><td>Validate name + district filled</td><td class="spec-api">POST /auth/register</td><td class="spec-action">Navigate to Home</td></tr>
+        <tr><td colspan="5" style="background:var(--dark);color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 16px;">SEARCH & RESULTS</td></tr>
+        <tr><td>Home</td><td class="spec-trigger">Tap category chip</td><td>Set category in state</td><td>—</td><td class="spec-action">Navigate to Results with that category</td></tr>
+        <tr><td>Search</td><td class="spec-trigger">Tap quick budget chip</td><td>Update budget input value</td><td>—</td><td class="spec-action">Input auto-filled</td></tr>
+        <tr><td>Search</td><td class="spec-trigger">Tap "Find Best Value"</td><td>Validate all 4 fields</td><td class="spec-api">GET /search/vendors?budget&category&district&date&scope</td><td class="spec-action">Navigate to Results. Show loading skeleton.</td></tr>
+        <tr><td>Results</td><td class="spec-trigger">Tap AP/TS filter tab</td><td>Filter array in React state</td><td>—</td><td class="spec-action">Re-render list. No API call.</td></tr>
+        <tr><td>Results</td><td class="spec-trigger">Tap "Filter" button</td><td>Open bottom sheet modal</td><td>—</td><td class="spec-action">Filter sheet slides up</td></tr>
+        <tr><td>Results</td><td class="spec-trigger">Apply filters</td><td>Sort + filter in state</td><td>—</td><td class="spec-action">Dismiss sheet. Update result count.</td></tr>
+        <tr><td>Results</td><td class="spec-trigger">Tap vendor card</td><td>Navigate with vendor_id param</td><td class="spec-api">GET /vendors/:id</td><td class="spec-action">Vendor Detail screen loads</td></tr>
+        <tr><td colspan="5" style="background:var(--dark);color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 16px;">VENDOR DETAIL</td></tr>
+        <tr><td>Vendor</td><td class="spec-trigger">Swipe gallery</td><td>Carousel state index++</td><td>—</td><td class="spec-action">Next photo shown</td></tr>
+        <tr><td>Vendor</td><td class="spec-trigger">Tap gallery photo</td><td>Open lightbox modal</td><td>—</td><td class="spec-action">Full-screen image viewer</td></tr>
+        <tr><td>Vendor</td><td class="spec-trigger">Tap heart ♡</td><td>Toggle saved state</td><td class="spec-api">POST /saved-vendors</td><td class="spec-action">Icon fills red. Toast "Saved!"</td></tr>
+        <tr><td>Vendor</td><td class="spec-trigger">Tap "Book"</td><td>Navigate to Booking screen</td><td class="spec-api">GET /vendors/:id/availability?month=YYYY-MM</td><td class="spec-action">Calendar loads with availability</td></tr>
+        <tr><td colspan="5" style="background:var(--dark);color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 16px;">BOOKING & PAYMENT</td></tr>
+        <tr><td>Booking</td><td class="spec-trigger">Tap available date</td><td>Set selectedDate in state</td><td>—</td><td class="spec-action">Date highlighted. "Next" button activates.</td></tr>
+        <tr><td>Booking</td><td class="spec-trigger">Tap "Next: Details"</td><td>Validate date selected</td><td>—</td><td class="spec-action">Navigate to event details form. Progress bar → step 2.</td></tr>
+        <tr><td>Booking</td><td class="spec-trigger">Tap "Next: Confirm"</td><td>Validate event type + venue</td><td>—</td><td class="spec-action">Navigate to confirmation. Progress bar → step 3.</td></tr>
+        <tr><td>Confirm</td><td class="spec-trigger">Tap "Pay Advance"</td><td>Create booking first</td><td class="spec-api">POST /bookings → POST /payments/initiate</td><td class="spec-action">Open Razorpay UPI modal</td></tr>
+        <tr><td>Payment</td><td class="spec-trigger">UPI success callback</td><td>Razorpay success handler</td><td class="spec-api">POST /payments/webhook (Razorpay)</td><td class="spec-action">Navigate to Success screen. Confetti. WhatsApp sent.</td></tr>
+        <tr><td>Bookings</td><td class="spec-trigger">Tap "Chat"</td><td>Open chat screen / WhatsApp deeplink</td><td>WebSocket or WA API</td><td class="spec-action">Chat opens</td></tr>
+        <tr><td>Bookings</td><td class="spec-trigger">Tap "Leave Review"</td><td>Open review modal</td><td class="spec-api">POST /reviews on submit</td><td class="spec-action">Vendor value_score recalculated next nightly cron</td></tr>
+        <tr><td colspan="5" style="background:var(--dark);color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:1px;padding:8px 16px;">VENDOR DASHBOARD</td></tr>
+        <tr><td>Vendor Home</td><td class="spec-trigger">Tap "Accept" booking</td><td>Optimistic UI update</td><td class="spec-api">PUT /bookings/:id/confirm</td><td class="spec-action">Date blocked. Customer WhatsApp sent. Card removed.</td></tr>
+        <tr><td>Vendor Home</td><td class="spec-trigger">Tap "Decline" booking</td><td>Open reason selector</td><td class="spec-api">PUT /bookings/:id/decline</td><td class="spec-action">Customer notified. Booking status = declined.</td></tr>
+        <tr><td>Availability</td><td class="spec-trigger">Tap date + "Mark Available"</td><td>Toggle date state green</td><td>—</td><td class="spec-action">Staged change (not saved yet)</td></tr>
+        <tr><td>Availability</td><td class="spec-trigger">Tap "Save Availability"</td><td>Batch all changes</td><td class="spec-api">POST /vendors/:id/availability (batch)</td><td class="spec-action">All dates saved. Customers can now see these dates.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ds-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
