@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubh Events - UI Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #D4A017;
+    --gold-light: #F0C84A;
+    --deep: #1A0A2E;
+    --purple: #4A1B7A;
+    --rose: #E85D8A;
+    --cream: #FFF8EE;
+    --white: #ffffff;
+    --gray: #8A8A9A;
+    --light: #F5F0FF;
+  }
+
+  body {
+    background: #0D0820;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    overflow-x: hidden;
+  }
+
+  /* Page title */
+  .page-title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .page-title p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: 6px;
+  }
+
+  /* Screen label */
+  .screen-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  /* Screens row */
+  .screens-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .screen-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 320px;
+    height: 620px;
+    background: var(--deep);
+    border-radius: 44px;
+    border: 3px solid #3A2060;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px #2A1550, inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 4px;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .status-bar .time { font-weight: 600; font-size: 0.75rem; color: white; }
+  .status-icons { display: flex; gap: 4px; align-items: center; }
+
+  /* Screen content area */
+  .screen-content { height: calc(100% - 30px); overflow: hidden; position: relative; }
+
+  /* ===================== SCREEN 1: SPLASH / HOME ===================== */
+  .screen-splash {
+    background: linear-gradient(160deg, #1A0A2E 0%, #2D1060 50%, #1A0A2E 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .splash-mandala {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 2px solid rgba(212,160,23,0.15);
+    box-shadow: 0 0 0 20px rgba(212,160,23,0.05), 0 0 0 40px rgba(212,160,23,0.03);
+  }
+  .splash-mandala::after {
+    content: '✦';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 3rem;
+    color: rgba(212,160,23,0.3);
+  }
+
+  .splash-flowers {
+    position: absolute;
+    bottom: 120px; left: -30px;
+    font-size: 5rem;
+    opacity: 0.12;
+    transform: rotate(-20deg);
+  }
+
+  .splash-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .app-badge {
+    background: rgba(212,160,23,0.15);
+    border: 1px solid rgba(212,160,23,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .app-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .app-logo span { color: var(--gold); }
+
+  .app-tagline {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+
+  .hero-image-mock {
+    width: 180px; height: 120px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #4A1B7A, #E85D8A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 30px rgba(232,93,138,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image-mock::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1));
+  }
+
+  .splash-btn {
+    width: 200px;
+    padding: 12px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, var(--gold), #F0A500);
+    border: none;
+    color: var(--deep);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(212,160,23,0.4);
+    margin-bottom: 10px;
+  }
+
+  .splash-sub-btn {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: underline;
+  }
+
+  .splash-bottom {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    z-index: 2;
+  }
+  .splash-stat { text-align: center; }
+  .splash-stat .num { font-size: 0.9rem; font-weight: 700; color: var(--gold); }
+  .splash-stat .lbl { font-size: 0.55rem; color: rgba(255,255,255,0.4); }
+
+  /* ===================== SCREEN 2: HOME FEED ===================== */
+  .screen-home {
+    background: var(--cream);
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen-home::-webkit-scrollbar { display: none; }
+
+  .home-header {
+    background: linear-gradient(135deg, #1A0A2E, #4A1B7A);
+    padding: 14px 18px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-header::after {
+    content: '🌸';
+    position: absolute;
+    right: 16px; top: 10px;
+    font-size: 2.5rem;
+    opacity: 0.2;
+  }
+
+  .home-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .home-greeting { font-size: 0.6rem; color: rgba(255,255,255,0.5); }
+  .home-name { font-size: 0.9rem; font-weight: 600; color: white; }
+  .home-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--rose));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .home-search {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+  }
+  .home-search span { font-size: 0.9rem; }
+  .home-search p { font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+
+  .categories-section { padding: 16px 14px 8px; }
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--deep);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-title span { font-size: 0.6rem; color: var(--rose); font-weight: 500; }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .cat-icon {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .cat-label { font-size: 0.5rem; color: var(--deep); font-weight: 500; text-align: center; }
+
+  .cat-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .cat-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .cat-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .cat-4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .cat-5 { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+  .post-req-banner {
+    margin: 12px 14px;
+    background: linear-gradient(135deg, #4A1B7A, #E85D8A);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(74,27,122,0.3);
+  }
+  .post-req-text .t1 { font-size: 0.6rem; color: rgba(255,255,255,0.7); }
+  .post-req-text .t2 { font-size: 0.8rem; font-weight: 700; color: white; }
+  .post-req-text .t3 { font-size: 0.55rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .post-req-btn {
+    background: white;
+    color: var(--purple);
+    border: none;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .providers-section { padding: 4px 14px 16px; }
+
+  .provider-card {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    display: flex;
+  }
+  .provider-img {
+    width: 80px; height: 80px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .pimg-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .pimg-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .pimg-3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+  .provider-info {
+    flex: 1;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .provider-name { font-size: 0.75rem; font-weight: 700; color: var(--deep); }
+  .provider-type { font-size: 0.58rem; color: var(--gray); margin-bottom: 4px; }
+  .provider-rating {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 0.6rem; color: var(--gold); font-weight: 600;
+  }
+  .provider-rating span { color: var(--gray); font-weight: 400; }
+  .provider-price { font-size: 0.65rem; color: var(--purple); font-weight: 600; margin-top: 2px; }
+  .provider-dist { font-size: 0.55rem; color: var(--gray); }
+
+  /* ===================== SCREEN 3: PROVIDER PROFILE ===================== */
+  .screen-profile {
+    background: var(--cream);
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen-profile::-webkit-scrollbar { display: none; }
+
+  .profile-hero {
+    height: 140px;
+    background: linear-gradient(135deg, #4A1B7A, #E85D8A);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+  }
+  .profile-hero-emoji {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    font-size: 3rem;
+    opacity: 0.3;
+  }
+  .back-btn {
+    position: absolute;
+    top: 14px; left: 14px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: white;
+    cursor: pointer;
+  }
+  .share-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: white;
+  }
+
+  .profile-avatar-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+  }
+  .profile-avatar {
+    width: 54px; height: 54px;
+    border-radius: 16px;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    border: 3px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    margin-bottom: -24px;
+  }
+
+  .profile-body { padding: 30px 14px 14px; }
+  .profile-name { font-size: 1rem; font-weight: 700; color: var(--deep); font-family: 'Playfair Display', serif; }
+  .profile-meta { font-size: 0.6rem; color: var(--gray); margin-bottom: 8px; }
+
+  .profile-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tag {
+    background: var(--light);
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 0.55rem;
+    color: var(--purple);
+    font-weight: 500;
+  }
+
+  .profile-stats {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .pstat {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .pstat .val { font-size: 0.85rem; font-weight: 700; color: var(--deep); }
+  .pstat .key { font-size: 0.5rem; color: var(--gray); }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .portfolio-item {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    overflow: hidden;
+  }
+  .pi-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .pi-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .pi-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .pi-4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .pi-5 { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .pi-6 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+  .packages-section { margin-bottom: 14px; }
+  .package-card {
+    background: white;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid var(--gold);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .package-name { font-size: 0.72rem; font-weight: 700; color: var(--deep); }
+  .package-desc { font-size: 0.55rem; color: var(--gray); margin-top: 2px; }
+  .package-price { font-size: 0.85rem; font-weight: 700; color: var(--purple); }
+
+  .profile-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px;
+    background: white;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    position: sticky;
+    bottom: 0;
+  }
+  .btn-whatsapp {
+    flex: 1;
+    padding: 10px;
+    background: #25D366;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .btn-book {
+    flex: 2;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--purple), var(--rose));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ===================== SCREEN 4: POST REQUIREMENT ===================== */
+  .screen-post {
+    background: var(--cream);
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen-post::-webkit-scrollbar { display: none; }
+
+  .post-header {
+    background: linear-gradient(135deg, #1A0A2E, #4A1B7A);
+    padding: 16px 16px 20px;
+    color: white;
+  }
+  .post-header h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .post-header p { font-size: 0.6rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  .post-form { padding: 16px; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 0.65rem; font-weight: 600; color: var(--deep); margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%;
+    background: white;
+    border: 1.5px solid rgba(74,27,122,0.15);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.7rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--deep);
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--purple); }
+
+  .event-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .event-type-btn {
+    background: white;
+    border: 2px solid rgba(74,27,122,0.15);
+    border-radius: 12px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .event-type-btn.active {
+    border-color: var(--purple);
+    background: var(--light);
+  }
+  .event-type-btn .et-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
+  .event-type-btn .et-label { font-size: 0.55rem; font-weight: 600; color: var(--deep); }
+
+  .services-check {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .svc-chip {
+    background: white;
+    border: 1.5px solid rgba(74,27,122,0.2);
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 0.58rem;
+    color: var(--deep);
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+  }
+  .svc-chip.active {
+    background: var(--purple);
+    color: white;
+    border-color: var(--purple);
+  }
+
+  .budget-row {
+    display: flex;
+    gap: 8px;
+  }
+  .budget-input {
+    flex: 1;
+    background: white;
+    border: 1.5px solid rgba(74,27,122,0.15);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.7rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--deep);
+  }
+
+  .post-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--gold), #F0A500);
+    border: none;
+    border-radius: 14px;
+    color: var(--deep);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(212,160,23,0.35);
+    margin-top: 6px;
+  }
+
+  /* ===================== SCREEN 5: QUOTES ===================== */
+  .screen-quotes {
+    background: var(--cream);
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen-quotes::-webkit-scrollbar { display: none; }
+
+  .quotes-header {
+    background: linear-gradient(135deg, #1A0A2E, #4A1B7A);
+    padding: 16px;
+    color: white;
+  }
+  .quotes-header h2 { font-family: 'Playfair Display', serif; font-size: 1rem; }
+  .quotes-header p { font-size: 0.58rem; color: rgba(255,255,255,0.5); }
+  .quote-req-pill {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.8);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .quotes-list { padding: 14px; }
+
+  .quote-card {
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card.best::before {
+    content: '⭐ BEST VALUE';
+    position: absolute;
+    top: 10px; right: -2px;
+    background: var(--gold);
+    color: var(--deep);
+    font-size: 0.5rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px 0 0 6px;
+  }
+
+  .quote-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .quote-avatar {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .qa-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .qa-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .qa-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+
+  .quote-vendor-name { font-size: 0.75rem; font-weight: 700; color: var(--deep); }
+  .quote-vendor-meta { font-size: 0.57rem; color: var(--gray); }
+  .quote-price-big { font-size: 1rem; font-weight: 700; color: var(--purple); margin-left: auto; }
+
+  .quote-includes {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    font-size: 0.57rem;
+    color: var(--deep);
+    line-height: 1.6;
+  }
+
+  .quote-actions { display: flex; gap: 6px; }
+  .q-btn-view {
+    flex: 1;
+    padding: 7px;
+    background: var(--light);
+    border: none;
+    border-radius: 9px;
+    color: var(--purple);
+    font-size: 0.6rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+  }
+  .q-btn-book {
+    flex: 2;
+    padding: 7px;
+    background: linear-gradient(135deg, var(--purple), var(--rose));
+    border: none;
+    border-radius: 9px;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+  }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    padding: 8px 0 10px;
+    z-index: 10;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.5rem;
+    color: var(--gray);
+  }
+  .nav-item.active { color: var(--purple); }
+  .nav-item .nav-icon { font-size: 1.1rem; }
+
+  /* Decorative dots between phones */
+  .connector {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    color: rgba(255,255,255,0.1);
+    font-size: 1.5rem;
+    align-self: center;
+  }
+
+  /* Flow indicators */
+  .flow-arrow {
+    color: var(--gold);
+    font-size: 1.2rem;
+    align-self: center;
+    opacity: 0.6;
+  }
+
+  /* Decorative header */
+  .deco-divider {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 10px 0 30px;
+  }
+  .deco-line { flex: 1; height: 1px; background: rgba(212,160,23,0.2); }
+  .deco-gem { color: var(--gold); font-size: 0.7rem; letter-spacing: 4px; opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<div class="page-title">
+  <h1>✦ Shubh Events ✦</h1>
+  <p>UI Design Concept — Event Services Marketplace for Everyone</p>
+</div>
+
+<div class="deco-divider">
+  <div class="deco-line"></div>
+  <div class="deco-gem">◆ SCREEN DESIGNS ◆</div>
+  <div class="deco-line"></div>
+</div>
+
+<!-- ROW 1: Splash + Home -->
+<div class="screens-row">
+
+  <!-- Screen 1: Splash -->
+  <div class="screen-wrapper">
+    <div class="screen-label">① Welcome Screen</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="status-icons">📶 🔋</div>
+      </div>
+      <div class="screen-content">
+        <div class="screen-splash">
+          <div class="splash-mandala"></div>
+          <div class="splash-flowers">🌸</div>
+          <div class="splash-hero">
+            <div class="app-badge">✦ SHUBH EVENTS ✦</div>
+            <div class="app-logo">Shubh<br><span>Events</span></div>
+            <div class="app-tagline">Find the best photographers,<br>decorators & caterers near you<br>at the best price</div>
+            <div class="hero-image-mock">📷</div>
+            <button class="splash-btn">GET STARTED →</button>
+            <div class="splash-sub-btn">Already have account? Login</div>
+          </div>
+          <div class="splash-bottom">
+            <div class="splash-stat"><div class="num">500+</div><div class="lbl">Vendors</div></div>
+            <div class="splash-stat"><div class="num">2000+</div><div class="lbl">Events Done</div></div>
+            <div class="splash-stat"><div class="num">4.8★</div><div class="lbl">Rating</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow">→</div>
+
+  <!-- Screen 2: Home Feed -->
+  <div class="screen-wrapper">
+    <div class="screen-label">② Home — Browse</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A0A2E; color:rgba(255,255,255,0.6);">
+        <span class="time" style="color:white">9:41</span>
+        <div class="status-icons">📶 🔋</div>
+      </div>
+      <div class="screen-content">
+        <div class="screen-home">
+          <div class="home-header">
+            <div class="home-top-row">
+              <div>
+                <div class="home-greeting">Good Morning 🙏</div>
+                <div class="home-name">Ravi Kumar</div>
+              </div>
+              <div class="home-avatar">👤</div>
+            </div>
+            <div class="home-search">
+              <span>🔍</span>
+              <p>Search photographers, decorators...</p>
+            </div>
+          </div>
+
+          <div class="categories-section">
+            <div class="section-title">Categories <span>See All</span></div>
+            <div class="categories-grid">
+              <div class="cat-item">
+                <div class="cat-icon cat-1">📷</div>
+                <div class="cat-label">Photo</div>
+              </div>
+              <div class="cat-item">
+                <div class="cat-icon cat-2">🌸</div>
+                <div class="cat-label">Flowers</div>
+              </div>
+              <div class="cat-item">
+                <div class="cat-icon cat-3">🎪</div>
+                <div class="cat-label">Stage</div>
+              </div>
+              <div class="cat-item">
+                <div class="cat-icon cat-4">🍽️</div>
+                <div class="cat-label">Catering</div>
+              </div>
+              <div class="cat-item">
+                <div class="cat-icon cat-5">💡</div>
+                <div class="cat-label">Lights</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-req-banner">
+            <div class="post-req-text">
+              <div class="t1">PLANNING AN EVENT?</div>
+              <div class="t2">Post Your Requirement</div>
+              <div class="t3">Get quotes from multiple vendors</div>
+            </div>
+            <button class="post-req-btn">Post Now</button>
+          </div>
+
+          <div class="providers-section">
+            <div class="section-title">Top Photographers <span>See All</span></div>
+            <div class="provider-card">
+              <div class="provider-img pimg-1">📷</div>
+              <div class="provider-info">
+                <div class="provider-name">Sri Balaji Studio</div>
+                <div class="provider-type">Photography & Videography</div>
+                <div class="provider-rating">⭐ 4.9 <span>(128 reviews)</span></div>
+                <div class="provider-price">₹8,000 – ₹25,000</div>
+                <div class="provider-dist">📍 3.2 km away</div>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-img pimg-2">🌸</div>
+              <div class="provider-info">
+                <div class="provider-name">Lakshmi Decorators</div>
+                <div class="provider-type">Flower & Stage Decoration</div>
+                <div class="provider-rating">⭐ 4.7 <span>(89 reviews)</span></div>
+                <div class="provider-price">₹5,000 – ₹18,000</div>
+                <div class="provider-dist">📍 5.1 km away</div>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-img pimg-3">🍽️</div>
+              <div class="provider-info">
+                <div class="provider-name">Annapoorna Catering</div>
+                <div class="provider-type">Full Event Catering</div>
+                <div class="provider-rating">⭐ 4.8 <span>(204 reviews)</span></div>
+                <div class="provider-price">₹150/plate onwards</div>
+                <div class="provider-dist">📍 2.8 km away</div>
+              </div>
+            </div>
+          </div>
+          <div style="height:60px"></div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><span class="nav-icon">🏠</span>Home</div>
+          <div class="nav-item"><span class="nav-icon">🔍</span>Search</div>
+          <div class="nav-item"><span class="nav-icon">📋</span>Quotes</div>
+          <div class="nav-item"><span class="nav-icon">📅</span>Bookings</div>
+          <div class="nav-item"><span class="nav-icon">👤</span>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow">→</div>
+
+  <!-- Screen 3: Provider Profile -->
+  <div class="screen-wrapper">
+    <div class="screen-label">③ Vendor Profile</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="status-icons">📶 🔋</div>
+      </div>
+      <div class="screen-content">
+        <div class="screen-profile">
+          <div class="profile-hero">
+            <div class="profile-hero-emoji">📷</div>
+            <div class="back-btn">←</div>
+            <div class="share-btn">↗</div>
+            <div class="profile-avatar-row">
+              <div class="profile-avatar">📷</div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="profile-name">Sri Balaji Studio</div>
+            <div class="profile-meta">📍 Thanjavur, Tamil Nadu &nbsp;|&nbsp; Member since 2021</div>
+            <div class="profile-tags">
+              <div class="tag">📷 Photography</div>
+              <div class="tag">🎬 Videography</div>
+              <div class="tag">✏️ Editing</div>
+              <div class="tag">🖨️ Album</div>
+            </div>
+            <div class="profile-stats">
+              <div class="pstat"><div class="val">4.9⭐</div><div class="key">Rating</div></div>
+              <div class="pstat"><div class="val">128</div><div class="key">Reviews</div></div>
+              <div class="pstat"><div class="val">250+</div><div class="key">Events</div></div>
+            </div>
+
+            <div class="section-title" style="margin-bottom:10px">Portfolio</div>
+            <div class="portfolio-grid">
+              <div class="portfolio-item pi-1">📷</div>
+              <div class="portfolio-item pi-2">💐</div>
+              <div class="portfolio-item pi-3">🎊</div>
+              <div class="portfolio-item pi-4">👰</div>
+              <div class="portfolio-item pi-5">🎂</div>
+              <div class="portfolio-item pi-6">✨</div>
+            </div>
+
+            <div class="section-title" style="margin-bottom:10px">Packages</div>
+            <div class="packages-section">
+              <div class="package-card">
+                <div>
+                  <div class="package-name">Basic Package</div>
+                  <div class="package-desc">4 hrs • 200 photos • 1 video</div>
+                </div>
+                <div class="package-price">₹8,000</div>
+              </div>
+              <div class="package-card" style="border-left-color: var(--rose);">
+                <div>
+                  <div class="package-name">Premium Package</div>
+                  <div class="package-desc">Full day • 500 photos • Album</div>
+                </div>
+                <div class="package-price">₹18,000</div>
+              </div>
+            </div>
+            <div style="height:60px"></div>
+          </div>
+          <div class="profile-actions">
+            <button class="btn-whatsapp">💬 WhatsApp</button>
+            <button class="btn-book">Book Now →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Row 2 label -->
+<div class="deco-divider">
+  <div class="deco-line"></div>
+  <div class="deco-gem">◆ MORE SCREENS ◆</div>
+  <div class="deco-line"></div>
+</div>
+
+<!-- ROW 2: Post Requirement + Quotes -->
+<div class="screens-row">
+
+  <!-- Screen 4: Post Requirement -->
+  <div class="screen-wrapper">
+    <div class="screen-label">④ Post Requirement</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A0A2E; color:rgba(255,255,255,0.6);">
+        <span class="time" style="color:white">9:41</span>
+        <div class="status-icons">📶 🔋</div>
+      </div>
+      <div class="screen-content">
+        <div class="screen-post">
+          <div class="post-header">
+            <h2>📋 Post Your Requirement</h2>
+            <p>Tell us what you need — vendors will send quotes!</p>
+          </div>
+          <div class="post-form">
+            <div class="form-group">
+              <label class="form-label">Event Type</label>
+              <div class="event-type-grid">
+                <div class="event-type-btn active">
+                  <span class="et-icon">💍</span>
+                  <span class="et-label">Wedding</span>
+                </div>
+                <div class="event-type-btn">
+                  <span class="et-icon">🎂</span>
+                  <span class="et-label">Birthday</span>
+                </div>
+                <div class="event-type-btn">
+                  <span class="et-icon">🎉</span>
+                  <span class="et-label">Function</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Event Date</label>
+              <input class="form-input" type="text" placeholder="📅 Select date" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location / Village</label>
+              <input class="form-input" type="text" placeholder="📍 Enter your village or town">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Services Needed</label>
+              <div class="services-check">
+                <div class="svc-chip active">📷 Photography</div>
+                <div class="svc-chip active">🌸 Flowers</div>
+                <div class="svc-chip">🎪 Stage</div>
+                <div class="svc-chip">🍽️ Catering</div>
+                <div class="svc-chip">💡 Lighting</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Budget (₹)</label>
+              <div class="budget-row">
+                <input class="budget-input" placeholder="Min ₹" type="text">
+                <input class="budget-input" placeholder="Max ₹" type="text">
+              </div>
+            </div>
+            <button class="post-submit-btn">✦ Get Quotes from Vendors →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow">→</div>
+
+  <!-- Screen 5: Quotes Inbox -->
+  <div class="screen-wrapper">
+    <div class="screen-label">⑤ Quotes Received</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A0A2E; color:rgba(255,255,255,0.6);">
+        <span class="time" style="color:white">9:41</span>
+        <div class="status-icons">📶 🔋</div>
+      </div>
+      <div class="screen-content">
+        <div class="screen-quotes">
+          <div class="quotes-header">
+            <h2>📩 Quotes Received</h2>
+            <p>3 vendors responded to your request</p>
+            <div class="quote-req-pill">
+              <span>💍 Wedding &nbsp;•&nbsp; 📷 Photo + 🌸 Flowers</span>
+              <span>May 15, 2025</span>
+            </div>
+          </div>
+          <div class="quotes-list">
+
+            <div class="quote-card best">
+              <div class="quote-top">
+                <div class="quote-avatar qa-1">📷</div>
+                <div>
+                  <div class="quote-vendor-name">Sri Balaji Studio</div>
+                  <div class="quote-vendor-meta">⭐ 4.9 • 3.2 km away</div>
+                </div>
+                <div class="quote-price-big">₹14,000</div>
+              </div>
+              <div class="quote-includes">
+                ✅ Full day photography<br>
+                ✅ 400 edited photos<br>
+                ✅ 1 highlight video<br>
+                ✅ Printed album included
+              </div>
+              <div class="quote-actions">
+                <button class="q-btn-view">View Profile</button>
+                <button class="q-btn-book">✓ Accept & Book</button>
+              </div>
+            </div>
+
+            <div class="quote-card">
+              <div class="quote-top">
+                <div class="quote-avatar qa-2">📸</div>
+                <div>
+                  <div class="quote-vendor-name">Raj Photography</div>
+                  <div class="quote-vendor-meta">⭐ 4.5 • 8.1 km away</div>
+                </div>
+                <div class="quote-price-big">₹17,500</div>
+              </div>
+              <div class="quote-includes">
+                ✅ Full day photography<br>
+                ✅ 300 edited photos<br>
+                ✅ 2 videos included
+              </div>
+              <div class="quote-actions">
+                <button class="q-btn-view">View Profile</button>
+                <button class="q-btn-book">✓ Accept & Book</button>
+              </div>
+            </div>
+
+            <div class="quote-card">
+              <div class="quote-top">
+                <div class="quote-avatar qa-3">🎬</div>
+                <div>
+                  <div class="quote-vendor-name">Kumar Films</div>
+                  <div class="quote-vendor-meta">⭐ 4.6 • 12 km away</div>
+                </div>
+                <div class="quote-price-big">₹11,000</div>
+              </div>
+              <div class="quote-includes">
+                ✅ 6 hrs photography<br>
+                ✅ 250 edited photos<br>
+                ❌ No album
+              </div>
+              <div class="quote-actions">
+                <button class="q-btn-view">View Profile</button>
+                <button class="q-btn-book">✓ Accept & Book</button>
+              </div>
+            </div>
+
+          </div>
+          <div style="height:60px"></div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><span class="nav-icon">🏠</span>Home</div>
+          <div class="nav-item"><span class="nav-icon">🔍</span>Search</div>
+          <div class="nav-item active"><span class="nav-icon">📋</span>Quotes</div>
+          <div class="nav-item"><span class="nav-icon">📅</span>Bookings</div>
+          <div class="nav-item"><span class="nav-icon">👤</span>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center; color:rgba(212,160,23,0.4); font-size:0.7rem; margin-top:10px; letter-spacing:3px;">
+  ✦ SHUBH EVENTS — UI CONCEPT DESIGN ✦
+</div>
+
+</body>
+</html>

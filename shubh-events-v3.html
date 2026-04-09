@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubh Events — Premium UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#060410;
+  --surface:#0E0920;
+  --card:#141028;
+  --border:rgba(255,255,255,0.07);
+  --gold:#E8A020;
+  --gold2:#FFD060;
+  --teal:#00C9A7;
+  --rose:#FF4E8C;
+  --violet:#7B3FE4;
+  --indigo:#4B2ACF;
+  --cream:#FFF8EE;
+  --ink:#0A0618;
+  --muted:#8888AA;
+  --white:#ffffff;
+  --green:#18C97A;
+  --red:#FF4466;
+  --amber:#FF9500;
+}
+body{
+  background:var(--bg);
+  font-family:'Sora',sans-serif;
+  min-height:100vh;
+  padding:40px 16px 80px;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 0%,rgba(123,63,228,0.22) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 50% at 85% 100%,rgba(232,160,32,0.14) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(0,201,167,0.06) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── HEADER ── */
+.header{text-align:center;margin-bottom:48px;position:relative;z-index:1;}
+.header .pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(232,160,32,0.1);border:1px solid rgba(232,160,32,0.25);
+  border-radius:100px;padding:5px 16px;
+  font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  margin-bottom:16px;
+}
+.header h1{
+  font-family:'Fraunces',serif;font-size:3.2rem;font-weight:900;
+  color:var(--white);line-height:1.05;
+}
+.header h1 .accent{color:var(--gold2);}
+.header p{font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:8px;letter-spacing:0.5px;}
+
+/* ── TAB BAR ── */
+.tabbar{
+  display:flex;justify-content:center;gap:0;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:18px;padding:5px;
+  width:fit-content;margin:0 auto 40px;
+  position:relative;z-index:1;
+}
+.tab{
+  padding:10px 28px;border-radius:13px;
+  font-size:0.72rem;font-weight:600;
+  color:rgba(255,255,255,0.35);cursor:pointer;
+  border:none;background:none;
+  font-family:'Sora',sans-serif;
+  transition:all .3s;
+  display:flex;align-items:center;gap:7px;
+}
+.tab.active{
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  color:white;
+  box-shadow:0 6px 20px rgba(123,63,228,0.45);
+}
+.tab .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.4);
+}
+.tab.active .dot{background:rgba(255,255,255,0.8);}
+
+/* ── SECTION ── */
+.sec-label{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:24px;position:relative;z-index:1;
+}
+.sec-label span{
+  font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);white-space:nowrap;
+}
+.sec-label .line{flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,0.25),transparent);}
+
+/* ── PHONES ROW ── */
+.phones{
+  display:flex;gap:20px;flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:56px;position:relative;z-index:1;
+}
+
+/* ── PHONE ── */
+.pw{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ptag{
+  font-size:0.55rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+}
+.phone{
+  width:295px;height:620px;
+  background:var(--surface);
+  border-radius:48px;
+  border:2px solid rgba(123,63,228,0.28);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 50px 100px rgba(0,0,0,0.8),
+    0 20px 40px rgba(123,63,228,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.07);
+  overflow:hidden;position:relative;flex-shrink:0;
+}
+.notch{
+  width:72px;height:22px;
+  background:var(--bg);
+  border-radius:0 0 18px 18px;
+  margin:0 auto;position:relative;z-index:10;
+}
+.pinner{height:calc(100% - 22px);overflow:hidden;position:relative;}
+.sbar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 18px 3px;font-size:0.6rem;
+}
+.sbar .tm{font-weight:700;font-size:0.68rem;color:white;}
+.sbar .ic{color:rgba(255,255,255,0.45);font-size:0.62rem;}
+.scrl{height:calc(100% - 50px);overflow-y:auto;scrollbar-width:none;}
+.scrl::-webkit-scrollbar{display:none;}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(14,9,32,0.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(123,63,228,0.18);
+  display:flex;padding:7px 0 11px;z-index:20;
+}
+.bni{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:3px;
+  font-size:0.45rem;font-weight:600;
+  color:rgba(255,255,255,0.25);letter-spacing:0.3px;
+}
+.bni.on{color:var(--gold2);}
+.bni .ic2{font-size:1.05rem;}
+.bni.on .ic2{filter:drop-shadow(0 0 5px rgba(255,208,96,0.7));}
+
+/* ════════ SCREEN: SPLASH ════════ */
+.s-splash{
+  height:100%;
+  background:linear-gradient(170deg,#080515 0%,#1A0A45 55%,#080515 100%);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.s-splash .orb{
+  position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;
+}
+.s-splash .orb1{width:200px;height:200px;background:rgba(123,63,228,0.35);top:-50px;right:-60px;}
+.s-splash .orb2{width:150px;height:150px;background:rgba(232,160,32,0.2);bottom:80px;left:-40px;}
+
+.s-splash .body{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:20px;text-align:center;z-index:2;
+}
+.sp-logo-wrap{
+  width:88px;height:88px;border-radius:26px;
+  background:linear-gradient(135deg,rgba(123,63,228,0.5),rgba(255,78,140,0.5));
+  border:1px solid rgba(232,160,32,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.6rem;margin-bottom:22px;
+  box-shadow:0 20px 50px rgba(123,63,228,0.4),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.sp-title{
+  font-family:'Fraunces',serif;font-size:2.8rem;font-weight:900;
+  color:white;line-height:1;margin-bottom:4px;
+}
+.sp-title em{color:var(--gold2);font-style:normal;}
+.sp-kicker{font-size:0.58rem;letter-spacing:3px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:20px;}
+.sp-copy{font-size:0.68rem;color:rgba(255,255,255,0.5);line-height:1.75;margin-bottom:28px;max-width:210px;}
+.sp-cta{
+  width:210px;padding:13px;border-radius:100px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  border:none;color:var(--ink);
+  font-family:'Sora',sans-serif;font-weight:700;font-size:0.75rem;
+  letter-spacing:1px;cursor:pointer;
+  box-shadow:0 12px 32px rgba(232,160,32,0.5);margin-bottom:12px;
+}
+.sp-login{font-size:0.58rem;color:rgba(255,255,255,0.28);}
+.sp-login u{color:var(--gold2);cursor:pointer;}
+.sp-foot{
+  display:flex;border-top:1px solid rgba(255,255,255,0.05);
+  padding:12px 0;z-index:2;
+}
+.sp-stat{flex:1;text-align:center;}
+.sp-stat+.sp-stat{border-left:1px solid rgba(255,255,255,0.06);}
+.sp-stat .v{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--gold2);}
+.sp-stat .l{font-size:0.45rem;color:rgba(255,255,255,0.25);letter-spacing:1px;margin-top:1px;}
+
+/* ════════ SCREEN: HOME ════════ */
+.s-home{height:100%;}
+.hd{
+  background:linear-gradient(155deg,#0E0920,#2A1060);
+  padding:12px 15px 18px;position:relative;overflow:hidden;
+}
+.hd::after{content:'✦';position:absolute;right:12px;top:10px;font-size:2.8rem;color:rgba(232,160,32,0.08);}
+.hd-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.hd-greet{font-size:0.52rem;color:rgba(255,255,255,0.35);margin-bottom:2px;}
+.hd-name{font-size:0.85rem;font-weight:700;color:white;}
+.hd-av{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--rose));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;border:2px solid rgba(255,255,255,0.12);
+  box-shadow:0 4px 12px rgba(232,160,32,0.35);
+}
+.search-bar{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:9px 13px;
+  display:flex;align-items:center;gap:8px;
+  backdrop-filter:blur(10px);
+}
+.search-bar .si{font-size:0.85rem;}
+.search-bar .st{font-size:0.6rem;color:rgba(255,255,255,0.35);}
+.search-bar .fi{
+  margin-left:auto;
+  background:rgba(232,160,32,0.15);
+  border:1px solid rgba(232,160,32,0.25);
+  border-radius:8px;padding:3px 8px;
+  font-size:0.5rem;color:var(--gold);font-weight:600;
+}
+
+.h-body{background:#F7F4FF;padding:12px 12px 80px;}
+
+.cats-wrap{margin-bottom:14px;}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.sh .st2{font-size:0.68rem;font-weight:700;color:var(--ink);}
+.sh .sa{font-size:0.56rem;color:var(--rose);font-weight:600;}
+.cats-scroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:3px;}
+.cats-scroll::-webkit-scrollbar{display:none;}
+.cat{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;}
+.cat .ci{
+  width:50px;height:50px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+  box-shadow:0 6px 16px rgba(0,0,0,0.12);
+}
+.cat.sel .ci{outline:2.5px solid var(--gold);outline-offset:2px;}
+.cat .cl{font-size:0.48rem;font-weight:600;color:var(--ink);}
+.ci1{background:linear-gradient(135deg,#667eea,#764ba2);}
+.ci2{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.ci3{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.ci4{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.ci5{background:linear-gradient(135deg,#fa709a,#fee140);}
+
+.banner{
+  margin-bottom:14px;border-radius:18px;
+  background:linear-gradient(130deg,#2A1060,#E8447A);
+  padding:13px;display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 10px 28px rgba(42,16,96,0.35);overflow:hidden;position:relative;
+}
+.banner::before{content:'🎊';position:absolute;right:55px;top:-2px;font-size:2.5rem;opacity:0.12;}
+.bt1{font-size:0.52rem;color:rgba(255,255,255,0.55);letter-spacing:1px;text-transform:uppercase;}
+.bt2{font-size:0.82rem;font-weight:700;color:white;margin:3px 0;}
+.bt3{font-size:0.52rem;color:rgba(255,255,255,0.45);}
+.b-cta{
+  background:white;color:#2A1060;
+  border:none;border-radius:12px;
+  padding:8px 11px;font-size:0.58rem;font-weight:700;
+  font-family:'Sora',sans-serif;cursor:pointer;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
+
+.vc{
+  background:white;border-radius:16px;margin-bottom:9px;
+  overflow:hidden;display:flex;align-items:stretch;
+  box-shadow:0 3px 14px rgba(10,6,24,0.07);
+  border:1px solid rgba(123,63,228,0.06);
+  position:relative;
+}
+.vc .badge{
+  position:absolute;top:7px;right:7px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  color:var(--ink);font-size:0.42rem;font-weight:700;
+  padding:2px 7px;border-radius:7px;letter-spacing:0.5px;
+}
+.vi{width:80px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.vi1{background:linear-gradient(155deg,#667eea,#764ba2);}
+.vi2{background:linear-gradient(155deg,#f093fb,#f5576c);}
+.vi3{background:linear-gradient(155deg,#43e97b,#1a9c6a);}
+.vinfo{flex:1;padding:9px 10px;}
+.vn{font-size:0.72rem;font-weight:700;color:var(--ink);}
+.vt{font-size:0.52rem;color:var(--muted);margin-bottom:4px;}
+.vr{display:flex;align-items:center;gap:3px;font-size:0.56rem;color:#F5A623;font-weight:600;}
+.vr s{color:var(--muted);font-weight:400;text-decoration:none;}
+.vp2{font-size:0.62rem;color:var(--violet);font-weight:700;margin-top:2px;}
+.vd{font-size:0.5rem;color:var(--muted);margin-top:1px;}
+
+/* ════════ SCREEN: VENDOR PROFILE (customer view) ════════ */
+.vph{
+  height:155px;
+  background:linear-gradient(140deg,#2A1060,#E8447A);
+  position:relative;overflow:hidden;
+}
+.vph::before{content:'📸';position:absolute;right:16px;top:14px;font-size:4.5rem;opacity:0.1;}
+.vph .back,.vph .share{
+  position:absolute;top:13px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;color:white;cursor:pointer;
+}
+.vph .back{left:13px;}
+.vph .share{right:13px;}
+.vph .av{
+  position:absolute;bottom:-26px;left:14px;
+  width:58px;height:58px;border-radius:18px;
+  background:white;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;border:3px solid white;
+  box-shadow:0 8px 24px rgba(0,0,0,0.25);
+}
+.vph .veri{
+  position:absolute;bottom:-26px;left:78px;
+  background:var(--green);color:white;
+  font-size:0.42rem;font-weight:700;
+  padding:2px 7px;border-radius:7px;letter-spacing:0.5px;
+}
+
+.vpbody{padding:34px 13px 10px;background:#F7F4FF;}
+.vpname{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);}
+.vploc{font-size:0.55rem;color:var(--muted);margin-bottom:7px;}
+.vpchips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
+.ch{
+  background:rgba(123,63,228,0.07);
+  border:1px solid rgba(123,63,228,0.14);
+  border-radius:8px;padding:3px 8px;
+  font-size:0.5rem;color:var(--violet);font-weight:500;
+}
+.vpst{display:flex;gap:5px;margin-bottom:13px;}
+.vps{
+  flex:1;background:white;border-radius:13px;padding:8px 5px;
+  text-align:center;box-shadow:0 2px 10px rgba(10,6,24,0.06);
+  border:1px solid rgba(123,63,228,0.07);
+}
+.vps .v{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:700;color:var(--ink);}
+.vps .k{font-size:0.46rem;color:var(--muted);margin-top:1px;}
+
+.ptgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px;}
+.pti{
+  aspect-ratio:1;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;overflow:hidden;position:relative;
+}
+.pti::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.25));}
+.pt1{background:linear-gradient(135deg,#667eea,#764ba2);}
+.pt2{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.pt3{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.pt4{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.pt5{background:linear-gradient(135deg,#fa709a,#fee140);}
+.pt6{background:linear-gradient(135deg,#a18cd1,#fbc2eb);}
+
+.pkglist{margin-bottom:11px;}
+.pkg{
+  background:white;border-radius:13px;padding:10px 11px;
+  margin-bottom:6px;border-left:3px solid var(--gold);
+  box-shadow:0 2px 10px rgba(10,6,24,0.05);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.pkg.hot{border-left-color:var(--rose);}
+.pkgn{font-size:0.68rem;font-weight:700;color:var(--ink);}
+.pkgd{font-size:0.52rem;color:var(--muted);margin-top:1px;}
+.pkgp{font-family:'Fraunces',serif;font-size:0.9rem;font-weight:700;color:var(--violet);}
+
+.rev{background:white;border-radius:13px;padding:9px 11px;margin-bottom:6px;box-shadow:0 2px 8px rgba(10,6,24,0.04);}
+.revtop{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.revav{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;color:white;font-weight:700;
+}
+.revn{font-size:0.62rem;font-weight:600;color:var(--ink);}
+.revd{font-size:0.48rem;color:var(--muted);}
+.revs{margin-left:auto;font-size:0.58rem;color:#F5A623;}
+.revt{font-size:0.55rem;color:var(--muted);line-height:1.55;}
+
+.vpact{
+  position:sticky;bottom:0;
+  background:rgba(247,244,255,0.97);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(123,63,228,0.1);
+  padding:9px 13px;display:flex;gap:7px;
+}
+.bwa{
+  flex:1;padding:10px;background:#25D366;
+  border:none;border-radius:12px;color:white;
+  font-size:0.6rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.bbk{
+  flex:2;padding:10px;
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  border:none;border-radius:12px;color:white;
+  font-size:0.6rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;
+  box-shadow:0 6px 18px rgba(123,63,228,0.35);
+}
+
+/* ════════ SCREEN: POST REQUIREMENT ════════ */
+.prh{
+  background:linear-gradient(155deg,#0E0920,#2A1060);
+  padding:14px 14px 16px;color:white;
+}
+.prh h2{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;}
+.prh p{font-size:0.56rem;color:rgba(255,255,255,0.4);margin-top:2px;}
+.prform{background:#F7F4FF;padding:13px 13px 80px;}
+.fg{margin-bottom:11px;}
+.fl{font-size:0.6rem;font-weight:600;color:var(--ink);margin-bottom:5px;display:block;}
+.fi{
+  width:100%;background:white;
+  border:1.5px solid rgba(123,63,228,0.12);
+  border-radius:12px;padding:9px 11px;
+  font-size:0.65rem;font-family:'Sora',sans-serif;color:var(--ink);outline:none;
+}
+.evgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.ev{
+  background:white;border:2px solid rgba(123,63,228,0.12);
+  border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer;
+}
+.ev.on{border-color:var(--violet);background:rgba(123,63,228,0.06);}
+.ev .ei{font-size:1.2rem;display:block;margin-bottom:3px;}
+.ev .el{font-size:0.5rem;font-weight:600;color:var(--ink);}
+.schips{display:flex;flex-wrap:wrap;gap:5px;}
+.sc{
+  background:white;border:1.5px solid rgba(123,63,228,0.12);
+  border-radius:20px;padding:4px 10px;
+  font-size:0.54rem;color:var(--ink);cursor:pointer;
+  font-family:'Sora',sans-serif;
+}
+.sc.on{background:var(--violet);color:white;border-color:var(--violet);}
+.brow{display:flex;gap:6px;}
+.bfi{
+  flex:1;background:white;border:1.5px solid rgba(123,63,228,0.12);
+  border-radius:12px;padding:9px 10px;
+  font-size:0.65rem;font-family:'Sora',sans-serif;color:var(--ink);
+}
+.prsub{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  border:none;border-radius:13px;color:var(--ink);
+  font-size:0.75rem;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;
+  box-shadow:0 8px 22px rgba(232,160,32,0.38);margin-top:4px;
+}
+
+/* ════════ SCREEN: QUOTES ════════ */
+.qth{
+  background:linear-gradient(155deg,#0E0920,#2A1060);
+  padding:14px;color:white;
+}
+.qth h2{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;}
+.qth p{font-size:0.54rem;color:rgba(255,255,255,0.4);}
+.qpill{
+  margin-top:9px;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  padding:7px 9px;display:flex;justify-content:space-between;
+  font-size:0.55rem;color:rgba(255,255,255,0.65);
+}
+.qtlist{background:#F7F4FF;padding:11px 11px 80px;}
+.qtc{
+  background:white;border-radius:17px;padding:11px;
+  margin-bottom:9px;box-shadow:0 4px 16px rgba(10,6,24,0.07);
+  border:1px solid rgba(123,63,228,0.08);position:relative;overflow:hidden;
+}
+.qtc.best{border-color:rgba(232,160,32,0.35);}
+.qtc.best::before{
+  content:'⭐ BEST VALUE';
+  position:absolute;top:9px;right:-2px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  color:var(--ink);font-size:0.43rem;font-weight:700;
+  padding:3px 10px;border-radius:7px 0 0 7px;letter-spacing:0.5px;
+}
+.qttop{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.qtav{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;}
+.qa1{background:linear-gradient(135deg,#667eea,#764ba2);}
+.qa2{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.qa3{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.qtvn{font-size:0.7rem;font-weight:700;color:var(--ink);}
+.qtvm{font-size:0.52rem;color:var(--muted);}
+.qtpr{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--violet);margin-left:auto;}
+.qtinc{
+  background:rgba(123,63,228,0.05);border:1px solid rgba(123,63,228,0.1);
+  border-radius:10px;padding:7px 9px;margin-bottom:8px;
+  font-size:0.54rem;color:var(--ink);line-height:1.7;
+}
+.qtacts{display:flex;gap:5px;}
+.qtv{
+  flex:1;padding:7px;background:rgba(123,63,228,0.07);
+  border:none;border-radius:9px;color:var(--violet);
+  font-size:0.56rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;
+}
+.qtb{
+  flex:2;padding:7px;
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  border:none;border-radius:9px;color:white;
+  font-size:0.56rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;
+  box-shadow:0 4px 12px rgba(123,63,228,0.3);
+}
+
+/* ════════════════════════════
+   VENDOR SCREENS
+════════════════════════════ */
+
+/* VENDOR DASHBOARD */
+.vdh{
+  background:linear-gradient(155deg,#060410,#1A0A45);
+  padding:13px 14px 18px;position:relative;overflow:hidden;
+}
+.vdh::after{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(123,63,228,0.2);filter:blur(40px);}
+.vdt{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.vdlogo{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:700;color:white;}
+.vdlogo span{color:var(--gold2);}
+.vdbell{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;position:relative;cursor:pointer;
+}
+.vdbell::after{
+  content:'3';position:absolute;top:-2px;right:-2px;
+  background:var(--rose);color:white;font-size:0.42rem;font-weight:700;
+  width:13px;height:13px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.vdw{font-size:0.55rem;color:rgba(255,255,255,0.35);margin-bottom:2px;}
+.vdbiz{font-size:0.9rem;font-weight:700;color:white;margin-bottom:14px;}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.kpi{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);
+  border-radius:14px;padding:10px 11px;backdrop-filter:blur(10px);
+}
+.kpi .kv{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:white;}
+.kpi .kv.g{color:var(--gold2);}
+.kpi .kv.tl{color:var(--teal);}
+.kpi .kl{font-size:0.48rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+.kpi .kt{font-size:0.5rem;color:rgba(255,255,255,0.2);margin-top:4px;}
+
+.vdbody{background:#F7F4FF;padding:11px 11px 80px;}
+
+.chart-card{
+  background:linear-gradient(140deg,#1C1033,#2A1060);
+  border-radius:16px;padding:13px;margin-bottom:12px;
+  color:white;
+}
+.chart-card .ct{font-size:0.58rem;color:rgba(255,255,255,0.4);}
+.chart-card .cv{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--gold2);margin-bottom:12px;}
+.bars{display:flex;gap:4px;align-items:flex-end;height:48px;}
+.bar{flex:1;border-radius:4px 4px 0 0;background:rgba(255,255,255,0.1);}
+.bar.hi{background:linear-gradient(to top,var(--gold),var(--gold2));}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bl{font-size:0.42rem;color:rgba(255,255,255,0.28);}
+
+.rcard{
+  background:white;border-radius:14px;padding:10px 11px;
+  margin-bottom:7px;box-shadow:0 2px 10px rgba(10,6,24,0.06);
+  border:1px solid rgba(123,63,228,0.07);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.rl .rn{font-size:0.66rem;font-weight:700;color:var(--ink);}
+.rl .rm{font-size:0.53rem;color:var(--muted);margin-top:1px;}
+.rl .rb{font-size:0.55rem;color:var(--violet);font-weight:600;margin-top:3px;}
+.rr .rd{font-size:0.5rem;color:var(--muted);margin-bottom:4px;text-align:right;}
+.rrply{
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  color:white;border:none;border-radius:9px;
+  padding:5px 10px;font-size:0.53rem;font-weight:600;
+  font-family:'Sora',sans-serif;cursor:pointer;
+}
+
+/* VENDOR PROFILE EDITOR */
+.veh{background:linear-gradient(155deg,#0E0920,#2A1060);padding:14px;color:white;}
+.veh h2{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;}
+.veh p{font-size:0.54rem;color:rgba(255,255,255,0.38);margin-top:2px;}
+
+.vebody{background:#F7F4FF;padding:12px 12px 80px;}
+
+.photo-block{
+  background:white;border-radius:18px;padding:16px;margin-bottom:10px;
+  text-align:center;border:2px dashed rgba(123,63,228,0.18);
+  box-shadow:0 2px 10px rgba(10,6,24,0.05);
+}
+.bigav{
+  width:70px;height:70px;border-radius:20px;
+  background:linear-gradient(135deg,var(--violet),var(--rose));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 8px;
+  border:3px solid white;box-shadow:0 8px 22px rgba(123,63,228,0.35);
+}
+.photo-block .pt{font-size:0.66rem;font-weight:700;color:var(--ink);}
+.photo-block .ps{font-size:0.52rem;color:var(--muted);margin-top:1px;}
+.photo-block button{
+  background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.2);
+  border-radius:10px;padding:6px 14px;font-size:0.56rem;font-weight:600;
+  color:var(--violet);font-family:'Sora',sans-serif;cursor:pointer;margin-top:8px;
+}
+
+.field{
+  background:white;border-radius:13px;padding:10px 11px;
+  margin-bottom:7px;box-shadow:0 2px 8px rgba(10,6,24,0.04);
+  border:1px solid rgba(123,63,228,0.07);
+}
+.field .fl2{font-size:0.52rem;color:var(--muted);margin-bottom:3px;}
+.field .fv{font-size:0.68rem;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+.field .fv .fe{font-size:0.52rem;color:var(--violet);font-weight:600;cursor:pointer;}
+
+.pkg-manage{background:white;border-radius:13px;padding:11px;margin-bottom:8px;box-shadow:0 2px 8px rgba(10,6,24,0.04);}
+.pkg-manage .pmt{font-size:0.68rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.pmk{
+  background:#F7F4FF;border-radius:11px;padding:9px 10px;
+  margin-bottom:6px;border-left:3px solid var(--gold);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.pmk.hot{border-left-color:var(--rose);}
+.pmkn{font-size:0.66rem;font-weight:700;color:var(--ink);}
+.pmkd{font-size:0.5rem;color:var(--muted);margin-top:1px;}
+.pmkp{font-family:'Fraunces',serif;font-size:0.88rem;font-weight:700;color:var(--violet);}
+.pmke{font-size:0.7rem;cursor:pointer;}
+.add-pkg{
+  width:100%;padding:8px;
+  background:rgba(123,63,228,0.06);
+  border:1.5px dashed rgba(123,63,228,0.22);
+  border-radius:10px;font-size:0.58rem;color:var(--violet);font-weight:600;
+  font-family:'Sora',sans-serif;cursor:pointer;
+}
+
+.portfolio-block{background:white;border-radius:13px;padding:11px;margin-bottom:8px;box-shadow:0 2px 8px rgba(10,6,24,0.04);}
+.portfolio-block .pbt{font-size:0.68rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.pgrid4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.pg4i{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;overflow:hidden;position:relative;}
+.pg4i .del{
+  position:absolute;top:2px;right:2px;
+  background:rgba(255,68,102,0.85);color:white;
+  width:14px;height:14px;border-radius:50%;
+  font-size:0.5rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:2;
+}
+.add4{
+  background:rgba(123,63,228,0.05);
+  border:2px dashed rgba(123,63,228,0.2);
+  border-radius:10px;aspect-ratio:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:1.3rem;color:var(--muted);cursor:pointer;
+}
+.add4 span{font-size:0.42rem;color:var(--muted);margin-top:2px;}
+
+/* ════════ VENDOR CALENDAR ════════ */
+.calh{background:linear-gradient(155deg,#0E0920,#2A1060);padding:14px;color:white;}
+.calh h2{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;}
+.calh p{font-size:0.54rem;color:rgba(255,255,255,0.38);margin-top:2px;}
+
+.calbody{background:#F7F4FF;padding:11px 11px 80px;}
+
+.calmonth{
+  background:white;border-radius:18px;padding:13px;
+  margin-bottom:10px;box-shadow:0 4px 16px rgba(10,6,24,0.07);
+}
+.calnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.calnav .mname{font-family:'Fraunces',serif;font-size:0.85rem;font-weight:700;color:var(--ink);}
+.calnav button{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(123,63,228,0.08);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;color:var(--violet);cursor:pointer;
+}
+.daysrow{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:5px;}
+.daysrow span{font-size:0.46rem;color:var(--muted);font-weight:600;text-align:center;padding:2px 0;}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cd{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  border-radius:9px;font-size:0.54rem;color:var(--ink);cursor:pointer;
+  font-weight:500;transition:all 0.15s;position:relative;
+}
+.cd:hover{background:rgba(123,63,228,0.08);}
+.cd.other{color:rgba(0,0,0,0.18);cursor:default;}
+.cd.other:hover{background:none;}
+.cd.booked{background:#FFECEF;color:var(--red);font-weight:700;}
+.cd.avail{background:#E8FAF2;color:var(--green);font-weight:700;}
+.cd.today{background:linear-gradient(135deg,var(--violet),var(--rose));color:white;font-weight:700;}
+.cd.sel{background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--ink);font-weight:700;}
+.cd.today::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.7);}
+
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.leg{display:flex;align-items:center;gap:4px;font-size:0.5rem;color:var(--muted);}
+.ld{width:8px;height:8px;border-radius:3px;}
+.lb{background:var(--red);}
+.la{background:var(--green);}
+.lt{background:var(--violet);}
+.ls{background:var(--gold);}
+
+.avail-action{
+  background:white;border-radius:14px;padding:11px 12px;
+  margin-bottom:10px;box-shadow:0 2px 8px rgba(10,6,24,0.05);
+  border:1px solid rgba(123,63,228,0.08);
+}
+.avail-action .at{font-size:0.66rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.avail-action .date-sel{
+  background:#F7F4FF;border:1.5px solid rgba(123,63,228,0.15);
+  border-radius:10px;padding:7px 10px;
+  font-size:0.6rem;font-family:'Sora',sans-serif;color:var(--ink);
+  width:100%;margin-bottom:8px;outline:none;
+}
+.avact-btns{display:flex;gap:6px;}
+.btn-avail{
+  flex:1;padding:8px;
+  background:rgba(24,201,122,0.1);border:1.5px solid rgba(24,201,122,0.3);
+  border-radius:10px;font-size:0.56rem;font-weight:700;color:var(--green);
+  font-family:'Sora',sans-serif;cursor:pointer;
+}
+.btn-block{
+  flex:1;padding:8px;
+  background:rgba(255,68,102,0.08);border:1.5px solid rgba(255,68,102,0.25);
+  border-radius:10px;font-size:0.56rem;font-weight:700;color:var(--red);
+  font-family:'Sora',sans-serif;cursor:pointer;
+}
+
+.bklist .bkt{font-size:0.68rem;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.bkitem{
+  background:white;border-radius:13px;padding:9px 11px;
+  margin-bottom:6px;display:flex;align-items:center;gap:9px;
+  box-shadow:0 2px 8px rgba(10,6,24,0.05);
+  border-left:3px solid var(--gold);
+}
+.bkitem.up{border-left-color:var(--teal);}
+.bkdb{width:36px;flex-shrink:0;text-align:center;}
+.bkdb .dd{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1;}
+.bkdb .dm{font-size:0.45rem;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.bkinfo{flex:1;}
+.bkcn{font-size:0.66rem;font-weight:700;color:var(--ink);}
+.bkev{font-size:0.52rem;color:var(--muted);}
+.bkpk{font-size:0.52rem;color:var(--violet);font-weight:600;}
+.bkpr{font-family:'Fraunces',serif;font-size:0.78rem;font-weight:700;color:var(--violet);}
+
+/* AVAILABILITY SUMMARY CARDS */
+.avail-summary{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.asc{
+  background:white;border-radius:13px;padding:9px 10px;
+  box-shadow:0 2px 8px rgba(10,6,24,0.05);
+  border-top:3px solid var(--green);text-align:center;
+}
+.asc.booked{border-top-color:var(--red);}
+.asc .asv{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);}
+.asc .asl{font-size:0.5rem;color:var(--muted);margin-top:1px;}
+
+/* ── toggle ── */
+.cust,.vend{display:none;}
+.cust.on,.vend.on{display:block;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="pill">✦ complete ui design ✦</div>
+  <h1>Shubh <span class="accent">Events</span></h1>
+  <p>Event Services Marketplace — Customer &amp; Vendor Screens</p>
+</div>
+
+<!-- TABS -->
+<div class="tabbar">
+  <button class="tab active" onclick="sw('c')"><span class="dot"></span>👤 Customer App</button>
+  <button class="tab" onclick="sw('v')"><span class="dot"></span>🏪 Vendor App</button>
+</div>
+
+<!-- ══════════ CUSTOMER ══════════ -->
+<div class="cust on" id="cs">
+
+  <div class="sec-label"><span>Welcome &amp; Explore</span><div class="line"></div></div>
+  <div class="phones">
+
+    <!-- SPLASH -->
+    <div class="pw">
+      <div class="ptag">① Splash</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="s-splash">
+            <div class="orb orb1"></div><div class="orb orb2"></div>
+            <div class="sbar" style="background:transparent;padding-top:6px"><span class="tm">9:41</span><span class="ic">📶 🔋</span></div>
+            <div class="body">
+              <div class="sp-logo-wrap">🎊</div>
+              <div class="sp-title">Shubh<br><em>Events</em></div>
+              <div class="sp-kicker">Find · Compare · Book</div>
+              <div class="sp-copy">Discover the best photographers, decorators &amp; caterers near your village — always at the right price</div>
+              <button class="sp-cta">GET STARTED →</button>
+              <div class="sp-login">Have an account? <u>Sign In</u></div>
+            </div>
+            <div class="sp-foot">
+              <div class="sp-stat"><div class="v">600+</div><div class="l">Vendors</div></div>
+              <div class="sp-stat"><div class="v">3K+</div><div class="l">Events</div></div>
+              <div class="sp-stat"><div class="v">4.9★</div><div class="l">Rating</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="pw">
+      <div class="ptag">② Home Browse</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="hd">
+              <div class="hd-row">
+                <div><div class="hd-greet">Vanakkam 🙏</div><div class="hd-name">Ravi Kumar</div></div>
+                <div class="hd-av">👤</div>
+              </div>
+              <div class="search-bar">
+                <span class="si">🔍</span><span class="st">Search photographers, decorators...</span>
+                <div class="fi">⚙ Filter</div>
+              </div>
+            </div>
+            <div class="h-body">
+              <div class="cats-wrap">
+                <div class="sh"><div class="st2">Categories</div><div class="sa">See All →</div></div>
+                <div class="cats-scroll">
+                  <div class="cat sel"><div class="ci ci1">📷</div><div class="cl">Photo</div></div>
+                  <div class="cat"><div class="ci ci2">🌸</div><div class="cl">Flowers</div></div>
+                  <div class="cat"><div class="ci ci3">🎪</div><div class="cl">Stage</div></div>
+                  <div class="cat"><div class="ci ci4">🍽️</div><div class="cl">Catering</div></div>
+                  <div class="cat"><div class="ci ci5">💡</div><div class="cl">Lights</div></div>
+                </div>
+              </div>
+              <div class="banner">
+                <div><div class="bt1">Planning an Event?</div><div class="bt2">Post Your Requirement</div><div class="bt3">Get quotes from multiple vendors</div></div>
+                <button class="b-cta">Post Now</button>
+              </div>
+              <div class="sh"><div class="st2">Top Near You</div><div class="sa">See All →</div></div>
+              <div class="vc"><div class="badge">TOP RATED</div><div class="vi vi1">📷</div><div class="vinfo"><div class="vn">Sri Balaji Studio</div><div class="vt">Photography &amp; Videography</div><div class="vr">⭐ 4.9 <s>(128)</s></div><div class="vp2">₹8,000 – ₹25,000</div><div class="vd">📍 3.2 km · Thanjavur</div></div></div>
+              <div class="vc"><div class="vi vi2">🌸</div><div class="vinfo"><div class="vn">Lakshmi Decorators</div><div class="vt">Flower &amp; Stage Decoration</div><div class="vr">⭐ 4.7 <s>(89)</s></div><div class="vp2">₹5,000 – ₹18,000</div><div class="vd">📍 5.1 km · Kumbakonam</div></div></div>
+              <div class="vc"><div class="vi vi3">🍽️</div><div class="vinfo"><div class="vn">Annapoorna Catering</div><div class="vt">Full Event Catering</div><div class="vr">⭐ 4.8 <s>(204)</s></div><div class="vp2">₹150/plate onwards</div><div class="vd">📍 2.8 km · Nearby</div></div></div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni on"><span class="ic2">🏠</span>Home</div>
+            <div class="bni"><span class="ic2">🔍</span>Search</div>
+            <div class="bni"><span class="ic2">📋</span>Quotes</div>
+            <div class="bni"><span class="ic2">📅</span>Bookings</div>
+            <div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDOR PROFILE -->
+    <div class="pw">
+      <div class="ptag">③ Vendor Profile</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#2A1060"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="vph">
+              <div class="back">←</div><div class="share">↗</div>
+              <div class="av">📷</div><div class="veri">✓ VERIFIED</div>
+            </div>
+            <div class="vpbody">
+              <div class="vpname">Sri Balaji Studio</div>
+              <div class="vploc">📍 Thanjavur, TN · Member since 2021</div>
+              <div class="vpchips"><div class="ch">📷 Photography</div><div class="ch">🎬 Video</div><div class="ch">✏️ Editing</div><div class="ch">🖨️ Album</div></div>
+              <div class="vpst">
+                <div class="vps"><div class="v">4.9⭐</div><div class="k">Rating</div></div>
+                <div class="vps"><div class="v">128</div><div class="k">Reviews</div></div>
+                <div class="vps"><div class="v">250+</div><div class="k">Events</div></div>
+              </div>
+              <div class="sh"><div class="st2">Portfolio</div><div class="sa">View All →</div></div>
+              <div class="ptgrid"><div class="pti pt1">📷</div><div class="pti pt2">💐</div><div class="pti pt3">🎊</div><div class="pti pt4">👰</div><div class="pti pt5">🎂</div><div class="pti pt6">✨</div></div>
+              <div class="sh"><div class="st2">Packages</div></div>
+              <div class="pkglist">
+                <div class="pkg"><div><div class="pkgn">Basic Package</div><div class="pkgd">4 hrs · 200 photos · 1 video</div></div><div class="pkgp">₹8,000</div></div>
+                <div class="pkg hot"><div><div class="pkgn">Premium Package</div><div class="pkgd">Full day · 500 photos · Album</div></div><div class="pkgp">₹18,000</div></div>
+              </div>
+              <div class="sh"><div class="st2">Reviews</div></div>
+              <div class="rev"><div class="revtop"><div class="revav">M</div><div><div class="revn">Murugan Family</div><div class="revd">March 2025</div></div><div class="revs">⭐⭐⭐⭐⭐</div></div><div class="revt">Excellent work! Very professional and photos were outstanding.</div></div>
+              <div class="rev"><div class="revtop"><div class="revav" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">S</div><div><div class="revn">Selvi &amp; Karthik</div><div class="revd">Feb 2025</div></div><div class="revs">⭐⭐⭐⭐⭐</div></div><div class="revt">Very affordable and quality is top notch. Highly recommend!</div></div>
+              <div style="height:70px"></div>
+            </div>
+          </div>
+          <div class="vpact">
+            <button class="bwa">💬 WhatsApp</button>
+            <button class="bbk">Book Now →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec-label"><span>Request &amp; Compare</span><div class="line"></div></div>
+  <div class="phones">
+
+    <!-- POST REQ -->
+    <div class="pw">
+      <div class="ptag">④ Post Requirement</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="prh"><h2>📋 Post Your Requirement</h2><p>Tell us your needs — vendors will quote you!</p></div>
+            <div class="prform">
+              <div class="fg"><label class="fl">Event Type</label>
+                <div class="evgrid">
+                  <div class="ev on"><span class="ei">💍</span><span class="el">Wedding</span></div>
+                  <div class="ev"><span class="ei">🎂</span><span class="el">Birthday</span></div>
+                  <div class="ev"><span class="ei">🎉</span><span class="el">Function</span></div>
+                  <div class="ev"><span class="ei">🏫</span><span class="el">School</span></div>
+                  <div class="ev"><span class="ei">⚰️</span><span class="el">Last Rites</span></div>
+                  <div class="ev"><span class="ei">🕌</span><span class="el">Religious</span></div>
+                </div>
+              </div>
+              <div class="fg"><label class="fl">Event Date</label><input class="fi" placeholder="📅 Select date" readonly></div>
+              <div class="fg"><label class="fl">Location / Village</label><input class="fi" placeholder="📍 Village or town name"></div>
+              <div class="fg"><label class="fl">No. of Guests</label><input class="fi" placeholder="Approx. guests e.g. 300"></div>
+              <div class="fg"><label class="fl">Services Needed</label>
+                <div class="schips">
+                  <div class="sc on">📷 Photography</div><div class="sc on">🌸 Flowers</div>
+                  <div class="sc">🎪 Stage</div><div class="sc">🍽️ Catering</div>
+                  <div class="sc">💡 Lighting</div><div class="sc">🎶 Sound</div>
+                </div>
+              </div>
+              <div class="fg"><label class="fl">Budget Range (₹)</label>
+                <div class="brow"><input class="bfi" placeholder="Min ₹"><input class="bfi" placeholder="Max ₹"></div>
+              </div>
+              <div class="fg"><label class="fl">Extra Notes</label><input class="fi" placeholder="Any specific requirements..."></div>
+              <button class="prsub">✦ Get Quotes from Vendors →</button>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">🏠</span>Home</div><div class="bni on"><span class="ic2">📋</span>Quotes</div>
+            <div class="bni"><span class="ic2">📅</span>Bookings</div><div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUOTES -->
+    <div class="pw">
+      <div class="ptag">⑤ Quotes Received</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="qth"><h2>📩 Quotes Received</h2><p>3 vendors responded to your wedding request</p>
+              <div class="qpill"><span>💍 Wedding · 📷 Photo + 🌸 Flowers</span><span style="color:var(--gold2)">May 15</span></div>
+            </div>
+            <div class="qtlist">
+              <div class="qtc best">
+                <div class="qttop"><div class="qtav qa1">📷</div><div><div class="qtvn">Sri Balaji Studio</div><div class="qtvm">⭐ 4.9 · 3.2 km</div></div><div class="qtpr">₹14,000</div></div>
+                <div class="qtinc">✅ Full day photography<br>✅ 400 edited photos<br>✅ 1 highlight video<br>✅ Printed album</div>
+                <div class="qtacts"><button class="qtv">Profile</button><button class="qtb">✓ Accept &amp; Book</button></div>
+              </div>
+              <div class="qtc">
+                <div class="qttop"><div class="qtav qa2">📸</div><div><div class="qtvn">Raj Photography</div><div class="qtvm">⭐ 4.5 · 8.1 km</div></div><div class="qtpr">₹17,500</div></div>
+                <div class="qtinc">✅ Full day · 300 photos<br>✅ 2 videos · ❌ No album</div>
+                <div class="qtacts"><button class="qtv">Profile</button><button class="qtb">✓ Accept &amp; Book</button></div>
+              </div>
+              <div class="qtc">
+                <div class="qttop"><div class="qtav qa3">🎬</div><div><div class="qtvn">Kumar Films</div><div class="qtvm">⭐ 4.6 · 12 km</div></div><div class="qtpr">₹11,000</div></div>
+                <div class="qtinc">✅ 6 hrs · 250 photos<br>❌ No video · ❌ No album</div>
+                <div class="qtacts"><button class="qtv">Profile</button><button class="qtb">✓ Accept &amp; Book</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">🏠</span>Home</div><div class="bni on"><span class="ic2">📋</span>Quotes</div>
+            <div class="bni"><span class="ic2">📅</span>Bookings</div><div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ VENDOR ══════════ -->
+<div class="vend" id="vs">
+
+  <div class="sec-label"><span>Vendor Management</span><div class="line"></div></div>
+  <div class="phones">
+
+    <!-- DASHBOARD -->
+    <div class="pw">
+      <div class="ptag">① Dashboard</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#060410"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="vdh">
+              <div class="vdt"><div class="vdlogo">Shubh <span>Events</span></div><div class="vdbell">🔔</div></div>
+              <div class="vdw">Good morning 🙏</div>
+              <div class="vdbiz">Sri Balaji Studio</div>
+              <div class="kpis">
+                <div class="kpi"><div class="kv g">₹42,500</div><div class="kl">This Month Earnings</div><div class="kt">↑ 18% vs last month</div></div>
+                <div class="kpi"><div class="kv">8</div><div class="kl">Bookings This Month</div><div class="kt">3 upcoming</div></div>
+                <div class="kpi"><div class="kv tl">5</div><div class="kl">New Quote Requests</div><div class="kt">Reply quickly!</div></div>
+                <div class="kpi"><div class="kv">4.9 ⭐</div><div class="kl">Your Rating</div><div class="kt">128 reviews</div></div>
+              </div>
+            </div>
+            <div class="vdbody">
+              <div class="chart-card">
+                <div class="ct">Monthly Earnings</div>
+                <div class="cv">₹2,84,000 this year</div>
+                <div class="bars">
+                  <div class="bar-wrap"><div class="bar" style="height:40%"></div><div class="bl">Jan</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bl">Feb</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:70%"></div><div class="bl">Mar</div></div>
+                  <div class="bar-wrap"><div class="bar hi" style="height:100%"></div><div class="bl" style="color:var(--gold2)">Apr</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:60%"></div><div class="bl">May</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:45%"></div><div class="bl">Jun</div></div>
+                </div>
+              </div>
+              <div style="font-size:0.66rem;font-weight:700;color:var(--ink);margin-bottom:7px;">📨 New Requests (5)</div>
+              <div class="rcard"><div class="rl"><div class="rn">Sundar Family — Wedding</div><div class="rm">📍 Papanasam · 300 guests</div><div class="rb">Budget: ₹12,000–₹20,000</div></div><div class="rr"><div class="rd">Jun 12</div><button class="rrply">Reply →</button></div></div>
+              <div class="rcard"><div class="rl"><div class="rn">Priya — Birthday Party</div><div class="rm">📍 Kumbakonam · 150 guests</div><div class="rb">Budget: ₹5,000–₹10,000</div></div><div class="rr"><div class="rd">May 28</div><button class="rrply">Reply →</button></div></div>
+              <div class="rcard"><div class="rl"><div class="rn">Raja — Annual Function</div><div class="rm">📍 Thanjavur · 500 guests</div><div class="rb">Budget: ₹20,000–₹35,000</div></div><div class="rr"><div class="rd">Jul 4</div><button class="rrply">Reply →</button></div></div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni on"><span class="ic2">📊</span>Home</div>
+            <div class="bni"><span class="ic2">📋</span>Requests</div>
+            <div class="bni"><span class="ic2">📅</span>Calendar</div>
+            <div class="bni"><span class="ic2">🖼️</span>Work</div>
+            <div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE EDITOR -->
+    <div class="pw">
+      <div class="ptag">② My Profile &amp; Work</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="veh"><h2>✏️ My Business Profile</h2><p>Keep updated to get more bookings</p></div>
+            <div class="vebody">
+
+              <!-- Avatar upload -->
+              <div class="photo-block">
+                <div class="bigav">📷</div>
+                <div class="pt">Sri Balaji Studio</div>
+                <div class="ps">Tap to change business photo</div>
+                <button>📷 Change Photo</button>
+              </div>
+
+              <!-- Details -->
+              <div class="field"><div class="fl2">Business Name</div><div class="fv">Sri Balaji Studio <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">Phone Number</div><div class="fv">+91 98765 43210 <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">Location / Town</div><div class="fv">📍 Thanjavur, Tamil Nadu <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">Service Area (km radius)</div><div class="fv">50 km radius <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">Experience</div><div class="fv">8 Years · 250+ Events <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">Languages Spoken</div><div class="fv">Tamil, Telugu, English <span class="fe">Edit ✏️</span></div></div>
+              <div class="field"><div class="fl2">About</div><div class="fv" style="font-size:0.6rem;font-weight:400;line-height:1.5">Professional photographer in Thanjavur, specializing in weddings. <span class="fe">Edit ✏️</span></div></div>
+
+              <!-- Packages -->
+              <div class="pkg-manage">
+                <div class="pmt">💼 My Packages</div>
+                <div class="pmk"><div><div class="pmkn">Basic — ₹8,000</div><div class="pmkd">4 hrs · 200 photos · 1 video</div></div><span class="pmke">✏️</span></div>
+                <div class="pmk hot"><div><div class="pmkn">Premium — ₹18,000</div><div class="pmkd">Full day · 500 photos · Album</div></div><span class="pmke">✏️</span></div>
+                <div class="pmk" style="border-left-color:var(--teal)"><div><div class="pmkn">Video Only — ₹6,000</div><div class="pmkd">Cinematic highlight reel only</div></div><span class="pmke">✏️</span></div>
+                <button class="add-pkg">＋ Add New Package</button>
+              </div>
+
+              <!-- Portfolio -->
+              <div class="portfolio-block">
+                <div class="pbt">🖼️ My Portfolio (12 photos)</div>
+                <div class="pgrid4">
+                  <div class="pg4i pt1"><div class="del">×</div>📷</div>
+                  <div class="pg4i pt2"><div class="del">×</div>💐</div>
+                  <div class="pg4i pt3"><div class="del">×</div>🎊</div>
+                  <div class="pg4i pt4"><div class="del">×</div>👰</div>
+                  <div class="pg4i pt5"><div class="del">×</div>🎂</div>
+                  <div class="pg4i pt6"><div class="del">×</div>✨</div>
+                  <div class="pg4i pt1"><div class="del">×</div>🌸</div>
+                  <div class="add4">➕<span>Upload</span></div>
+                </div>
+                <div style="font-size:0.5rem;color:var(--muted);text-align:center;margin-top:7px;">Tap × to delete · Long-press to reorder</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">📊</span>Home</div>
+            <div class="bni"><span class="ic2">📋</span>Requests</div>
+            <div class="bni"><span class="ic2">📅</span>Calendar</div>
+            <div class="bni"><span class="ic2">🖼️</span>Work</div>
+            <div class="bni on"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="pw">
+      <div class="ptag">③ Availability Calendar</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="calh"><h2>📅 My Availability</h2><p>Manage your booked &amp; available dates</p></div>
+            <div class="calbody">
+
+              <!-- Summary -->
+              <div class="avail-summary">
+                <div class="asc booked"><div class="asv">6</div><div class="asl">Days Booked in May</div></div>
+                <div class="asc"><div class="asv">18</div><div class="asl">Days Available in May</div></div>
+              </div>
+
+              <!-- Calendar -->
+              <div class="calmonth">
+                <div class="calnav">
+                  <button>‹</button>
+                  <div class="mname">May 2025</div>
+                  <button>›</button>
+                </div>
+                <div class="daysrow">
+                  <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                </div>
+                <div class="calgrid" id="cal">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+
+              <!-- Legend -->
+              <div class="legend">
+                <div class="leg"><div class="ld lb"></div>Booked</div>
+                <div class="leg"><div class="ld la"></div>Available</div>
+                <div class="leg"><div class="ld lt"></div>Today</div>
+                <div class="leg"><div class="ld ls"></div>Selected</div>
+              </div>
+
+              <!-- Action panel -->
+              <div class="avail-action">
+                <div class="at" id="selLabel">Select a date to manage</div>
+                <input class="date-sel" type="date" id="datePicker" onchange="onDatePick(this.value)">
+                <div class="avact-btns">
+                  <button class="btn-avail" onclick="markDate('avail')">✓ Mark Available</button>
+                  <button class="btn-block" onclick="markDate('booked')">✗ Mark Booked</button>
+                </div>
+              </div>
+
+              <!-- Upcoming bookings -->
+              <div class="bklist">
+                <div class="bkt">📌 Upcoming Bookings (3)</div>
+                <div class="bkitem up">
+                  <div class="bkdb"><div class="dd">15</div><div class="dm">May</div></div>
+                  <div class="bkinfo"><div class="bkcn">Ravi &amp; Meena Wedding</div><div class="bkev">💍 Wedding · Papanasam</div><div class="bkpk">Premium Package</div></div>
+                  <div class="bkpr">₹18,000</div>
+                </div>
+                <div class="bkitem">
+                  <div class="bkdb"><div class="dd">22</div><div class="dm">May</div></div>
+                  <div class="bkinfo"><div class="bkcn">Kumar Family Function</div><div class="bkev">🎉 Function · Thanjavur</div><div class="bkpk">Basic Package</div></div>
+                  <div class="bkpr">₹8,000</div>
+                </div>
+                <div class="bkitem up">
+                  <div class="bkdb"><div class="dd">28</div><div class="dm">May</div></div>
+                  <div class="bkinfo"><div class="bkcn">Priya Birthday Party</div><div class="bkev">🎂 Birthday · Kumbakonam</div><div class="bkpk">Basic Package</div></div>
+                  <div class="bkpr">₹8,000</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">📊</span>Home</div>
+            <div class="bni"><span class="ic2">📋</span>Requests</div>
+            <div class="bni on"><span class="ic2">📅</span>Calendar</div>
+            <div class="bni"><span class="ic2">🖼️</span>Work</div>
+            <div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="text-align:center;color:rgba(232,160,32,0.25);font-size:0.6rem;letter-spacing:4px;margin-top:10px;position:relative;z-index:1;">✦ SHUBH EVENTS — UI CONCEPT V3 ✦</div>
+
+<script>
+// Tab toggle
+function sw(m){
+  document.getElementById('cs').classList.toggle('on', m==='c');
+  document.getElementById('vs').classList.toggle('on', m==='v');
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&m==='c')||(i===1&&m==='v')));
+}
+
+// Calendar
+const bookedDates = new Set([6,11,15,22,28,3]);
+const availDates  = new Set([2,9,16,21,26,30]);
+let selectedDate  = null;
+
+function renderCal(){
+  const grid = document.getElementById('cal');
+  if(!grid) return;
+  grid.innerHTML='';
+  // May 2025 starts Thursday (day 4, 0=Sun)
+  const startDay=4, days=31;
+  // blanks before
+  for(let i=0;i<startDay;i++){
+    const d=document.createElement('div');
+    d.className='cd other';
+    d.textContent=27+i;
+    grid.appendChild(d);
+  }
+  for(let d=1;d<=days;d++){
+    const el=document.createElement('div');
+    el.textContent=d;
+    let cls='cd';
+    if(d===13) cls+=' today';
+    else if(d===selectedDate) cls+=' sel';
+    else if(bookedDates.has(d)) cls+=' booked';
+    else if(availDates.has(d)) cls+=' avail';
+    el.className=cls;
+    el.onclick=()=>selectDay(d);
+    grid.appendChild(el);
+  }
+  // pad end
+  const total=startDay+days;
+  const rem=(7-total%7)%7;
+  for(let i=1;i<=rem;i++){
+    const d=document.createElement('div');
+    d.className='cd other';d.textContent=i;
+    grid.appendChild(d);
+  }
+}
+
+function selectDay(d){
+  selectedDate=d;
+  const lbl=document.getElementById('selLabel');
+  if(lbl){
+    const status=bookedDates.has(d)?'🔴 Booked':availDates.has(d)?'🟢 Available':'⬜ Not set';
+    lbl.textContent=`May ${d}, 2025 — ${status}`;
+  }
+  renderCal();
+}
+
+function onDatePick(val){
+  if(!val) return;
+  const d=new Date(val).getDate();
+  selectDay(d);
+}
+
+function markDate(type){
+  if(!selectedDate){alert('Please select a date first!');return;}
+  if(type==='avail'){
+    availDates.add(selectedDate);
+    bookedDates.delete(selectedDate);
+  } else {
+    bookedDates.add(selectedDate);
+    availDates.delete(selectedDate);
+  }
+  const lbl=document.getElementById('selLabel');
+  if(lbl){
+    const status=type==='avail'?'🟢 Marked Available':'🔴 Marked Booked';
+    lbl.textContent=`May ${selectedDate} — ${status}`;
+  }
+  renderCal();
+}
+
+renderCal();
+</script>
+</body>
+</html>

@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubh Events — Vendor Travel + Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#06040F;
+  --surf:#0E0920;
+  --card:#141028;
+  --border:rgba(255,255,255,0.07);
+  --gold:#E8A020;
+  --gold2:#FFD060;
+  --teal:#00C9A7;
+  --rose:#FF4E8C;
+  --violet:#7B3FE4;
+  --indigo:#4B2ACF;
+  --cream:#F8F5FF;
+  --ink:#0A0618;
+  --muted:#8888AA;
+  --green:#18C97A;
+  --red:#FF4466;
+  --amber:#FF9500;
+  --blue:#3B82F6;
+  --orange:#F97316;
+}
+body{
+  background:var(--bg);
+  font-family:'Sora',sans-serif;
+  min-height:100vh;
+  padding:36px 16px 80px;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 0%,rgba(123,63,228,0.2) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 90%,rgba(232,160,32,0.12) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── GLOBAL HEADER ── */
+.gh{text-align:center;margin-bottom:44px;position:relative;z-index:1;}
+.gh .pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(232,160,32,0.1);border:1px solid rgba(232,160,32,0.25);
+  border-radius:100px;padding:5px 16px;
+  font-size:0.58rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;
+}
+.gh h1{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;color:#fff;line-height:1.05;}
+.gh h1 em{color:var(--gold2);font-style:normal;}
+.gh p{font-size:0.72rem;color:rgba(255,255,255,0.28);margin-top:7px;letter-spacing:.5px;}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;justify-content:center;gap:0;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:18px;padding:5px;
+  width:fit-content;margin:0 auto 44px;position:relative;z-index:1;
+}
+.tb{
+  padding:10px 24px;border-radius:13px;
+  font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.3);
+  cursor:pointer;border:none;background:none;
+  font-family:'Sora',sans-serif;transition:all .3s;
+  display:flex;align-items:center;gap:7px;
+}
+.tb.on{background:linear-gradient(135deg,var(--violet),var(--rose));color:white;box-shadow:0 6px 20px rgba(123,63,228,0.4);}
+
+/* ── SECTION LABEL ── */
+.sl{display:flex;align-items:center;gap:14px;margin-bottom:22px;position:relative;z-index:1;}
+.sl span{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.22);white-space:nowrap;}
+.sl .ln{flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,0.25),transparent);}
+
+/* ── PHONE SHELL ── */
+.phones{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:52px;position:relative;z-index:1;}
+.pw{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ptag{font-size:0.52rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.18);}
+.phone{
+  width:295px;height:620px;background:var(--surf);
+  border-radius:48px;border:2px solid rgba(123,63,228,0.28);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.03),0 50px 100px rgba(0,0,0,0.8),0 20px 40px rgba(123,63,228,0.12),inset 0 1px 0 rgba(255,255,255,0.06);
+  overflow:hidden;position:relative;flex-shrink:0;
+}
+.notch{width:72px;height:22px;background:var(--bg);border-radius:0 0 18px 18px;margin:0 auto;position:relative;z-index:10;}
+.pinner{height:calc(100% - 22px);overflow:hidden;position:relative;}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:5px 18px 3px;font-size:0.6rem;}
+.sbar .tm{font-weight:700;font-size:0.68rem;color:white;}
+.sbar .ic{color:rgba(255,255,255,0.4);font-size:0.62rem;}
+.scrl{height:calc(100% - 50px);overflow-y:auto;scrollbar-width:none;}
+.scrl::-webkit-scrollbar{display:none;}
+.bnav{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(14,9,32,0.97);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(123,63,228,0.18);
+  display:flex;padding:7px 0 11px;z-index:20;
+}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:0.44rem;font-weight:600;color:rgba(255,255,255,0.22);}
+.bni.on{color:var(--gold2);}
+.bni .ic2{font-size:1.05rem;}
+.bni.on .ic2{filter:drop-shadow(0 0 5px rgba(255,208,96,0.7));}
+
+/* ── SHARED FORM STYLES ── */
+.fhead{background:linear-gradient(155deg,#0E0920,#2A1060);padding:14px;color:white;}
+.fhead h2{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;}
+.fhead p{font-size:0.54rem;color:rgba(255,255,255,0.38);margin-top:2px;}
+.fbody{background:var(--cream);padding:12px 12px 80px;}
+.fg{margin-bottom:10px;}
+.fl{font-size:0.6rem;font-weight:600;color:var(--ink);margin-bottom:4px;display:block;}
+.fi{
+  width:100%;background:white;
+  border:1.5px solid rgba(123,63,228,0.12);border-radius:12px;
+  padding:9px 11px;font-size:0.65rem;font-family:'Sora',sans-serif;color:var(--ink);outline:none;
+}
+.fi:focus{border-color:var(--violet);}
+.frow{display:flex;gap:7px;}
+.frow .fi{flex:1;}
+.fsel{
+  width:100%;background:white;
+  border:1.5px solid rgba(123,63,228,0.12);border-radius:12px;
+  padding:9px 11px;font-size:0.65rem;font-family:'Sora',sans-serif;color:var(--ink);outline:none;
+  appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237B3FE4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.ftoggle{display:flex;gap:0;background:rgba(123,63,228,0.06);border:1px solid rgba(123,63,228,0.14);border-radius:12px;overflow:hidden;}
+.ftog{
+  flex:1;padding:9px 6px;text-align:center;font-size:0.62rem;font-weight:600;
+  color:var(--muted);cursor:pointer;border:none;background:none;
+  font-family:'Sora',sans-serif;transition:all .2s;
+}
+.ftog.on{background:var(--violet);color:white;}
+
+.section-card{background:white;border-radius:14px;padding:11px;margin-bottom:10px;box-shadow:0 2px 10px rgba(10,6,24,0.05);border:1px solid rgba(123,63,228,0.07);}
+.section-card .st{font-size:0.68rem;font-weight:700;color:var(--ink);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.section-card .st span{font-size:0.55rem;color:var(--muted);font-weight:400;}
+
+.travel-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);
+  border-radius:11px;padding:8px 10px;margin-bottom:9px;
+}
+.travel-badge .tbi{font-size:1.2rem;}
+.travel-badge .tbt{font-size:0.6rem;font-weight:600;color:var(--teal);}
+.travel-badge .tbs{font-size:0.52rem;color:var(--muted);}
+
+.state-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.stc{
+  background:rgba(123,63,228,0.07);border:1.5px solid rgba(123,63,228,0.15);
+  border-radius:8px;padding:3px 9px;font-size:0.52rem;color:var(--violet);
+  font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;
+}
+.stc.on{background:var(--violet);color:white;border-color:var(--violet);}
+.stc .x{font-size:0.7rem;opacity:0.7;}
+
+.km-display{
+  background:linear-gradient(135deg,rgba(123,63,228,0.12),rgba(255,78,140,0.08));
+  border:1px solid rgba(123,63,228,0.18);border-radius:12px;
+  padding:10px 12px;margin-top:8px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.km-display .kml{font-size:0.58rem;color:var(--muted);}
+.km-display .kmv{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--violet);}
+
+.save-btn{
+  width:100%;padding:13px;margin-top:8px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  border:none;border-radius:13px;color:var(--ink);
+  font-size:0.75rem;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;
+  box-shadow:0 8px 22px rgba(232,160,32,0.35);
+}
+
+/* ════════════════════════════
+   ADMIN DASHBOARD  (full page, not phone)
+════════════════════════════ */
+.admin-wrap{position:relative;z-index:1;}
+
+.admin-shell{
+  background:var(--surf);border-radius:24px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.03);
+  max-width:1100px;margin:0 auto;
+}
+
+/* Admin top bar */
+.adm-topbar{
+  background:linear-gradient(135deg,#080515,#1A0840);
+  padding:0 28px;
+  display:flex;align-items:center;gap:0;
+  border-bottom:1px solid rgba(123,63,228,0.2);
+  height:54px;
+}
+.adm-logo{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:white;margin-right:40px;}
+.adm-logo em{color:var(--gold2);font-style:normal;}
+.adm-nav{display:flex;gap:0;flex:1;}
+.adm-nav a{
+  padding:0 18px;height:54px;display:flex;align-items:center;
+  font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.35);
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .2s;text-decoration:none;
+}
+.adm-nav a.on{color:var(--gold2);border-bottom-color:var(--gold2);}
+.adm-nav a:hover{color:rgba(255,255,255,0.7);}
+.adm-right{display:flex;align-items:center;gap:12px;margin-left:auto;}
+.adm-search{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:6px 12px;
+  display:flex;align-items:center;gap:7px;
+}
+.adm-search input{background:none;border:none;outline:none;font-size:0.65rem;color:white;font-family:'Sora',sans-serif;width:140px;}
+.adm-search input::placeholder{color:rgba(255,255,255,0.25);}
+.adm-bell{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;position:relative;cursor:pointer;
+}
+.adm-bell::after{content:'4';position:absolute;top:-1px;right:-1px;background:var(--rose);color:white;font-size:0.4rem;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.adm-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));display:flex;align-items:center;justify-content:center;font-size:0.9rem;cursor:pointer;}
+
+/* Admin body */
+.adm-body{display:flex;min-height:600px;}
+
+/* Sidebar */
+.adm-side{
+  width:200px;flex-shrink:0;
+  background:rgba(8,5,21,0.6);
+  border-right:1px solid rgba(123,63,228,0.15);
+  padding:16px 10px;
+}
+.side-section{margin-bottom:20px;}
+.side-label{font-size:0.48rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:0 8px;margin-bottom:8px;}
+.side-item{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:10px;
+  font-size:0.65rem;font-weight:500;color:rgba(255,255,255,0.4);
+  cursor:pointer;margin-bottom:2px;transition:all .2s;
+}
+.side-item:hover{background:rgba(123,63,228,0.1);color:rgba(255,255,255,0.7);}
+.side-item.on{background:rgba(123,63,228,0.15);color:white;font-weight:600;}
+.side-item .si{font-size:1rem;}
+.side-item .badge{margin-left:auto;background:var(--rose);color:white;font-size:0.42rem;font-weight:700;padding:1px 6px;border-radius:6px;}
+
+/* Main content */
+.adm-main{flex:1;padding:22px;overflow-y:auto;background:rgba(6,4,15,0.4);}
+
+/* KPI cards */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.kcard{
+  background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid var(--border);position:relative;overflow:hidden;
+}
+.kcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kcard.k1::before{background:linear-gradient(to right,var(--violet),var(--rose));}
+.kcard.k2::before{background:linear-gradient(to right,var(--teal),var(--blue));}
+.kcard.k3::before{background:linear-gradient(to right,var(--gold),var(--amber));}
+.kcard.k4::before{background:linear-gradient(to right,var(--green),var(--teal));}
+.kcard .ki{font-size:1.5rem;margin-bottom:8px;}
+.kcard .kv{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:white;margin-bottom:2px;}
+.kcard .kl{font-size:0.6rem;color:var(--muted);}
+.kcard .kg{font-size:0.58rem;margin-top:6px;}
+.kcard .kg.up{color:var(--teal);}
+.kcard .kg.dn{color:var(--red);}
+
+/* Two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+
+/* Panel */
+.panel{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
+.panel-head{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.panel-head .ph{font-size:0.75rem;font-weight:700;color:white;}
+.panel-head .ps{font-size:0.6rem;color:var(--muted);}
+.panel-head .pa{
+  font-size:0.6rem;color:var(--violet);font-weight:600;cursor:pointer;
+  background:rgba(123,63,228,0.1);border:1px solid rgba(123,63,228,0.2);
+  border-radius:8px;padding:4px 10px;
+}
+.panel-body{padding:14px 18px;}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:0.55rem;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:0 0 10px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+
+.vrow{display:flex;align-items:center;gap:9px;}
+.vavt{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.va1{background:linear-gradient(135deg,#667eea,#764ba2);}
+.va2{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.va3{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.va4{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.va5{background:linear-gradient(135deg,#fa709a,#fee140);}
+.va6{background:linear-gradient(135deg,#a18cd1,#fbc2eb);}
+.vtxt .vtn{font-size:0.65rem;font-weight:600;color:white;}
+.vtxt .vts{font-size:0.52rem;color:var(--muted);}
+.cell{font-size:0.62rem;color:rgba(255,255,255,0.7);}
+.cell.muted{color:var(--muted);}
+.cell.bold{font-weight:700;color:white;}
+.cell.gold{color:var(--gold2);font-weight:600;}
+.cell.teal{color:var(--teal);}
+
+/* Status pill */
+.sp{display:inline-flex;align-items:center;gap:4px;font-size:0.55rem;font-weight:600;padding:3px 9px;border-radius:20px;}
+.sp.active{background:rgba(24,201,122,0.12);color:var(--green);border:1px solid rgba(24,201,122,0.25);}
+.sp.pending{background:rgba(255,149,0,0.12);color:var(--amber);border:1px solid rgba(255,149,0,0.25);}
+.sp.suspended{background:rgba(255,68,102,0.1);color:var(--red);border:1px solid rgba(255,68,102,0.2);}
+.sp.verified{background:rgba(0,201,167,0.1);color:var(--teal);border:1px solid rgba(0,201,167,0.25);}
+.sp::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* Action btns */
+.abtn{font-size:0.55rem;font-weight:600;padding:4px 9px;border-radius:8px;border:none;cursor:pointer;font-family:'Sora',sans-serif;}
+.abtn.view{background:rgba(123,63,228,0.1);color:var(--violet);}
+.abtn.approve{background:rgba(24,201,122,0.12);color:var(--green);}
+.abtn.suspend{background:rgba(255,68,102,0.1);color:var(--red);}
+.abtn.edit{background:rgba(232,160,32,0.1);color:var(--gold);}
+
+/* Mini chart bar */
+.mini-bar{display:flex;align-items:flex-end;gap:3px;height:36px;}
+.mb{flex:1;border-radius:3px 3px 0 0;background:rgba(123,63,228,0.2);}
+.mb.hi{background:linear-gradient(to top,var(--violet),var(--rose));}
+.mb.tl{background:linear-gradient(to top,var(--teal),#00f2fe);}
+
+/* Rating stars */
+.stars{font-size:0.58rem;color:#F5A623;letter-spacing:-1px;}
+
+/* Travel info pill */
+.tpill{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:0.55rem;font-weight:600;padding:3px 8px;border-radius:8px;
+  background:rgba(0,201,167,0.1);color:var(--teal);
+  border:1px solid rgba(0,201,167,0.2);
+}
+.tpill.no{background:rgba(255,68,102,0.08);color:var(--red);border-color:rgba(255,68,102,0.18);}
+
+/* Stat mini */
+.stat-mini{text-align:center;padding:12px;}
+.stat-mini .v{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:white;}
+.stat-mini .l{font-size:0.52rem;color:var(--muted);margin-top:2px;}
+
+/* Chart area */
+.chart-area{
+  background:rgba(8,5,21,0.5);border-radius:12px;padding:14px;
+  display:flex;align-items:flex-end;gap:6px;height:100px;
+}
+.ca-bar{
+  flex:1;border-radius:4px 4px 0 0;position:relative;
+  background:rgba(123,63,228,0.15);
+  transition:height .3s;
+}
+.ca-bar.hi{background:linear-gradient(to top,#7B3FE4,#FF4E8C);}
+.ca-bar .lbl{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:0.42rem;color:var(--muted);white-space:nowrap;}
+
+/* Recent activity */
+.act-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.act-item:last-child{border-bottom:none;}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.act-dot.g{background:var(--green);}
+.act-dot.o{background:var(--amber);}
+.act-dot.r{background:var(--red);}
+.act-dot.b{background:var(--blue);}
+.act-txt{flex:1;}
+.act-txt .at{font-size:0.62rem;color:rgba(255,255,255,0.75);}
+.act-txt .as{font-size:0.52rem;color:var(--muted);margin-top:1px;}
+.act-time{font-size:0.5rem;color:var(--muted);white-space:nowrap;}
+
+/* Map placeholder */
+.map-ph{
+  background:linear-gradient(135deg,rgba(123,63,228,0.12),rgba(0,201,167,0.06));
+  border:1px dashed rgba(123,63,228,0.25);
+  border-radius:12px;height:110px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+}
+.map-ph .mi{font-size:2rem;opacity:0.4;}
+.map-ph .mt{font-size:0.6rem;color:rgba(255,255,255,0.3);}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:between;gap:6px;margin-top:12px;}
+.pgn{font-size:0.58rem;color:var(--muted);flex:1;}
+.pg-btns{display:flex;gap:4px;margin-left:auto;}
+.pgb{width:28px;height:28px;border-radius:8px;border:none;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-size:0.6rem;cursor:pointer;font-family:'Sora',sans-serif;}
+.pgb.on{background:var(--violet);color:white;}
+
+/* Toggle view */
+.v1,.v2,.v3{display:none;}
+.v1.show,.v2.show,.v3.show{display:block;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="gh">
+  <div class="pill">✦ enhanced ui design ✦</div>
+  <h1>Shubh <em>Events</em></h1>
+  <p>Vendor Travel Settings &amp; Admin Control Dashboard</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tb on" onclick="sw(0)">🚗 Vendor Travel Fields</button>
+  <button class="tb" onclick="sw(1)">🛡️ Admin Dashboard</button>
+</div>
+
+<!-- ══════════ VENDOR TRAVEL SCREENS ══════════ -->
+<div class="v1 show" id="v1">
+
+  <div class="sl"><span>Vendor Profile — Travel &amp; Reach Settings</span><div class="ln"></div></div>
+  <div class="phones">
+
+    <!-- SCREEN: Travel Settings -->
+    <div class="pw">
+      <div class="ptag">Travel Availability</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="fhead">
+              <h2>🚗 Travel &amp; Reach Settings</h2>
+              <p>Tell customers how far you can travel</p>
+            </div>
+            <div class="fbody">
+
+              <!-- Travel toggle -->
+              <div class="section-card">
+                <div class="st">🗺️ Do You Travel for Events?</div>
+                <div class="ftoggle">
+                  <button class="ftog on" id="t_yes" onclick="setTravel(true)">✅ Yes, I Travel</button>
+                  <button class="ftog" id="t_no" onclick="setTravel(false)">❌ No, Local Only</button>
+                </div>
+                <div id="travel_info" class="travel-badge" style="margin-top:10px;">
+                  <span class="tbi">✈️</span>
+                  <div><div class="tbt">Travel Enabled</div><div class="tbs">Customers in other areas can book you</div></div>
+                </div>
+              </div>
+
+              <!-- Local radius -->
+              <div class="section-card">
+                <div class="st">📍 Local Service Radius <span>(always active)</span></div>
+                <div class="fg" style="margin-bottom:0">
+                  <label class="fl">How far will you travel locally? (km)</label>
+                  <div class="frow">
+                    <input class="fi" type="number" placeholder="e.g. 50" id="localKm" value="50" oninput="calcRate()">
+                    <span style="display:flex;align-items:center;font-size:0.68rem;color:var(--muted);padding:0 4px;">km</span>
+                  </div>
+                </div>
+                <div class="km-display" style="margin-top:8px;">
+                  <div><div class="kml">Local coverage area</div><div style="font-size:0.52rem;color:var(--muted);margin-top:2px;">Free / included in package</div></div>
+                  <div class="kmv" id="localKmDisplay">50 km</div>
+                </div>
+              </div>
+
+              <!-- Outstation toggle -->
+              <div class="section-card" id="outstationCard">
+                <div class="st">🏙️ Outstation Travel</div>
+
+                <div class="fg">
+                  <label class="fl">Travel to Other Districts?</label>
+                  <div class="ftoggle">
+                    <button class="ftog on">✅ Yes</button>
+                    <button class="ftog">❌ No</button>
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label class="fl">Travel to Other States?</label>
+                  <div class="ftoggle">
+                    <button class="ftog on" id="st_yes">✅ Yes</button>
+                    <button class="ftog" id="st_no">❌ No</button>
+                  </div>
+                </div>
+
+                <div class="fg" style="margin-bottom:0">
+                  <label class="fl">Maximum Travel Distance (km)</label>
+                  <input class="fi" type="number" placeholder="e.g. 500" id="maxKm" value="500" oninput="calcRate()">
+                </div>
+              </div>
+
+              <!-- Charge per km -->
+              <div class="section-card" id="rateCard">
+                <div class="st">💰 Travel Charges</div>
+
+                <div class="fg">
+                  <label class="fl">Charge Type</label>
+                  <select class="fsel">
+                    <option>Per km (one-way)</option>
+                    <option>Per km (both ways)</option>
+                    <option>Fixed charge per event</option>
+                    <option>Included in package</option>
+                  </select>
+                </div>
+
+                <div class="fg">
+                  <label class="fl">Rate per km (₹)</label>
+                  <div class="frow">
+                    <span style="display:flex;align-items:center;font-size:0.75rem;font-weight:700;color:var(--ink);padding:0 6px 0 0;">₹</span>
+                    <input class="fi" type="number" placeholder="e.g. 12" id="rateKm" value="12" oninput="calcRate()">
+                    <span style="display:flex;align-items:center;font-size:0.68rem;color:var(--muted);padding:0 4px;">/ km</span>
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label class="fl">Minimum Booking Amount for Outstation</label>
+                  <div class="frow">
+                    <span style="display:flex;align-items:center;font-size:0.75rem;font-weight:700;color:var(--ink);padding:0 6px 0 0;">₹</span>
+                    <input class="fi" type="number" placeholder="e.g. 15000" value="15000">
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label class="fl">Accommodation Requirement?</label>
+                  <div class="ftoggle">
+                    <button class="ftog on">🏨 Customer Arranges</button>
+                    <button class="ftog">💸 I Arrange (add cost)</button>
+                  </div>
+                </div>
+
+                <div class="fg" style="margin-bottom:0">
+                  <label class="fl">Per Day Accommodation Cost (₹) <span style="color:var(--muted);font-weight:400">(if self-arranged)</span></label>
+                  <div class="frow">
+                    <span style="display:flex;align-items:center;font-size:0.75rem;font-weight:700;color:var(--ink);padding:0 6px 0 0;">₹</span>
+                    <input class="fi" type="number" placeholder="e.g. 1500" value="1500">
+                    <span style="display:flex;align-items:center;font-size:0.62rem;color:var(--muted);padding:0 0 0 4px;">/ day</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live estimate -->
+              <div class="section-card" style="background:linear-gradient(135deg,rgba(123,63,228,0.08),rgba(255,78,140,0.05));border-color:rgba(123,63,228,0.18);">
+                <div class="st">🧮 Live Travel Cost Estimate</div>
+                <div style="font-size:0.58rem;color:var(--muted);margin-bottom:10px;">Based on your settings above</div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:white;border-radius:10px;">
+                    <span style="font-size:0.6rem;color:var(--ink);">📍 100 km trip</span>
+                    <span style="font-size:0.68rem;font-weight:700;color:var(--violet);" id="est100">₹1,200</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:white;border-radius:10px;">
+                    <span style="font-size:0.6rem;color:var(--ink);">🛣️ 300 km trip</span>
+                    <span style="font-size:0.68rem;font-weight:700;color:var(--violet);" id="est300">₹3,600</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:white;border-radius:10px;">
+                    <span style="font-size:0.6rem;color:var(--ink);">✈️ 500 km trip</span>
+                    <span style="font-size:0.68rem;font-weight:700;color:var(--violet);" id="est500">₹6,000</span>
+                  </div>
+                </div>
+              </div>
+
+              <button class="save-btn">💾 Save Travel Settings</button>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">📊</span>Home</div>
+            <div class="bni"><span class="ic2">📋</span>Requests</div>
+            <div class="bni"><span class="ic2">📅</span>Calendar</div>
+            <div class="bni on"><span class="ic2">🖼️</span>Work</div>
+            <div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: States Coverage -->
+    <div class="pw">
+      <div class="ptag">States Coverage</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#0E0920"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <div class="fhead">
+              <h2>🗺️ States &amp; Cities Coverage</h2>
+              <p>Select where you are available to work</p>
+            </div>
+            <div class="fbody">
+
+              <div class="section-card">
+                <div class="st">📌 Home State <span>(always active)</span></div>
+                <div style="display:flex;align-items:center;gap:9px;background:rgba(123,63,228,0.07);border:1px solid rgba(123,63,228,0.15);border-radius:11px;padding:9px 11px;">
+                  <span style="font-size:1.2rem;">🏠</span>
+                  <div>
+                    <div style="font-size:0.68rem;font-weight:700;color:var(--ink);">Tamil Nadu</div>
+                    <div style="font-size:0.52rem;color:var(--muted);">Your registered state — always covered</div>
+                  </div>
+                  <span class="sp verified" style="margin-left:auto;">Verified</span>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <div class="st">🌍 Other States You Cover</div>
+                <div style="font-size:0.56rem;color:var(--muted);margin-bottom:9px;">Tap to add or remove states</div>
+                <div class="state-chips">
+                  <div class="stc on">Andhra Pradesh <span class="x">×</span></div>
+                  <div class="stc on">Telangana <span class="x">×</span></div>
+                  <div class="stc on">Karnataka <span class="x">×</span></div>
+                  <div class="stc on">Kerala <span class="x">×</span></div>
+                  <div class="stc">Maharashtra</div>
+                  <div class="stc">Goa</div>
+                  <div class="stc">Odisha</div>
+                  <div class="stc">West Bengal</div>
+                  <div class="stc">Delhi</div>
+                  <div class="stc">Gujarat</div>
+                  <div class="stc">Rajasthan</div>
+                  <div class="stc">Punjab</div>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <div class="st">🏙️ Specific Cities (Optional)</div>
+                <div style="font-size:0.56rem;color:var(--muted);margin-bottom:8px;">Add specific cities you serve outside home state</div>
+                <input class="fi" placeholder="Type a city and press Enter e.g. Bengaluru" style="margin-bottom:7px">
+                <div class="state-chips">
+                  <div class="stc on">Bengaluru <span class="x">×</span></div>
+                  <div class="stc on">Hyderabad <span class="x">×</span></div>
+                  <div class="stc on">Kochi <span class="x">×</span></div>
+                  <div class="stc on">Chennai <span class="x">×</span></div>
+                </div>
+              </div>
+
+              <div class="section-card" style="background:linear-gradient(135deg,rgba(0,201,167,0.07),rgba(59,130,246,0.05));border-color:rgba(0,201,167,0.18);">
+                <div class="st">📊 Your Coverage Summary</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+                  <div style="background:white;border-radius:11px;padding:9px;text-align:center;">
+                    <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);">5</div>
+                    <div style="font-size:0.5rem;color:var(--muted);">States Covered</div>
+                  </div>
+                  <div style="background:white;border-radius:11px;padding:9px;text-align:center;">
+                    <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);">4</div>
+                    <div style="font-size:0.5rem;color:var(--muted);">Cities Added</div>
+                  </div>
+                  <div style="background:white;border-radius:11px;padding:9px;text-align:center;grid-column:span 2;">
+                    <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--teal);">500 km</div>
+                    <div style="font-size:0.5rem;color:var(--muted);">Max travel distance set</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visibility note -->
+              <div style="background:rgba(232,160,32,0.07);border:1px solid rgba(232,160,32,0.2);border-radius:12px;padding:10px 11px;margin-bottom:10px;">
+                <div style="font-size:0.6rem;font-weight:700;color:var(--gold);margin-bottom:3px;">💡 Visibility Tip</div>
+                <div style="font-size:0.55rem;color:rgba(0,0,0,0.6);line-height:1.6;">Customers searching from Bengaluru or Hyderabad will now see your profile when you add those states!</div>
+              </div>
+
+              <button class="save-btn">🗺️ Save Coverage Settings</button>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bni"><span class="ic2">📊</span>Home</div>
+            <div class="bni"><span class="ic2">📋</span>Requests</div>
+            <div class="bni"><span class="ic2">📅</span>Calendar</div>
+            <div class="bni on"><span class="ic2">🖼️</span>Work</div>
+            <div class="bni"><span class="ic2">👤</span>Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: How customer sees it -->
+    <div class="pw">
+      <div class="ptag">Customer View — Travel Info</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pinner">
+          <div class="sbar" style="background:#2A1060"><span class="tm" style="color:white">9:41</span><span class="ic">📶 🔋</span></div>
+          <div class="scrl">
+            <!-- vendor profile header -->
+            <div style="height:130px;background:linear-gradient(140deg,#2A1060,#E8447A);position:relative;overflow:hidden;">
+              <div style="position:absolute;right:16px;top:14px;font-size:4rem;opacity:0.1;">📷</div>
+              <div style="position:absolute;top:12px;left:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:white;">←</div>
+              <div style="position:absolute;bottom:-24px;left:13px;width:56px;height:56px;border-radius:16px;background:white;display:flex;align-items:center;justify-content:center;font-size:1.7rem;border:3px solid white;box-shadow:0 8px 20px rgba(0,0,0,0.2);">📷</div>
+              <div style="position:absolute;bottom:-24px;left:75px;background:var(--green);color:white;font-size:0.4rem;font-weight:700;padding:2px 7px;border-radius:7px;">✓ VERIFIED</div>
+            </div>
+            <div style="background:var(--cream);padding:32px 13px 12px;">
+              <div style="font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--ink);">Sri Balaji Studio</div>
+              <div style="font-size:0.54rem;color:var(--muted);margin-bottom:10px;">📍 Thanjavur, Tamil Nadu</div>
+
+              <!-- TRAVEL SECTION shown to customers -->
+              <div style="background:white;border-radius:14px;padding:11px;margin-bottom:10px;border:1px solid rgba(0,201,167,0.2);box-shadow:0 2px 10px rgba(10,6,24,0.05);">
+                <div style="font-size:0.68rem;font-weight:700;color:var(--ink);margin-bottom:9px;display:flex;align-items:center;gap:6px;">🚗 Travel & Availability</div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+                  <div style="background:rgba(24,201,122,0.08);border:1px solid rgba(24,201,122,0.2);border-radius:10px;padding:8px;text-align:center;">
+                    <div style="font-size:1rem;margin-bottom:3px;">🗺️</div>
+                    <div style="font-size:0.58rem;font-weight:700;color:var(--green);">Travels Outstation</div>
+                    <div style="font-size:0.5rem;color:var(--muted);">Yes — up to 500 km</div>
+                  </div>
+                  <div style="background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);border-radius:10px;padding:8px;text-align:center;">
+                    <div style="font-size:1rem;margin-bottom:3px;">💰</div>
+                    <div style="font-size:0.58rem;font-weight:700;color:var(--teal);">₹12 per km</div>
+                    <div style="font-size:0.5rem;color:var(--muted);">One-way travel charge</div>
+                  </div>
+                </div>
+
+                <div style="background:#F0FDF8;border-radius:10px;padding:9px 10px;margin-bottom:8px;">
+                  <div style="font-size:0.58rem;font-weight:700;color:var(--ink);margin-bottom:5px;">🌍 States Covered</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                    <span style="background:rgba(0,201,167,0.12);border:1px solid rgba(0,201,167,0.2);border-radius:7px;padding:2px 8px;font-size:0.5rem;color:var(--teal);font-weight:600;">Tamil Nadu 🏠</span>
+                    <span style="background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.14);border-radius:7px;padding:2px 8px;font-size:0.5rem;color:var(--violet);font-weight:600;">Andhra Pradesh</span>
+                    <span style="background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.14);border-radius:7px;padding:2px 8px;font-size:0.5rem;color:var(--violet);font-weight:600;">Karnataka</span>
+                    <span style="background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.14);border-radius:7px;padding:2px 8px;font-size:0.5rem;color:var(--violet);font-weight:600;">Kerala</span>
+                    <span style="background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.14);border-radius:7px;padding:2px 8px;font-size:0.5rem;color:var(--violet);font-weight:600;">Telangana</span>
+                  </div>
+                </div>
+
+                <div style="background:#FFF9F0;border:1px solid rgba(232,160,32,0.2);border-radius:10px;padding:8px 10px;">
+                  <div style="font-size:0.56rem;color:var(--ink);line-height:1.6;">
+                    🏨 <strong>Accommodation:</strong> Customer to arrange<br>
+                    📦 <strong>Min. booking for outstation:</strong> ₹15,000<br>
+                    🚗 <strong>Local free zone:</strong> 50 km radius
+                  </div>
+                </div>
+              </div>
+
+              <!-- Packages preview -->
+              <div style="background:white;border-radius:13px;padding:10px;margin-bottom:10px;box-shadow:0 2px 8px rgba(10,6,24,0.05);">
+                <div style="font-size:0.66rem;font-weight:700;color:var(--ink);margin-bottom:7px;">💼 Packages</div>
+                <div style="background:#F7F4FF;border-radius:10px;padding:8px 10px;margin-bottom:5px;border-left:3px solid var(--gold);display:flex;justify-content:space-between;">
+                  <div><div style="font-size:0.64rem;font-weight:700;color:var(--ink);">Basic</div><div style="font-size:0.5rem;color:var(--muted);">4 hrs · 200 photos</div></div>
+                  <div style="font-family:'Fraunces',serif;font-size:0.88rem;font-weight:700;color:var(--violet);">₹8,000</div>
+                </div>
+                <div style="background:#F7F4FF;border-radius:10px;padding:8px 10px;border-left:3px solid var(--rose);display:flex;justify-content:space-between;">
+                  <div><div style="font-size:0.64rem;font-weight:700;color:var(--ink);">Premium</div><div style="font-size:0.5rem;color:var(--muted);">Full day · Album included</div></div>
+                  <div style="font-family:'Fraunces',serif;font-size:0.88rem;font-weight:700;color:var(--violet);">₹18,000</div>
+                </div>
+              </div>
+              <div style="height:70px"></div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(247,244,255,0.97);backdrop-filter:blur(12px);border-top:1px solid rgba(123,63,228,0.1);padding:9px 13px;display:flex;gap:7px;">
+            <button style="flex:1;padding:10px;background:#25D366;border:none;border-radius:12px;color:white;font-size:0.6rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;">💬 WhatsApp</button>
+            <button style="flex:2;padding:10px;background:linear-gradient(135deg,var(--violet),var(--rose));border:none;border-radius:12px;color:white;font-size:0.6rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(123,63,228,0.35);">Book Now →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ ADMIN DASHBOARD ══════════ -->
+<div class="v2" id="v2">
+
+  <div class="sl"><span>Admin Control Panel — Shubh Events</span><div class="ln"></div></div>
+
+  <div class="admin-wrap">
+    <div class="admin-shell">
+
+      <!-- Top Bar -->
+      <div class="adm-topbar">
+        <div class="adm-logo">Shubh <em>Events</em></div>
+        <nav class="adm-nav">
+          <a class="on">📊 Overview</a>
+          <a>🏪 Vendors</a>
+          <a>👥 Customers</a>
+          <a>📋 Bookings</a>
+          <a>💰 Revenue</a>
+          <a>⚙️ Settings</a>
+        </nav>
+        <div class="adm-right">
+          <div class="adm-search"><span style="font-size:0.8rem;">🔍</span><input placeholder="Search vendors, customers..."></div>
+          <div class="adm-bell">🔔</div>
+          <div class="adm-av">👤</div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="adm-body">
+
+        <!-- Sidebar -->
+        <div class="adm-side">
+          <div class="side-section">
+            <div class="side-label">Main</div>
+            <div class="side-item on"><span class="si">📊</span> Overview</div>
+            <div class="side-item"><span class="si">📋</span> Bookings <span class="badge">12</span></div>
+            <div class="side-item"><span class="si">💰</span> Revenue</div>
+            <div class="side-item"><span class="si">📈</span> Analytics</div>
+          </div>
+          <div class="side-section">
+            <div class="side-label">Manage</div>
+            <div class="side-item"><span class="si">🏪</span> Vendors <span class="badge">5</span></div>
+            <div class="side-item"><span class="si">👥</span> Customers</div>
+            <div class="side-item"><span class="si">⭐</span> Reviews</div>
+            <div class="side-item"><span class="si">🚩</span> Reports <span class="badge">3</span></div>
+          </div>
+          <div class="side-section">
+            <div class="side-label">System</div>
+            <div class="side-item"><span class="si">💳</span> Payments</div>
+            <div class="side-item"><span class="si">📣</span> Promotions</div>
+            <div class="side-item"><span class="si">⚙️</span> Settings</div>
+            <div class="side-item"><span class="si">👤</span> Admins</div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="adm-main">
+
+          <!-- Greeting row -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:white;">Good Morning, Admin 🙏</div>
+              <div style="font-size:0.62rem;color:var(--muted);margin-top:3px;">Tuesday, 7 April 2026 · Here's what's happening today</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:0.62rem;color:rgba(255,255,255,0.6);font-family:'Sora',sans-serif;cursor:pointer;">📤 Export</button>
+              <button style="background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:10px;padding:8px 16px;font-size:0.62rem;font-weight:700;color:var(--ink);font-family:'Sora',sans-serif;cursor:pointer;">+ Add Vendor</button>
+            </div>
+          </div>
+
+          <!-- KPI Row -->
+          <div class="kpi-row">
+            <div class="kcard k1">
+              <div class="ki">🏪</div>
+              <div class="kv">524</div>
+              <div class="kl">Total Vendors</div>
+              <div class="kg up">↑ 34 new this month</div>
+            </div>
+            <div class="kcard k2">
+              <div class="ki">👥</div>
+              <div class="kv">3,218</div>
+              <div class="kl">Total Customers</div>
+              <div class="kg up">↑ 218 new this month</div>
+            </div>
+            <div class="kcard k3">
+              <div class="ki">📅</div>
+              <div class="kv">1,847</div>
+              <div class="kl">Total Bookings</div>
+              <div class="kg up">↑ 12% vs last month</div>
+            </div>
+            <div class="kcard k4">
+              <div class="ki">💰</div>
+              <div class="kv">₹8.4L</div>
+              <div class="kl">Platform Revenue</div>
+              <div class="kg up">↑ 22% this month</div>
+            </div>
+          </div>
+
+          <!-- Row 2: Chart + Activity -->
+          <div class="two-col" style="grid-template-columns:1.6fr 1fr;">
+
+            <!-- Bookings chart -->
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <div class="ph">📈 Bookings Overview</div>
+                  <div class="ps">Last 7 months</div>
+                </div>
+                <select style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:0.6rem;color:rgba(255,255,255,0.6);font-family:'Sora',sans-serif;outline:none;">
+                  <option>2025</option><option>2024</option>
+                </select>
+              </div>
+              <div class="panel-body">
+                <div style="display:flex;align-items:flex-end;gap:8px;height:100px;margin-bottom:8px;">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">142</div>
+                    <div style="width:100%;height:50px;background:rgba(123,63,228,0.18);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Oct</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">198</div>
+                    <div style="width:100%;height:70px;background:rgba(123,63,228,0.22);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Nov</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">234</div>
+                    <div style="width:100%;height:83px;background:rgba(123,63,228,0.25);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Dec</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">189</div>
+                    <div style="width:100%;height:67px;background:rgba(123,63,228,0.22);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Jan</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">267</div>
+                    <div style="width:100%;height:95px;background:rgba(123,63,228,0.28);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Feb</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">312</div>
+                    <div style="width:100%;height:100%;background:linear-gradient(to top,var(--violet),var(--rose));border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--gold2);font-weight:600;">Mar ↑</div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="font-size:0.42rem;color:var(--muted);">287</div>
+                    <div style="width:100%;height:88px;background:rgba(123,63,228,0.25);border-radius:4px 4px 0 0;"></div>
+                    <div style="font-size:0.44rem;color:var(--muted);">Apr</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent activity -->
+            <div class="panel">
+              <div class="panel-head">
+                <div class="ph">🔔 Live Activity</div>
+                <div class="pa">View All</div>
+              </div>
+              <div class="panel-body" style="padding-top:10px;">
+                <div class="act-item">
+                  <div class="act-dot g"></div>
+                  <div class="act-txt"><div class="at">New vendor registered</div><div class="as">Raj Photography · Madurai</div></div>
+                  <div class="act-time">2 min ago</div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot b"></div>
+                  <div class="act-txt"><div class="at">Booking confirmed</div><div class="as">Ravi Kumar × Sri Balaji Studio</div></div>
+                  <div class="act-time">8 min ago</div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot o"></div>
+                  <div class="act-txt"><div class="at">Vendor pending approval</div><div class="as">Kumar Films · Kumbakonam</div></div>
+                  <div class="act-time">15 min ago</div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot r"></div>
+                  <div class="act-txt"><div class="at">Complaint received</div><div class="as">Sundar vs Flower Mart</div></div>
+                  <div class="act-time">32 min ago</div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot g"></div>
+                  <div class="act-txt"><div class="at">Payment received</div><div class="as">₹18,000 · Premium Package</div></div>
+                  <div class="act-time">1 hr ago</div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot b"></div>
+                  <div class="act-txt"><div class="at">New customer signup</div><div class="as">Priya S · Thanjavur</div></div>
+                  <div class="act-time">2 hr ago</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Vendor Table -->
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head">
+              <div>
+                <div class="ph">🏪 Vendor Management</div>
+                <div class="ps">524 vendors · 12 pending approval</div>
+              </div>
+              <div style="display:flex;gap:7px;align-items:center;">
+                <select style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:0.6rem;color:rgba(255,255,255,0.5);font-family:'Sora',sans-serif;outline:none;">
+                  <option>All Categories</option>
+                  <option>Photography</option>
+                  <option>Decoration</option>
+                  <option>Catering</option>
+                </select>
+                <select style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:0.6rem;color:rgba(255,255,255,0.5);font-family:'Sora',sans-serif;outline:none;">
+                  <option>All Status</option>
+                  <option>Active</option>
+                  <option>Pending</option>
+                  <option>Suspended</option>
+                </select>
+                <div class="pa">Export CSV</div>
+              </div>
+            </div>
+            <div class="panel-body" style="padding:0 18px;">
+              <table class="tbl">
+                <thead>
+                  <tr>
+                    <th>Vendor</th>
+                    <th>Category</th>
+                    <th>Location</th>
+                    <th>Travel</th>
+                    <th>Rating</th>
+                    <th>Bookings</th>
+                    <th>Revenue</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va1">📷</div><div class="vtxt"><div class="vtn">Sri Balaji Studio</div><div class="vts">+91 98765 43210</div></div></div></td>
+                    <td><div class="cell">Photography</div></td>
+                    <td><div class="cell muted">Thanjavur, TN</div></td>
+                    <td><div class="tpill">✈ 500km · ₹12/km</div></td>
+                    <td><div class="stars">★★★★★</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">4.9 (128)</div></td>
+                    <td><div class="cell bold">250</div></td>
+                    <td><div class="cell gold">₹3.8L</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button><button class="abtn edit">Edit</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va2">🌸</div><div class="vtxt"><div class="vtn">Lakshmi Decorators</div><div class="vts">+91 87654 32109</div></div></div></td>
+                    <td><div class="cell">Decoration</div></td>
+                    <td><div class="cell muted">Kumbakonam, TN</div></td>
+                    <td><div class="tpill">✈ 200km · ₹10/km</div></td>
+                    <td><div class="stars">★★★★☆</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">4.7 (89)</div></td>
+                    <td><div class="cell bold">134</div></td>
+                    <td><div class="cell gold">₹1.9L</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button><button class="abtn edit">Edit</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va3">🍽️</div><div class="vtxt"><div class="vtn">Annapoorna Catering</div><div class="vts">+91 76543 21098</div></div></div></td>
+                    <td><div class="cell">Catering</div></td>
+                    <td><div class="cell muted">Thanjavur, TN</div></td>
+                    <td><div class="tpill no">🏠 Local only</div></td>
+                    <td><div class="stars">★★★★★</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">4.8 (204)</div></td>
+                    <td><div class="cell bold">312</div></td>
+                    <td><div class="cell gold">₹5.1L</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button><button class="abtn edit">Edit</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va4">🎬</div><div class="vtxt"><div class="vtn">Kumar Films</div><div class="vts">+91 65432 10987</div></div></div></td>
+                    <td><div class="cell">Videography</div></td>
+                    <td><div class="cell muted">Chennai, TN</div></td>
+                    <td><div class="tpill">✈ 800km · ₹15/km</div></td>
+                    <td><div class="stars">★★★★☆</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">4.6 (67)</div></td>
+                    <td><div class="cell bold">89</div></td>
+                    <td><div class="cell gold">₹1.2L</div></td>
+                    <td><div class="sp pending">Pending</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn approve">Approve</button><button class="abtn suspend">Reject</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va5">💡</div><div class="vtxt"><div class="vtn">Raja Lights & Sound</div><div class="vts">+91 54321 09876</div></div></div></td>
+                    <td><div class="cell">Lights & Sound</div></td>
+                    <td><div class="cell muted">Trichy, TN</div></td>
+                    <td><div class="tpill">✈ 300km · ₹8/km</div></td>
+                    <td><div class="stars">★★★★☆</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">4.5 (42)</div></td>
+                    <td><div class="cell bold">56</div></td>
+                    <td><div class="cell gold">₹0.8L</div></td>
+                    <td><div class="sp pending">Pending</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn approve">Approve</button><button class="abtn suspend">Reject</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt va6">🎪</div><div class="vtxt"><div class="vtn">Stage Masters</div><div class="vts">+91 43210 98765</div></div></div></td>
+                    <td><div class="cell">Stage Decor</div></td>
+                    <td><div class="cell muted">Madurai, TN</div></td>
+                    <td><div class="tpill no">🏠 Local only</div></td>
+                    <td><div class="stars">★★★☆☆</div><div class="cell" style="font-size:0.5rem;color:var(--muted);">3.8 (18)</div></td>
+                    <td><div class="cell bold">23</div></td>
+                    <td><div class="cell gold">₹0.3L</div></td>
+                    <td><div class="sp suspended">Suspended</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button><button class="abtn approve">Restore</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div class="pgn">Showing 6 of 524 vendors</div>
+                <div class="pg-btns">
+                  <button class="pgb">‹</button>
+                  <button class="pgb on">1</button>
+                  <button class="pgb">2</button>
+                  <button class="pgb">3</button>
+                  <button class="pgb">›</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Table -->
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head">
+              <div>
+                <div class="ph">👥 Customer Management</div>
+                <div class="ps">3,218 customers · 218 new this month</div>
+              </div>
+              <div style="display:flex;gap:7px;">
+                <select style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:0.6rem;color:rgba(255,255,255,0.5);font-family:'Sora',sans-serif;outline:none;">
+                  <option>All Customers</option>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                </select>
+                <div class="pa">Export CSV</div>
+              </div>
+            </div>
+            <div class="panel-body" style="padding:0 18px;">
+              <table class="tbl">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Location</th>
+                    <th>Bookings</th>
+                    <th>Total Spent</th>
+                    <th>Last Event</th>
+                    <th>Event Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt" style="background:linear-gradient(135deg,#667eea,#764ba2)">R</div><div class="vtxt"><div class="vtn">Ravi Kumar</div><div class="vts">+91 91234 56789</div></div></div></td>
+                    <td><div class="cell muted">Papanasam, TN</div></td>
+                    <td><div class="cell bold">4</div></td>
+                    <td><div class="cell gold">₹62,000</div></td>
+                    <td><div class="cell muted">May 15, 2025</div></td>
+                    <td><div class="cell">💍 Wedding</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt" style="background:linear-gradient(135deg,#f093fb,#f5576c)">P</div><div class="vtxt"><div class="vtn">Priya Sundar</div><div class="vts">+91 82345 67890</div></div></div></td>
+                    <td><div class="cell muted">Kumbakonam, TN</div></td>
+                    <td><div class="cell bold">2</div></td>
+                    <td><div class="cell gold">₹24,000</div></td>
+                    <td><div class="cell muted">Apr 28, 2025</div></td>
+                    <td><div class="cell">🎂 Birthday</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">S</div><div class="vtxt"><div class="vtn">Selvam Rajan</div><div class="vts">+91 73456 78901</div></div></div></td>
+                    <td><div class="cell muted">Thanjavur, TN</div></td>
+                    <td><div class="cell bold">7</div></td>
+                    <td><div class="cell gold">₹1.1L</div></td>
+                    <td><div class="cell muted">Mar 12, 2025</div></td>
+                    <td><div class="cell">🎉 Function</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">M</div><div class="vtxt"><div class="vtn">Murugan K</div><div class="vts">+91 64567 89012</div></div></div></td>
+                    <td><div class="cell muted">Trichy, TN</div></td>
+                    <td><div class="cell bold">1</div></td>
+                    <td><div class="cell gold">₹8,000</div></td>
+                    <td><div class="cell muted">Feb 5, 2025</div></td>
+                    <td><div class="cell">💍 Wedding</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="vrow"><div class="vavt" style="background:linear-gradient(135deg,#fa709a,#fee140)">K</div><div class="vtxt"><div class="vtn">Kavitha Raj</div><div class="vts">+91 55678 90123</div></div></div></td>
+                    <td><div class="cell muted">Chennai, TN</div></td>
+                    <td><div class="cell bold">3</div></td>
+                    <td><div class="cell gold">₹45,000</div></td>
+                    <td><div class="cell muted">Jan 20, 2025</div></td>
+                    <td><div class="cell">🏫 School Event</div></td>
+                    <td><div class="sp active">Active</div></td>
+                    <td><div style="display:flex;gap:4px;"><button class="abtn view">View</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div class="pgn">Showing 5 of 3,218 customers</div>
+                <div class="pg-btns">
+                  <button class="pgb">‹</button>
+                  <button class="pgb on">1</button>
+                  <button class="pgb">2</button>
+                  <button class="pgb">3</button>
+                  <button class="pgb">...</button>
+                  <button class="pgb">322</button>
+                  <button class="pgb">›</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom 3-col -->
+          <div class="three-col">
+
+            <!-- Top categories -->
+            <div class="panel">
+              <div class="panel-head"><div class="ph">📊 Top Categories</div></div>
+              <div class="panel-body">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.6rem;margin-bottom:4px;"><span style="color:rgba(255,255,255,0.7);">📷 Photography</span><span style="color:var(--gold2);font-weight:600;">38%</span></div>
+                    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="width:38%;height:100%;background:linear-gradient(to right,var(--violet),var(--rose));border-radius:3px;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.6rem;margin-bottom:4px;"><span style="color:rgba(255,255,255,0.7);">🌸 Decoration</span><span style="color:var(--gold2);font-weight:600;">27%</span></div>
+                    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="width:27%;height:100%;background:linear-gradient(to right,var(--teal),#00f2fe);border-radius:3px;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.6rem;margin-bottom:4px;"><span style="color:rgba(255,255,255,0.7);">🍽️ Catering</span><span style="color:var(--gold2);font-weight:600;">21%</span></div>
+                    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="width:21%;height:100%;background:linear-gradient(to right,var(--gold),var(--amber));border-radius:3px;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.6rem;margin-bottom:4px;"><span style="color:rgba(255,255,255,0.7);">💡 Lights & Sound</span><span style="color:var(--gold2);font-weight:600;">14%</span></div>
+                    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="width:14%;height:100%;background:linear-gradient(to right,var(--green),var(--teal));border-radius:3px;"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vendor status breakdown -->
+            <div class="panel">
+              <div class="panel-head"><div class="ph">🏪 Vendor Status</div></div>
+              <div class="panel-body">
+                <div style="display:flex;flex-direction:column;gap:7px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(24,201,122,0.08);border-radius:10px;border:1px solid rgba(24,201,122,0.15);">
+                    <span style="font-size:0.6rem;color:var(--green);font-weight:600;">✅ Active</span>
+                    <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--green);">489</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(255,149,0,0.08);border-radius:10px;border:1px solid rgba(255,149,0,0.15);">
+                    <span style="font-size:0.6rem;color:var(--amber);font-weight:600;">⏳ Pending Approval</span>
+                    <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--amber);">24</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(255,68,102,0.08);border-radius:10px;border:1px solid rgba(255,68,102,0.15);">
+                    <span style="font-size:0.6rem;color:var(--red);font-weight:600;">🚫 Suspended</span>
+                    <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--red);">11</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(0,201,167,0.08);border-radius:10px;border:1px solid rgba(0,201,167,0.15);">
+                    <span style="font-size:0.6rem;color:var(--teal);font-weight:600;">✈️ Outstation Travel</span>
+                    <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--teal);">312</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue breakdown -->
+            <div class="panel">
+              <div class="panel-head"><div class="ph">💰 Revenue This Month</div></div>
+              <div class="panel-body">
+                <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:var(--gold2);margin-bottom:4px;">₹8,42,500</div>
+                <div style="font-size:0.58rem;color:var(--green);margin-bottom:14px;">↑ 22% from last month</div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <div style="display:flex;justify-content:space-between;font-size:0.58rem;">
+                    <span style="color:var(--muted);">Commission (10%)</span>
+                    <span style="color:rgba(255,255,255,0.7);font-weight:600;">₹5,60,000</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.58rem;">
+                    <span style="color:var(--muted);">Subscriptions</span>
+                    <span style="color:rgba(255,255,255,0.7);font-weight:600;">₹1,82,500</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.58rem;">
+                    <span style="color:var(--muted);">Featured Listings</span>
+                    <span style="color:rgba(255,255,255,0.7);font-weight:600;">₹1,00,000</span>
+                  </div>
+                  <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.62rem;">
+                    <span style="color:white;font-weight:700;">Total</span>
+                    <span style="color:var(--gold2);font-weight:700;">₹8,42,500</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div><!-- /adm-main -->
+      </div><!-- /adm-body -->
+    </div><!-- /admin-shell -->
+  </div>
+
+</div>
+
+<div style="text-align:center;color:rgba(232,160,32,0.22);font-size:0.58rem;letter-spacing:4px;margin-top:30px;position:relative;z-index:1;">✦ SHUBH EVENTS — TRAVEL + ADMIN UI ✦</div>
+
+<script>
+function sw(i){
+  document.getElementById('v1').classList.toggle('show', i===0);
+  document.getElementById('v2').classList.toggle('show', i===1);
+  document.querySelectorAll('.tb').forEach((t,j)=>t.classList.toggle('on', i===j));
+}
+
+function setTravel(yes){
+  document.getElementById('t_yes').classList.toggle('on', yes);
+  document.getElementById('t_no').classList.toggle('on', !yes);
+  document.getElementById('outstationCard').style.display = yes ? '' : 'none';
+  document.getElementById('rateCard').style.display = yes ? '' : 'none';
+  document.getElementById('travel_info').style.display = yes ? '' : 'none';
+}
+
+function calcRate(){
+  const rate = parseFloat(document.getElementById('rateKm').value) || 0;
+  const localKm = document.getElementById('localKm').value;
+  document.getElementById('localKmDisplay').textContent = localKm + ' km';
+  const e100 = document.getElementById('est100');
+  const e300 = document.getElementById('est300');
+  const e500 = document.getElementById('est500');
+  if(e100) e100.textContent = '₹' + (100 * rate).toLocaleString('en-IN');
+  if(e300) e300.textContent = '₹' + (300 * rate).toLocaleString('en-IN');
+  if(e500) e500.textContent = '₹' + (500 * rate).toLocaleString('en-IN');
+}
+
+calcRate();
+</script>
+</body>
+</html>
